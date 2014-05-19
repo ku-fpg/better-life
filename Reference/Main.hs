@@ -1,6 +1,14 @@
 import Control.Concurrent
 import Life
 
+{- Game of life example from section 9.7 of Programming in Haskell,
+   Graham Hutton, Cambridge University Press, 2007.
+
+   Edited by Andy Gill for EECS 876.
+    - using thread delay
+    - using standard combinators like sequence and nub
+-}
+
 module Main where
 
     cls                           :: IO ()
