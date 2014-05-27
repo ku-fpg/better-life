@@ -1,4 +1,4 @@
-module Life (nextgen, Pos, Board) where
+module Life where
 {- Game of life example from section 9.7 of Programming in Haskell,
    Graham Hutton, Cambridge University Press, 2007.
 
@@ -48,6 +48,9 @@ module Life (nextgen, Pos, Board) where
     
     nextgen                       :: Board -> Board
     nextgen b                     =  survivors b ++ births b
+    
+    diff                          :: Board -> Board -> [Pos]
+    diff b1 b2                    =  b1 \\ b2--zipWith (\lhs rhs -> )
     
     
     

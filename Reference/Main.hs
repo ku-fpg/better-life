@@ -1,5 +1,5 @@
-import Control.Concurrent
-import Life
+
+--import Reader
 
 {- Game of life example from section 9.7 of Programming in Haskell,
    Graham Hutton, Cambridge University Press, 2007.
@@ -10,7 +10,11 @@ import Life
 -}
 
 module Main where
-
+    import System.Environment
+    import Control.Concurrent
+    import Life
+    --import Reader
+    
     cls                           :: IO ()
     cls                           =  putStr "\ESC[2J"
     
@@ -24,6 +28,7 @@ module Main where
     showcells                     :: Board -> IO ()
     showcells b                   =  sequence_ [writeat p "O" | p <- b]
     
+
     life                          :: Board -> IO ()
     life b                        =  do cls
                                         showcells b
@@ -33,4 +38,6 @@ module Main where
     glider                        :: Board
     glider                        =  [(4,2),(2,3),(4,3),(3,4),(4,4)]                                    
                                         
-    main = life glider                                    
+    main = do --[f] <- getArgs 
+              --board <- readLife f
+              life glider                                  
