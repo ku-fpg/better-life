@@ -50,7 +50,7 @@ module Life where
     nextgen b                     =  survivors b ++ births b
     
     diff                          :: Board -> Board -> [Pos]
-    diff b1 b2                    =  b1 \\ b2--zipWith (\lhs rhs -> )
+    diff b1 b2                    =  b1 \\ b2
     
     
     
