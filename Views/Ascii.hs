@@ -12,7 +12,7 @@
 module Main where
     import System.Environment
     import Control.Concurrent
-    import Life
+    import LifeUnwrapped
     --import Reader
     
     cls                           :: IO ()

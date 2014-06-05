@@ -1,4 +1,4 @@
-module Life where
+module LifeUnwrapped where
 {- Game of life example from section 9.7 of Programming in Haskell,
    Graham Hutton, Cambridge University Press, 2007.
 
@@ -28,7 +28,7 @@ module Life where
     isEmpty b p                   =  not (isAlive b p)
     
     neighbs                       :: Pos -> [Pos]
-    neighbs (x,y)                 =  map wrap [(x-1,y-1), (x,y-1),
+    neighbs (x,y)                 =  filter (\(x,y) -> (x < (width - 1)) || (y < (height - 1))) [(x-1,y-1), (x,y-1),
                                                (x+1,y-1), (x-1,y),
                                                (x+1,y)  , (x-1,y+1),
                                                (x,y+1)  , (x+1,y+1)] 
