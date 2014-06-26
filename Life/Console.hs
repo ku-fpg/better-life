@@ -15,10 +15,13 @@ writeat p xs = do
 		goto p
 		putStr xs
 
+showcells :: Life board => board -> IO ()
+showcells b = sequence_ [ writeat p "O" | p <- alive b ]
+
 lifeConsole :: Life board => board -> IO ()
 lifeConsole b = do
 		cls
-		sequence_ [writeat p "O" | p <- alive b]
+		showcells b
 		threadDelay (50 * 1000)
 		lifeConsole (next b)
 
