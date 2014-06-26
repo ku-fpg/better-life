@@ -4,21 +4,57 @@ import Life.Types
 import Life.Console
 import Life.Worlds
 
-import qualified Life
+import Data.List
 
-data Board = Board Life.Env Life.Board
+data Board = Board 
+	{ env  :: Env,
+	 board :: [Pos] }
 
-instance Life Board where
-  empty (w,h) = Board (w,h,torus_surface (w,h)) []
-  diff = undefined
-  next  (Board env brd) = Board env (Life.nextgen env brd)
-  inv = undefined
-  size  (Board (w,h,_) _)  = (w,h)
-  alive (Board _ brd) = brd
+isAlive :: Board -> Pos -> Bool
+isAlive b p = elem p $ board b
 
+isEmpty :: Board -> Pos -> Bool
+isEmpty b = not . (isAlive b)
 
-torus_surface :: (Int,Int) -> Pos -> Pos
-torus_surface (w,h) (x,y) = (((x-1) `mod` w) + 1, ((y-1) `mod` h + 1))
+neighbs :: Env -> Pos -> [Pos]
+neighbs ((width,height),warp) (x,y) = 
+	sort $ filter (\(x1,y1) -> (x > 0 && x <= width) && (y > 0 && y <= height))
+	     $ map warp [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
+
+liveneighbs :: Board -> Pos -> Int
+liveneighbs b = length . filter (isAlive b) . (neighbs (env b))
+
+survivors :: Board -> [Pos]
+survivors b = [ p | p <- board b, elem (liveneighbs b p) [2,3] ]
+
+births :: Board -> [Pos]
+births b = [ p | p <- neighbors, isEmpty b p, liveneighbs b p == 3 ]
+	where neighbors = nub $ concat $ map (neighbs (env b)) $ board b
+
+nextgen :: Board -> Board
+nextgen b = Board (env b) $ survivors b ++ births b
+
+instance Life Life.Board where
+  empty e = Board e []
+  size = fst . env
+  diff b1 b2 = Board (env b1) (board b1 \\ board b2)
+  next b = nextgen b
+  inv p b | isAlive b p = Board (env b) $ filter ((/=) p) $ board b
+		  | otherwise = Board (env b) $ sort $ p : board b
+  alive b = board b
+
+life :: Int -> Int -> String -> String -> IO ()
+life w h ws bs = 
+	let warp = case ws of
+		"torus-surface" -> (\(x,y) -> (x `mod` w, y `mod` h))
+		"flat" -> id
+		otherwise -> id
+	in let board = case bs of
+			"glider gun" -> gliderGun
+			"glider" -> glider
+			otherwise -> []
+		in lifeConsole $ scene ((Size w h),warp) board
 
 main :: IO ()
-main = lifeConsole (glider (16,16) :: Board)
+main = life 20 20 "torus-surface" "glider"
+
