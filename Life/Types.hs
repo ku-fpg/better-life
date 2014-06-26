@@ -8,7 +8,8 @@ type Env = (Size,Warp)
 
 class Life board where
   -- create
-  empty :: Env -> board
+  empty :: Size -> board
+  emptyWith :: Env -> board
   -- board operations
   diff  :: board -> board -> board
   next  :: board -> board
@@ -23,6 +24,8 @@ class Life board where
 --   flip pos . flip pos == id
 --   scene (size board) (alive board) == board
 
-scene :: Life board => Env -> [Pos] -> board
+scene :: Life board => Size -> [Pos] -> board
 scene = foldr inv . empty
 
+sceneWith :: Life board => Env -> [Pos] -> board
+sceneWith = foldr inv . emptyWith

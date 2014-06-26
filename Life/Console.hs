@@ -11,12 +11,14 @@ goto :: Pos -> IO ()
 goto (x,y) =  putStr ("\ESC[" ++ show y ++ ";" ++ show x ++ "H")
 
 writeat :: Pos -> String -> IO ()
-writeat p xs = do 	goto p
-					putStr xs
+writeat p xs = do 
+		goto p
+		putStr xs
 
 lifeConsole :: Life board => board -> IO ()
-lifeConsole b = do	cls
-					sequence_ [writeat p "O" | p <- alive b]
-					threadDelay (50 * 1000)
-					lifeConsole (nextgen b)
+lifeConsole b = do
+		cls
+		sequence_ [writeat p "O" | p <- alive b]
+		threadDelay (50 * 1000)
+		lifeConsole (next b)
 

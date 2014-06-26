@@ -34,8 +34,9 @@ births b = [ p | p <- neighbors, isEmpty b p, liveneighbs b p == 3 ]
 nextgen :: Board -> Board
 nextgen b = Board (env b) $ survivors b ++ births b
 
-instance Life Life.Board where
-  empty e = Board e []
+instance Life Board where
+  empty s = Board (s,id) []
+  emptyWith e = Board e []
   size = fst . env
   diff b1 b2 = Board (env b1) (board b1 \\ board b2)
   next b = nextgen b
@@ -43,18 +44,18 @@ instance Life Life.Board where
 		  | otherwise = Board (env b) $ sort $ p : board b
   alive b = board b
 
-life :: Int -> Int -> String -> String -> IO ()
-life w h ws bs = 
-	let warp = case ws of
-		"torus-surface" -> (\(x,y) -> (x `mod` w, y `mod` h))
-		"flat" -> id
-		otherwise -> id
-	in let board = case bs of
-			"glider gun" -> gliderGun
-			"glider" -> glider
-			otherwise -> []
-		in lifeConsole $ scene ((Size w h),warp) board
+life :: Env -> [Pos] -> IO ()
+life e b = lifeConsole (sceneWith e b :: Board)
 
-main :: IO ()
-main = life 20 20 "torus-surface" "glider"
+gSize = (20,20)
+ggSize = (50,50)
+
+testOriginal = life (gSize, torusSurface gSize) glider
+
+testFlatGlider = life (gSize,flatSurface) glider
+
+testGliderGun = life (ggSize,torusSurface ggSize) gliderGun
+
+testFlatGliderGun = life (ggSize,flatSurface) gliderGun
+
 
