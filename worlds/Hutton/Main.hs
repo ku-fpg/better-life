@@ -1,61 +1,44 @@
 module Main where
 
-import Life.Types 
+import Life.Types
 import Life.Console
 import Life.Worlds
+import Life
 
-import Data.List
-
-data Board = Board 
-	{ env  :: Env,
-	 board :: [Pos] }
-
-isAlive :: Board -> Pos -> Bool
-isAlive b p = elem p $ board b
-
-isEmpty :: Board -> Pos -> Bool
-isEmpty b = not . (isAlive b)
-
-neighbs :: Env -> Pos -> [Pos]
-neighbs ((width,height),warp) (x,y) = 
-	sort $ filter (\(x1,y1) -> (x > 0 && x <= width) && (y > 0 && y <= height))
-	     $ map warp [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
-
-liveneighbs :: Board -> Pos -> Int
-liveneighbs b = length . filter (isAlive b) . (neighbs (env b))
-
-survivors :: Board -> [Pos]
-survivors b = [ p | p <- board b, elem (liveneighbs b p) [2,3] ]
-
-births :: Board -> [Pos]
-births b = [ p | p <- neighbors, isEmpty b p, liveneighbs b p == 3 ]
-	where neighbors = nub $ concat $ map (neighbs (env b)) $ board b
-
-nextgen :: Board -> Board
-nextgen b = Board (env b) $ survivors b ++ births b
-
-instance Life Board where
-  empty s = Board (s,id) []
-  emptyWith e = Board e []
-  size = fst . env
-  diff b1 b2 = Board (env b1) (board b1 \\ board b2)
-  next b = nextgen b
-  inv p b | isAlive b p = Board (env b) $ filter ((/=) p) $ board b
-		  | otherwise = Board (env b) $ sort $ p : board b
-  alive b = board b
-
+-- Runs Life indefinitely
 life :: Env -> [Pos] -> IO ()
 life e b = lifeConsole (sceneWith e b :: Board)
 
-gSize = (20,20)
-ggSize = (50,50)
+-- Runs Life (with display) for the specified number of generations
+-- 	Then it prints the final board configuration as a list of positions
+runLife :: Env -> [Pos] -> Int -> IO Board
+runLife e b n = runLifeConsole (sceneWith e b :: Board) n
 
-testOriginal = life (gSize, torusSurface gSize) glider
+-- Runs the Life Engine (no display) for the specified number of generations
+-- 	Then it prints the final board
+lifeEngine :: Board -> Int -> Board
+lifeEngine b 0 = b
+lifeEngine b n = lifeEngine (next b) $ n-1
 
-testFlatGlider = life (gSize,flatSurface) glider
+-- Test functions
+s50 = (50,50)
 
-testGliderGun = life (ggSize,torusSurface ggSize) gliderGun
+originalLife = life (s50, torusSurface s50) glider
 
-testFlatGliderGun = life (ggSize,flatSurface) gliderGun
+testFSG = life (s50,flatSurface) glider
+
+testTSGG = life (s50,torusSurface s50) gliderGun
+
+testFSGG = life (s50,flatSurface) gliderGun
+
+testTSGrun20 = runLife (s50, torusSurface s50) glider 20
+
+testFSGrun20 = runLife (s50, flatSurface) glider 20
+
+testLifeEngine = lifeEngine (Board (s50,torusSurface s50) glider) 500
+
+-- Main runs the original version of Life (size 20x20 with wrapping edges) starting with the "glider" board
+
+main = originalLife
 
 

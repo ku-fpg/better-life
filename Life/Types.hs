@@ -11,21 +11,23 @@ class Life board where
   empty :: Size -> board
   emptyWith :: Env -> board
   -- board operations
-  diff  :: board -> board -> board
-  next  :: board -> board
+  diff :: board -> board -> board
+  next :: board -> board
   -- point operations
-  inv   :: Pos   -> board -> board
-  -- projectors
-  size  :: board -> Size
+  inv :: Pos   -> board -> board
+  -- getters
+  size :: board -> Size
   alive :: board -> [Pos]
-
--- laws
---   size . empty        == id
---   flip pos . flip pos == id
---   scene (size board) (alive board) == board
 
 scene :: Life board => Size -> [Pos] -> board
 scene = foldr inv . empty
 
 sceneWith :: Life board => Env -> [Pos] -> board
 sceneWith = foldr inv . emptyWith
+
+-- laws
+--   size . empty        == id
+--   flip pos . flip pos == id
+--   scene (size board) (alive board) == board
+
+

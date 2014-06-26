@@ -18,6 +18,7 @@ writeat p xs = do
 showcells :: Life board => board -> IO ()
 showcells b = sequence_ [ writeat p "O" | p <- alive b ]
 
+-- Runs life with the given board indefinitely
 lifeConsole :: Life board => board -> IO ()
 lifeConsole b = do
 		cls
@@ -25,3 +26,12 @@ lifeConsole b = do
 		threadDelay (50 * 1000)
 		lifeConsole (next b)
 
+-- Runs Life with the given board for the given number of generations
+-- 	At the end of the run it returns the final board configuration
+runLifeConsole :: Life board => board -> Int -> IO board
+runLifeConsole b 0 = return b
+runLifeConsole b n = do 
+		cls
+		showcells b
+		threadDelay (50 * 1000)
+		runLifeConsole (next b) (n-1)
