@@ -3,13 +3,11 @@ module Life.Types where
 -- | 'Pos' is a zero-indexed position in the (abstact) board
 type Pos = (Int,Int)
 type Size = (Int,Int)
-type Warp = Pos -> Pos
-type Env = (Size,Warp)
+type Env = (Size,Bool)
 
 class Life board where
   -- create
-  empty :: Size -> board
-  emptyWith :: Env -> board
+  empty :: Env -> board
   -- board operations
   diff :: board -> board -> board
   next :: board -> board
@@ -19,11 +17,8 @@ class Life board where
   size :: board -> Size
   alive :: board -> [Pos]
 
-scene :: Life board => Size -> [Pos] -> board
+scene :: Life board => Env -> [Pos] -> board
 scene = foldr inv . empty
-
-sceneWith :: Life board => Env -> [Pos] -> board
-sceneWith = foldr inv . emptyWith
 
 -- laws
 --   size . empty        == id
