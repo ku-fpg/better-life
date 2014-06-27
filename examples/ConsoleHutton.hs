@@ -6,13 +6,13 @@ import Life.Engine.Hutton
 import Life.Worlds
 
 -- Runs Life indefinitely
-life :: Env -> [Pos] -> IO ()
-life e b = lifeConsole (scene e b :: Board)
+life :: Config -> [Pos] -> IO ()
+life c b = lifeConsole (scene c b :: Board)
 
 -- Runs Life for the specified number of generations
 -- 	Then it prints the final board configuration as a list of positions
-runLife :: Env -> [Pos] -> Int -> IO Board
-runLife e b n = runLifeConsole (scene e b :: Board) n
+runLife :: Config -> [Pos] -> Int -> IO Board
+runLife c b n = runLifeConsole (scene c b :: Board) n
 
 -- Runs the original version of Life (size 20x20 with wrapping edges) starting with the "glider" board
 originalLife = life ((20,20),True) glider

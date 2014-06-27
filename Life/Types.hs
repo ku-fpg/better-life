@@ -3,21 +3,21 @@ module Life.Types where
 -- | 'Pos' is a zero-indexed position in the (abstact) board
 type Pos = (Int,Int)
 type Size = (Int,Int)
-type Env = (Size,Bool)
+type Config = (Size,Bool)
 
 class Life board where
   -- create
-  empty :: Env -> board
+  empty :: Config -> board
   -- board operations
   diff :: board -> board -> board
   next :: board -> board
   -- point operations
   inv :: Pos   -> board -> board
-  -- getters
-  size :: board -> Size
+  -- projections
+  config :: board -> Config
   alive :: board -> [Pos]
 
-scene :: Life board => Env -> [Pos] -> board
+scene :: Life board => Config -> [Pos] -> board
 scene = foldr inv . empty
 
 -- laws

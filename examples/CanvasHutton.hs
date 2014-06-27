@@ -8,8 +8,8 @@ import Life.Engine.Hutton
 import Life.Worlds
 
 -- Runs Life indefinitely
-life :: Env -> [Pos] -> IO ()
-life e b = blankCanvas 3000 $ \c -> lifeCanvas c (scene e b :: Board)
+life :: Config -> [Pos] -> IO ()
+life c b = blankCanvas 3000 $ \dc -> lifeCanvas dc (scene c b :: Board)
 
 main = life ((50,50),False) gliderGun
 
