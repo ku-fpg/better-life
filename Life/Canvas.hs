@@ -31,13 +31,4 @@ lifeCanvas c b = do
 		threadDelay $ 50 * 50
 		lifeCanvas c $ next b
 
-runLifeCanvas :: Life board => DeviceContext -> board -> Int -> IO board
-runLifeCanvas c b 0 = return b
-runLifeCanvas c b n =  do 
-		send c $ do 
-			clearRect (0,0,width c,height c)
-			renderBalls $ alive b
-		threadDelay $ 50 * 50
-		runLifeCanvas c (next b) $ n-1
-
 
