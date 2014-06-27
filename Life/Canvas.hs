@@ -1,10 +1,11 @@
 module Life.Canvas where
 
-import Life.Types
-import Graphics.Blank
 import Data.Text (pack)
+import Graphics.Blank
 import Control.Concurrent
 import Numeric
+
+import Life.Types
 
 renderBall :: Pos -> Canvas ()
 renderBall (x,y) = do 

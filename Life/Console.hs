@@ -1,8 +1,9 @@
 module Life.Console where
 
-import Life.Types
 import System.Console.ANSI
 import Control.Concurrent
+
+import Life.Types
 
 cls :: IO ()
 cls = putStr "\ESC[2J"
