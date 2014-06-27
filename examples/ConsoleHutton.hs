@@ -9,16 +9,10 @@ import Life.Worlds
 life :: Env -> [Pos] -> IO ()
 life e b = lifeConsole (scene e b :: Board)
 
--- Runs Life (with display) for the specified number of generations
+-- Runs Life for the specified number of generations
 -- 	Then it prints the final board configuration as a list of positions
 runLife :: Env -> [Pos] -> Int -> IO Board
 runLife e b n = runLifeConsole (scene e b :: Board) n
-
--- Runs the Life Engine (no display) for the specified number of generations
--- 	Then it prints the final board
-lifeEngine :: Board -> Int -> Board
-lifeEngine b 0 = b
-lifeEngine b n = lifeEngine (next b) $ n-1
 
 -- Runs the original version of Life (size 20x20 with wrapping edges) starting with the "glider" board
 originalLife = life ((20,20),True) glider
