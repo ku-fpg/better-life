@@ -1,4 +1,4 @@
-module Life where
+module HuttonEngine where
 
 import Life.Types
 import Life.Worlds
@@ -22,7 +22,7 @@ neighbs :: Env -> Pos -> [Pos]
 neighbs ((w,h),warp) (x,y) = 
 	sort $ case warp of
 		False -> filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) neighbors
-		True -> map (\(x,y) -> ((x-1) `mod` w + 1, (y-1) `mod` h + 1)) neighbors
+		True -> map (\(x,y) -> (x `mod` w, y `mod` h)) neighbors
 	where neighbors = [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
 
 liveneighbs :: Board -> Pos -> Int

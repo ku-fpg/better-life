@@ -1,9 +1,9 @@
-module Main where
+module HuttonLife where
 
 import Life.Types
 import Life.Console
 import Life.Worlds
-import Life
+import HuttonEngine
 
 -- Runs Life indefinitely
 life :: Env -> [Pos] -> IO ()
@@ -38,5 +38,4 @@ testGrun20 = runLife (s50,True) glider 20
 
 testGGFlatrun20 = runLife (s50,False) gliderGun 20
 
-testLifeEngine = lifeEngine (Board (s50,True) glider) 500
 
