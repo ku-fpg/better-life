@@ -6,11 +6,9 @@ import Life.Types
 import Life.Worlds
 
 data Board = Board 
-	{ cnfg :: Config,
-	 board :: Set Pos }
-
-instance Show Board where
-	show = show . board
+		{ cnfg :: Config,
+		 board :: Set Pos }
+	deriving (Show)
 
 isAlive :: Board -> Pos -> Bool
 isAlive b p = member p $ board b
