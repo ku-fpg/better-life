@@ -1,8 +1,8 @@
-module NoDisplayHutton where
+module NoDisplaySet where
 
 import Life.Types
 import Life.Engine
-import Life.Engine.Hutton
+import Life.Engine.Set
 import Life.Worlds
 
 -- Runs Life (without display) indefinitely

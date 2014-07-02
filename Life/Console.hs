@@ -20,7 +20,7 @@ showcells :: Life board => board -> IO ()
 showcells b = sequence_ [ writeat p "O" | p <- alive b ]
 
 -- Runs life with the given board indefinitely
-lifeConsole :: Life board => board -> IO ()
+lifeConsole :: Life board => board -> IO board
 lifeConsole b = do
 		cls
 		showcells b

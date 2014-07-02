@@ -31,4 +31,3 @@ lifeCanvas c b = do
 	threadDelay $ 50 * 50
 	lifeCanvas c $ next b
 
-
