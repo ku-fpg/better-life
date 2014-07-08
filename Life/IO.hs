@@ -6,9 +6,9 @@ import Control.Applicative
 
 -- These functions need to be rewritten to work with new Life board class
 
-{-
+
 readLife :: Life board => FilePath -> IO board
-readLife fname = do 
+readLife fname = undefined {-do 
 	board <- (dropWhile ((/= "#P") . head) . map words . lines) <$> readFile fname
 	let [_, x, y] = head board
 	let board' = concat $ tail board
@@ -20,9 +20,9 @@ readLife fname = do
 					else acc)
 			[] 
 			$ zip pairs $ concat board'
-
+-}
 writeLife :: Life board => board -> FilePath -> IO ()
-writeLife board fname = do 
+writeLife board fname = undefined {-do 
 	let mincorner = minimum board
 	let maxcorner = maximum board
 	let xdim = (fst maxcorner) - (fst mincorner) + 1
@@ -36,3 +36,5 @@ writeLife board fname = do
 										else ".")
 								window))
 -}
+
+

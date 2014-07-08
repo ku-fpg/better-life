@@ -46,3 +46,4 @@ instance Life Board where
 		else insert p $ board b
 	alive b = toAscList $ board b
 
+

@@ -29,10 +29,10 @@ lifeConsole b = do
 
 -- Runs Life with the given board for the given number of generations
 -- 	At the end of the run it returns the final board configuration
-runLifeConsole :: Life board => board -> Int -> IO board
-runLifeConsole b 0 = return b
-runLifeConsole b n = do 
+lifeXConsole :: Life board => Int -> board -> IO board
+lifeXConsole 0 b = return b
+lifeXConsole n b = do 
 		cls
 		showcells b
 		threadDelay (50 * 1000)
-		runLifeConsole (next b) (n-1)
+		lifeXConsole (n-1) (next b)

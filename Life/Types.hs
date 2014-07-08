@@ -20,6 +20,12 @@ class Life board where
 scene :: Life board => Config -> [Pos] -> board
 scene = foldr inv . empty
 
+-- Runs Life with the given board for the given number of generations
+-- 	At the end of the run it returns the final board configuration
+runLife :: Life board => Int -> board -> board
+runLife 0 b = b
+runLife n b = runLife (n-1) (next b)
+
 -- laws
 --   size . empty        == id
 --   flip pos . flip pos == id

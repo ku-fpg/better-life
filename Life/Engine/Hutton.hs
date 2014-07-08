@@ -3,7 +3,6 @@ module Life.Engine.Hutton where
 import Data.List
 
 import Life.Types
-import Life.Worlds
 
 data Board = Board 
 		{ cnfg :: Config,
@@ -46,4 +45,5 @@ instance Life Board where
 		then filter ((/=) p) $ board b
 		else sort $ p : board b
 	alive b = board b
+
 
