@@ -3,6 +3,7 @@ module Life where
 import Data.List
 
 import Types
+import Worlds
 
 data Board = Board 
 		{ cnfg :: Config,

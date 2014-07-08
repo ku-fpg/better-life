@@ -1,4 +1,4 @@
-module NewLife (Board', repB, absB) where
+module NewLife where
 
 import Data.Set as Set
 
