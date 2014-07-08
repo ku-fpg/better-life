@@ -3,24 +3,23 @@ module Life.Engine.Set where
 import Data.Set as Set
 
 import Life.Types
-import Life.Worlds
 
 data Board = Board 
 		{ cnfg :: Config,
 		 board :: Set Pos }
 	deriving (Show)
 
+neighbs :: Config -> Pos -> Set Pos
+neighbs ((w,h),warp) (x,y) = if warp
+		then Set.map (\(x,y) -> (x `mod` w, y `mod` h)) neighbors
+		else Set.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) neighbors
+	where neighbors = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
+
 isAlive :: Board -> Pos -> Bool
 isAlive b p = member p $ board b
 
 isEmpty :: Board -> Pos -> Bool
 isEmpty b p = notMember p $ board b
-
-neighbs :: Config -> Pos -> Set Pos
-neighbs ((w,h),warp) (x,y) = if warp
-		then Set.map (\(x,y) -> (x `mod` w, y `mod` h)) neighbors
-		else Set.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) neighbors
-	where neighbors = fromList [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
 
 liveneighbs :: Board -> Pos -> Int
 liveneighbs b = size . Set.filter (isAlive b) . (neighbs (cnfg b))
@@ -33,13 +32,13 @@ births b = Set.filter (\p -> (isEmpty b p) && (liveneighbs b p == 3)) $
 	Set.foldr (\p s -> union s (neighbs (cnfg b) p)) Set.empty $ board b
 
 nextgen :: Board -> Board
-nextgen b = Board (cnfg b) $ survivors b `union` births b
+nextgen b = survivors b `union` births b
 
 instance Life Board where
 	empty c = Board c Set.empty
 	config = cnfg
 	diff b1 b2 = Board (cnfg b1) $ board b1 \\ board b2
-	next b = nextgen b
+	next b = Board (cnfg b) $ nextgen b
 	inv p b = Board (cnfg b) $ 
 		if isAlive b p 
 		then delete p $ board b
