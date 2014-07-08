@@ -1,4 +1,4 @@
-module CanvasHutton where
+module HuttonCanvas where
 
 import Graphics.Blank
 

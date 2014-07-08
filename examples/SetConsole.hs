@@ -1,18 +1,18 @@
-module ConsoleHutton where
+module SetConsole where
 
 import Life.Types
 import Life.Console
-import Life.Engine.Hutton
+import Life.Engine.Set
 import Life.Worlds
 
 -- Runs Life indefinitely
-life :: Config -> [Pos] -> IO Board
-life c = lifeConsole . (scene c)
+life :: Config -> [Pos] -> IO ()
+life c b = lifeConsole (scene c b :: Board)
 
 -- Runs Life for the specified number of generations
 -- 	Then it prints the final board configuration as a list of positions
 runLife :: Config -> [Pos] -> Int -> IO Board
-runLife c = runLifeConsole . (scene c)
+runLife c b n = runLifeConsole (scene c b :: Board) n
 
 -- Runs the original version of Life (size 20x20 with wrapping edges) starting with the "glider" board
 originalLife = life ((20,20),True) glider

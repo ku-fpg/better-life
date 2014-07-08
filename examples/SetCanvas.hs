@@ -1,4 +1,4 @@
-module CanvasSet where
+module SetCanvas where
 
 import Graphics.Blank
 
