@@ -32,4 +32,3 @@ testGrun20 = lifeX 20 (s50,True) glider
 
 testGGFlatrun20 = lifeX 20 (s50,False) gliderGun
 
-
