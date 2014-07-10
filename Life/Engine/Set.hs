@@ -9,11 +9,13 @@ data Board = Board
 		 board :: Set Pos }
 	deriving (Show)
 
+neighbors :: Pos -> Set Pos
+neighbors (x,y) = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
+
 neighbs :: Config -> Pos -> Set Pos
-neighbs ((w,h),warp) (x,y) = if warp
-		then Set.map (\(x,y) -> (x `mod` w, y `mod` h)) neighbors
-		else Set.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) neighbors
-	where neighbors = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
+neighbs ((w,h),warp) p = if warp
+		then Set.map (\(x,y) -> (x `mod` w, y `mod` h)) $ neighbors p
+		else Set.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) $ neighbors p
 
 isAlive :: Board -> Pos -> Bool
 isAlive b p = member p $ board b

@@ -9,12 +9,14 @@ data Board = Board
 		 board :: [Pos] }
 	deriving (Show)
 
+neighbors :: Pos -> [Pos]
+neighbors (x,y) = [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
+
 neighbs :: Config -> Pos -> [Pos]
-neighbs ((w,h),warp) (x,y) = sort $ 
+neighbs ((w,h),warp) p = sort $ 
 		if warp
-		then map (\(x,y) -> (x `mod` w, y `mod` h)) neighbors
-		else filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) neighbors
-	where neighbors = [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
+		then map (\(x,y) -> (x `mod` w, y `mod` h)) $ neighbors p
+		else filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) $ neighbors p
 
 isAlive :: Board -> Pos -> Bool
 isAlive b p = elem p $ board b
@@ -29,8 +31,7 @@ survivors :: Board -> [Pos]
 survivors b = [ p | p <- board b, elem (liveneighbs b p) [2,3] ]
 
 births :: Board -> [Pos]
-births b = [ p | p <- n, isEmpty b p, liveneighbs b p == 3 ]
-	where n = nub $ concat $ map (neighbs (cnfg b)) $ board b
+births b = [ p | p <- nub $ concat $ map (neighbs (cnfg b)) $ board b, isEmpty b p, liveneighbs b p == 3 ]
 
 nextgen :: Board -> Board
 nextgen b = sort $ survivors b ++ births b
