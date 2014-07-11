@@ -6,8 +6,8 @@ import Types
 import Worlds
 
 data Board = Board 
-		{ cnfg :: Config,
-		 board :: [Pos] }
+		{ cnfg :: Config
+		, board :: [Pos] }
 	deriving (Show)
 
 neighbors :: Pos -> [Pos]
@@ -32,8 +32,7 @@ survivors :: Board -> [Pos]
 survivors b = [ p | p <- board b, elem (liveneighbs b p) [2,3] ]
 
 births :: Board -> [Pos]
-births b = [ p | p <- n, isEmpty b p, liveneighbs b p == 3 ]
-	where n = nub $ concat $ map (neighbs (cnfg b)) $ board b
+births b = [ p | p <- nub (concat (map (neighbs (cnfg b)) (board b))), isEmpty b p, liveneighbs b p == 3 ]
 
 nextgen :: Board -> Board
 nextgen b = sort $ survivors b ++ births b
