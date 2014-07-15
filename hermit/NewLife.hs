@@ -1,12 +1,9 @@
 module NewLife where
 
-import Data.Set as Set
-
-import Types
-
 -- Libraries required for Hermit transformations
 import Data.Function (fix)
 import Life
+import Data.Set as Set
 
 -- The new data structure to be used in the implementation
 data Board' = Board' 
@@ -91,7 +88,7 @@ absBB :: (Board' -> Board') -> (Board -> Board)
 absBB f = absB . f . repB
 
 -- Rules for data structure conversion
-{-
+
 -- NOT SURE ABOUT THE FOLLOWING RULES?????????????????
 {-# RULES "neighbors" [~0] forall x y. repb [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] #-}
 
@@ -108,7 +105,6 @@ absBB f = absB . f . repB
 
 {-# RULES "nextgen" [~0] forall b. sort (survivors (absB b) ++ births (absB b)) = survivors b `union` births b #-}
 
--}
 -- Needed because the fusion rule we generate isn't too useful yet.
 {-# RULES "repB-absB-fusion" [~0] forall b. repB (absB b) = b #-}
 

@@ -34,13 +34,13 @@ births :: Board -> [Pos]
 births b = [ p | p <- nub $ concat $ map (neighbs (cnfg b)) $ board b, isEmpty b p, liveneighbs b p == 3 ]
 
 nextgen :: Board -> Board
-nextgen b = sort $ survivors b ++ births b
+nextgen b = Board (cnfg b) $ sort $ survivors b ++ births b
 
 instance Life Board where
 	empty c = Board c []
 	config = cnfg
 	diff b1 b2 = Board (cnfg b1) $ board b1 \\ board b2
-	next b = Board (cnfg b) $ nextgen b
+	next b = nextgen b
 	inv p b = Board (cnfg b) $ 
 		if isAlive b p 
 		then filter ((/=) p) $ board b

@@ -27,8 +27,8 @@ runLife 0 b = b
 runLife n b = runLife (n-1) (next b)
 
 -- laws
---   size . empty        == id
---   flip pos . flip pos == id
---   scene (size board) (alive board) == board
+--   config . empty        == id
+--   inv pos . inv pos == id
+--   scene (config board) (alive board) == board
 
 
