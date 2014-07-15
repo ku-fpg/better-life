@@ -3,7 +3,6 @@ module NewLife where
 -- Libraries required for Hermit transformations
 import Types
 import Life
-import Data.List (nub, sort)
 import Data.Set as Set
 import Data.Function (fix)
 
