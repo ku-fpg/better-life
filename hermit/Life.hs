@@ -48,7 +48,7 @@ instance Life Board where
 		else sort $ p : board b
 	alive b = board b
 
-main :: IO ()
+main :: Board
 main = runLife 500 $ scene ((20,20),True) glider
 
 
