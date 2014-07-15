@@ -106,7 +106,7 @@ absBB f = absB . f . repB
 
 {-# RULES "births" [~0] forall b. [ p | p <- nub (concat (map (neighbs (cnfg (absB b))) (board (absB b)))), isEmpty (absB b) p, liveneighbs (absB b) p == 3 ] = Set.filter (\p -> (isEmpty b p) && (liveneighbs b p == 3)) (Set.foldr (\p s -> union s (neighbs (cnfg b) p)) Set.empty (board b)) #-}
 
-{-# RULES "nextgen" [~0] forall b. sort $ survivors (absB b) ++ births (absB b) = survivors b `union` births b #-}
+{-# RULES "nextgen" [~0] forall b. sort (survivors (absB b) ++ births (absB b)) = survivors b `union` births b #-}
 
 -}
 -- Needed because the fusion rule we generate isn't too useful yet.
