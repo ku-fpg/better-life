@@ -13,16 +13,13 @@ data Board' = Board'
 	{ cnfg' :: Config,
 	 board' :: Set Pos }
 
-isAlive' = undefined
-nextgen' = undefined
-
 instance Life Board' where
 	empty c = Board' c Set.empty
 	config = cnfg'
 	diff b1 b2 = Board' (cnfg' b1) $ board' b1 \\ board' b2
-	next b = nextgen' b
+	next b = undefined
 	inv p b = Board' (cnfg' b) $ 
-		if isAlive' b p 
+		if member p $ board' b
 		then delete p $ board' b
 		else insert p $ board' b
 	alive b = toAscList $ board' b
