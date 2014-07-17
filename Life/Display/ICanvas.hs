@@ -37,10 +37,13 @@ drawGrid (w,h) = do
 renderSquare :: Pos -> Canvas ()
 renderSquare (x,y) = do 
 	beginPath()
-	fillStyle $ pack $ '#' : (concat [showHex (255 - (x' `mod` 255)) "", 
-		                   '0' : (showHex 0 ""),
-		                   showHex (y' `mod` 255) ""])
-	rect ((fromIntegral x'), (fromIntegral y'), 8, 8)
+	fillStyle $ pack $ "red" 
+	{-Need to fix this, some cells are appearing white 
+	'#' : (concat [showHex (200 - ((x' + 50) `mod` 200)) "", 
+		                              showHex ((x' + y') `mod` 200) "",
+		                              showHex ((y' + 50) `mod` 200) ""])
+	-}
+	rect ((fromIntegral x'), (fromIntegral y'), 9, 9)
 	closePath()
 	fill()
 	where 
@@ -52,7 +55,7 @@ renderSquares :: [Pos] -> Canvas ()
 renderSquares xs = mapM_ renderSquare xs
                 
 clearDeadCells :: [Pos] -> Canvas ()
-clearDeadCells b = sequence_ [ clearRect (10 * fromIntegral x, 10 * fromIntegral y, 8, 8) | (x,y) <- b ]
+clearDeadCells b = sequence_ [ clearRect (10 * fromIntegral x, 10 * fromIntegral y, 9, 9) | (x,y) <- b ]
 
 lifeLoop :: Life board => DeviceContext -> board -> IO ()
 lifeLoop dc b = do 
@@ -69,24 +72,29 @@ drawButton (x,y) = do
 	fillStyle $ pack "red"
 	fillRect (x, y, 30, 20)
 	fillStyle $ pack "white"
-	fillText (pack "start", x + 5, y + 12.5)
+	fillText (pack "start", x + 2.5, y + 12.5)
                                             
 lifeICanvas :: Life board => DeviceContext -> board -> IO ()
 lifeICanvas dc b = do 
-	send dc $ do 
-		drawGrid $ fst $ config b
-		drawButton (140, 325)
+	send dc $ do
+		let size = fst $ config b
+		drawGrid size
+		let bcoords = (5 * (fromIntegral (fst size)) - 15  , 10 * fromIntegral (snd size) + 20 )
+		drawButton bcoords
 	event <- wait dc
 	case ePageXY event of
 	-- if no mouse location, ignore, and redraw
 		Nothing -> lifeICanvas dc b
 		Just (x',y') -> 
-			if floor x' >= 140 && floor x' <= 170 && floor y' >= 325 && floor y' <= 345 
-			then lifeLoop dc b
-			else if (floor x') `div` 10 > fst (fst (config b)) || (floor y') `div` 10 > snd (fst (config b))
-				then lifeICanvas dc b
-				else do 
-					send dc $ renderSquare ((floor x') `div` 10, (floor y') `div` 10)
-					lifeICanvas dc $ inv ((floor x') `div` 10, (floor y') `div` 10) b
+		    let (bx,by) = fst $ config b
+		        (butx,buty) = (5 * (fromIntegral bx) - 15  , 10 * (fromIntegral by) + 20 ) 
+		    in
+			    if floor x' >= butx && floor x' <= (butx + 30) && floor y' >= buty && floor y' <= (buty + 20) 
+			    then lifeLoop dc b
+			    else if (floor x') `div` 10 > bx || (floor y') `div` 10 > by
+				    then lifeICanvas dc b
+				    else do 
+					    send dc $ renderSquare ((floor x') `div` 10, (floor y') `div` 10)
+					    lifeICanvas dc $ inv ((floor x') `div` 10, (floor y') `div` 10) b
 
 
