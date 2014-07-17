@@ -1,4 +1,4 @@
-module Worlds where
+module Scenes where
 
 import Types
 import Data.List
