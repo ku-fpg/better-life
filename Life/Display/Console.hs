@@ -1,4 +1,4 @@
-module Life.Console where
+module Life.Display.Console where
 
 import System.Console.ANSI
 import Control.Concurrent

@@ -1,4 +1,4 @@
-module Life.ICanvas where
+module Life.Display.ICanvas where
 
 import Graphics.Blank
 import Data.Text (pack)
@@ -7,7 +7,7 @@ import Control.Concurrent
 
 import Life.Types
 
--- This still needs work, the button does not render correctly due to the new variable sized boards
+-- This still needs work, it does not render correctly due to the new variable-size boards
 
 drawGrid :: Size -> Canvas ()
 drawGrid (w,h) = do 

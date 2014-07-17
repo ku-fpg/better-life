@@ -1,8 +1,8 @@
 module SetConsole where
 
 import Life.Types
-import Life.Console
 import Life.Engine.Set
+import Life.Display.Console
 import Life.Scenes
 
 -- Runs Life indefinitely

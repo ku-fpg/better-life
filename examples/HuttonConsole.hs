@@ -1,8 +1,8 @@
 module HuttonConsole where
 
 import Life.Types
-import Life.Console
 import Life.Engine.Hutton
+import Life.Display.Console
 import Life.Scenes
 
 -- Runs Life indefinitely

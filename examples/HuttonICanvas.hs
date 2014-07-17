@@ -4,8 +4,8 @@ import Graphics.Blank
 import Data.Text (pack)
 
 import Life.Types
-import Life.ICanvas
 import Life.Engine.Hutton
+import Life.Display.ICanvas
 import Life.Scenes
 
 -- Runs Life indefinitely

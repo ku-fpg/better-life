@@ -1,4 +1,4 @@
-module Life.Canvas where
+module Life.Display.Canvas where
 
 import Data.Text (pack)
 import Graphics.Blank

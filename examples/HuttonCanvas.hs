@@ -3,8 +3,8 @@ module HuttonCanvas where
 import Graphics.Blank
 
 import Life.Types
-import Life.Canvas
 import Life.Engine.Hutton
+import Life.Display.Canvas
 import Life.Scenes
 
 -- Runs Life indefinitely
