@@ -12,7 +12,7 @@ class Life board where
 	diff :: board -> board -> board
 	next :: board -> board
 	-- point operations
-	inv :: Pos   -> board -> board
+	inv :: Pos -> board -> board
 	-- projections
 	config :: board -> Config
 	alive :: board -> [Pos]
