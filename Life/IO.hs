@@ -1,40 +1,38 @@
 module Life.IO where
 
-import Life.Types
-
 import Control.Applicative
 
--- These functions need to be rewritten to work with new Life board class
+import Life.Types
 
+-- These functions have not been tested
 
 readLife :: Life board => FilePath -> IO board
-readLife fname = undefined {-do 
-	board <- (dropWhile ((/= "#P") . head) . map words . lines) <$> readFile fname
-	let [_, x, y] = head board
-	let board' = concat $ tail board
-	let xdim = (maximum . map length) board'
-	let ydim = length board'
-	let pairs = [(xcoord, ycoord) | ycoord <- [1..ydim], xcoord <- [1..xdim]] 
-	return $ foldl (\acc arg -> if ((/= '.') . snd) arg
+readLife fname = do 
+	b <- (dropWhile ((/= "#P") . head) . map words . lines) <$> readFile fname
+	let [width, height, w] = head b
+	let xdim = read width
+	let ydim = read height
+	return $ scene ((xdim, ydim), if w == "0" then False else True ) $ 
+		foldl (\acc arg -> if ((== '*') . snd) arg
 					then (fst arg) : acc
-					else acc)
+					else acc) 
 			[] 
-			$ zip pairs $ concat board'
--}
+			$ zip [ (x,y) | y <- [0..ydim-1], x <- [0..xdim-1] ] $ concat $ concat $ tail b
+
 writeLife :: Life board => board -> FilePath -> IO ()
-writeLife board fname = undefined {-do 
-	let mincorner = minimum board
-	let maxcorner = maximum board
-	let xdim = (fst maxcorner) - (fst mincorner) + 1
-	let window = [(xcoord, ycoord) | ycoord <- [1..(snd maxcorner)], xcoord <- [1..xdim]]
-	writeFile fname  ("#Life 1.05 \n#P 1 1\n" ++ (concatMap (\arg -> if arg `elem` board 
-									then if (fst arg) `mod` xdim == 0 
-										then "*\n" 
-										else "*"
-									else if (fst arg) `mod` xdim == 0 
-										then ".\n"
-										else ".")
-								window))
--}
+writeLife b fname = do 
+	let xdim = fst $ fst $ config b
+	let ydim = snd $ fst $ config b
+	let warp = if snd $ config b then "1" else "0"
+	writeFile fname $ "#Life 1.05 \n#P " ++ 
+		show xdim ++ " " ++ show ydim ++ " " ++ warp ++ "\n" ++ 
+		concatMap (\arg -> if (fst arg) < xdim - 1
+					then if arg `elem` (alive b)
+						then "*"
+						else "."
+					else if arg `elem` (alive b)
+						then "*\n"
+						else ".\n")
+			[ (x,y) | y <- [0..ydim-1], x <- [0..xdim-1] ]
 
 
