@@ -1,8 +1,8 @@
 module NewLife where
 
 -- Libraries required for Hermit transformations
-import Types
-import Life
+import Life.Types
+import Life.Engine.Hutton
 
 import Data.Set as Set
 import Data.Function (fix)
