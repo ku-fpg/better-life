@@ -2,7 +2,7 @@ module SetEngine where
 
 import Life.Types
 import Life.Engine.Set
-import Life.Worlds
+import Life.Scenes
 
 -- Runs the Life (without display) for the specified number of generations
 -- 	Then it prints the final board

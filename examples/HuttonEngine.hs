@@ -2,7 +2,7 @@ module HuttonEngine where
 
 import Life.Types
 import Life.Engine.Hutton
-import Life.Worlds
+import Life.Scenes
 
 -- Runs the Life (without display) for the specified number of generations
 life :: Int -> Config -> [Pos] -> Board

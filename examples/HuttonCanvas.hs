@@ -5,7 +5,7 @@ import Graphics.Blank
 import Life.Types
 import Life.Canvas
 import Life.Engine.Hutton
-import Life.Worlds
+import Life.Scenes
 
 -- Runs Life indefinitely
 life :: Config -> [Pos] -> IO ()

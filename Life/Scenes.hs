@@ -1,7 +1,6 @@
-module Life.Worlds where
+module Life.Scenes where
 
 import Life.Types
-import Data.List
 
 -- Pre-plotted Scenes
 

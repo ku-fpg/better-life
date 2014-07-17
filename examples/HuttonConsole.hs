@@ -3,7 +3,7 @@ module HuttonConsole where
 import Life.Types
 import Life.Console
 import Life.Engine.Hutton
-import Life.Worlds
+import Life.Scenes
 
 -- Runs Life indefinitely
 life :: Config -> [Pos] -> IO Board

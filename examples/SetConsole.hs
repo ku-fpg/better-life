@@ -3,7 +3,7 @@ module SetConsole where
 import Life.Types
 import Life.Console
 import Life.Engine.Set
-import Life.Worlds
+import Life.Scenes
 
 -- Runs Life indefinitely
 life :: Config -> [Pos] -> IO ()
