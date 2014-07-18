@@ -31,7 +31,7 @@ survivors :: Board -> [Pos]
 survivors b = [ p | p <- board b, elem (liveneighbs b p) [2,3] ]
 
 births :: Board -> [Pos]
-births b = [ p | p <- nub $ concat $ map (neighbs (cnfg b)) $ board b, isEmpty b p, liveneighbs b p == 3 ]
+births b = [ p | p <- nub $ concatMap (neighbs (cnfg b)) $ board b, isEmpty b p, liveneighbs b p == 3 ]
 
 nextgen :: Board -> Board
 nextgen b = Board (cnfg b) $ sort $ survivors b ++ births b
@@ -46,5 +46,4 @@ instance Life Board where
 		then filter ((/=) p) $ board b
 		else sort $ p : board b
 	alive b = board b
-
 
