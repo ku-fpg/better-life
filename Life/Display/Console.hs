@@ -36,3 +36,5 @@ lifeXConsole n b = do
 		showcells b
 		threadDelay (50 * 1000)
 		lifeXConsole (n-1) (next b)
+
+

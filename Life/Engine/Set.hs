@@ -1,3 +1,4 @@
+{-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 module Life.Engine.Set where
 
 import Data.List (sort)
@@ -5,10 +6,7 @@ import Data.Set as Set
 
 import Life.Types
 
-data Board = Board 
-		{ cnfg :: Config,
-		 board :: Set Pos }
-	deriving (Show)
+type Board = LifeBoard Config (Set Pos)
 
 neighbors :: Pos -> Set Pos
 neighbors (x,y) = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
@@ -26,24 +24,24 @@ isEmpty :: Board -> Pos -> Bool
 isEmpty b p = notMember p $ board b
 
 liveneighbs :: Board -> Pos -> Int
-liveneighbs b = size . Set.filter (isAlive b) . (neighbs (cnfg b))
+liveneighbs b = size . Set.filter (isAlive b) . (neighbs (config b))
 
 survivors :: Board -> Set Pos
 survivors b = Set.filter (\p -> elem (liveneighbs b p) [2,3]) $ board b
 
 births :: Board -> Set Pos
 births b = Set.filter (\p -> (isEmpty b p) && (liveneighbs b p == 3)) $ 
-	Set.foldr (\p s -> union s (neighbs (cnfg b) p)) Set.empty $ board b
+	Set.foldr (\p s -> union s (neighbs (config b) p)) Set.empty $ board b
 
 nextgen :: Board -> Board
-nextgen b = Board (cnfg b) $ survivors b `union` births b
+nextgen b = LifeBoard (config b) $ survivors b `union` births b
 
 instance Life Board where
-	empty c = Board c Set.empty
-	config = cnfg
-	diff b1 b2 = Board (cnfg b1) $ board b1 \\ board b2
+	empty c = LifeBoard c Set.empty
+	dims b = fst $ config b
+	diff b1 b2 = LifeBoard (config b1) $ board b1 \\ board b2
 	next = nextgen
-	inv p b = Board (cnfg b) $ 
+	inv p b = LifeBoard (config b) $ 
 		if isAlive b p 
 		then delete p $ board b
 		else insert p $ board b

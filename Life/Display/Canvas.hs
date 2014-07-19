@@ -24,10 +24,10 @@ renderBalls :: [Pos] -> Canvas ()
 renderBalls xs = mapM_ renderBall xs
 
 lifeCanvas :: Life board => DeviceContext -> board -> IO ()
-lifeCanvas c b = do 
-	send c $ do 
-		clearRect (0, 0, width c, height c)
+lifeCanvas dc b = do 
+	send dc $ do 
+		clearRect (0, 0, width dc, height dc)
 		renderBalls $ alive b
 	threadDelay $ 50 * 50
-	lifeCanvas c $ next b
+	lifeCanvas dc $ next b
 

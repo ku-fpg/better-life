@@ -5,17 +5,22 @@ type Pos = (Int,Int)
 type Size = (Int,Int)
 type Config = (Size,Bool)
 
-class Life board where
+data LifeBoard c b = LifeBoard 
+		{ config :: c
+		, board :: b }
+	deriving Show
+
+class Life b where
 	-- create
-	empty :: Config -> board
+	empty :: Config -> b
 	-- board operations
-	diff :: board -> board -> board
-	next :: board -> board
+	diff :: b -> b -> b
+	next :: b -> b
 	-- point operations
-	inv :: Pos -> board -> board
+	inv :: Pos -> b -> b
 	-- projections
-	config :: board -> Config
-	alive :: board -> [Pos]
+	dims :: b -> Size
+	alive :: b -> [Pos]
 
 scene :: Life board => Config -> [Pos] -> board
 scene = foldr inv . empty
