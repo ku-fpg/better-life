@@ -6,7 +6,7 @@ import Life.Display.Console
 import Life.Scenes
 
 -- Runs Life indefinitely
-life :: Config -> [Pos] -> IO ()
+life :: Config -> [Pos] -> IO Board
 life c b = lifeConsole (scene c b :: Board)
 
 -- Runs Life for the specified number of generations
