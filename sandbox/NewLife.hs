@@ -1,28 +1,28 @@
+{-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 module NewLife where
 
 -- Libraries required for Hermit transformations
 import Life.Types
-import Life.Engine.Hutton
+--import Life.Engine.Hutton
 
 import Data.Set as Set
 import Data.Function (fix)
 
 -- Transformations required by hermit for worker/wrapper conversions
 -- The new data structure to be used in the implementation
-data Board' = Board' 
-	{ cnfg' :: Config,
-	 board' :: Set Pos }
+type Board = LifeBoard Config [Pos]
+type Board' = LifeBoard Config (Set Pos)
 
 instance Life Board' where
-	empty c = Board' c Set.empty
-	config = cnfg'
-	diff b1 b2 = Board' (cnfg' b1) $ board' b1 \\ board' b2
+	empty c = LifeBoard c Set.empty
+	dims b = fst $ config b
+	diff b1 b2 = LifeBoard (config b1) $ board b1 \\ board b2
 	next b = undefined
-	inv p b = Board' (cnfg' b) $ 
-		if member p $ board' b
-		then delete p $ board' b
-		else insert p $ board' b
-	alive b = toAscList $ board' b
+	inv p b = LifeBoard (config b) $ 
+		if member p $ board b
+		then delete p $ board b
+		else insert p $ board b
+	alive b = toAscList $ board b
 
 -- repb and absb change the underlying board field
 repb :: [Pos] -> Set Pos
@@ -33,10 +33,10 @@ absb = toAscList
 
 -- repB and absB change the entire Board structure
 repB :: Board -> Board'
-repB b = Board' (cnfg b) $ repb (board b)
+repB b = LifeBoard (config b) $ repb (board b)
 
 absB :: Board' -> Board
-absB b = Board (cnfg' b) $ absb (board' b)
+absB b = LifeBoard (config b) $ absb (board b)
 
 -- repPb and absPb can be used for neighbors function
 -- representation of (Pos -> [Pos])
@@ -100,11 +100,11 @@ absBB f = absB . f . repB
 {-# RULES "isAlive" [100] forall b p. elem p (board (absB b)) = Set.member p (board b) #-}
 {-# RULES "isEmpty" [100] forall b p. not (elem p (board (absB b))) = Set.notMember p (board b) #-}
 
-{-# RULES "liveneighbs" [100] forall b. length . Prelude.filter (isAlive (absB b)) . (neighbs (cnfg (absB b))) = size . Set.filter (isAlive b) . (neighbs (cnfg b)) #-}
+{-# RULES "liveneighbs" [100] forall b. length . Prelude.filter (isAlive (absB b)) . (neighbs (config (absB b))) = size . Set.filter (isAlive b) . (neighbs (config b)) #-}
 
 {-# RULES "survivors" [100] forall b. [ p | p <- board (absB b), elem (liveneighbs (absB b) p) [2,3] ] = Set.filter (\p -> elem (liveneighbs b p) [2,3]) (board b) #-}
 
-{-# RULES "births" [100] forall b. [ p | p <- nub (concat (Prelude.map (neighbs (cnfg (absB b))) (board (absB b)))), isEmpty (absB b) p, liveneighbs (absB b) p == 3 ] = Set.filter (\p -> (isEmpty b p) && (liveneighbs b p == 3)) (Set.foldr (\p s -> union s (neighbs (cnfg b) p)) Set.empty (board b)) #-}
+{-# RULES "births" [100] forall b. [ p | p <- nub (concat (Prelude.map (neighbs (config (absB b))) (board (absB b)))), isEmpty (absB b) p, liveneighbs (absB b) p == 3 ] = Set.filter (\p -> (isEmpty b p) && (liveneighbs b p == 3)) (Set.foldr (\p s -> union s (neighbs (config b) p)) Set.empty (board b)) #-}
 
 {-# RULES "nextgen" [100] forall b. sort (survivors (absB b) ++ births (absB b)) = survivors b `union` births b #-}
 -}
