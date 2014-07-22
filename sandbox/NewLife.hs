@@ -2,15 +2,14 @@ module NewLife where
 
 -- Libraries required for Hermit transformations
 import Life.Types
---import Life.Engine.Hutton
 
 import Data.Set as Set
 import Data.Function (fix)
 
--- Transformations required by hermit for worker/wrapper conversions
 -- The new data structure to be used in the implementation
-type Board = LifeBoard Config [Pos]
-type Board' = LifeBoard Config (Set Pos)
+--import Life.Engine.Hutton
+type Board = LifeBoard [Pos] -- Board type from Life/Engine/Hutton.hs
+type Board' = LifeBoard (Set Pos)  -- The new Board type we want
 
 instance Life Board' where
 	empty c = LifeBoard c Set.empty
@@ -22,6 +21,9 @@ instance Life Board' where
 		then delete p $ board b
 		else insert p $ board b
 	alive b = toAscList $ board b
+
+
+-- Transformations required by hermit for worker/wrapper conversions
 
 -- repb and absb change the underlying board field
 repb :: [Pos] -> Set Pos
@@ -91,23 +93,23 @@ absBB f = absB . f . repB
 
 
 -- Needed because the fusion rule we generate isn't too useful yet.
-{-# RULES "repB-absB-fusion" [100] forall b. repB (absB b) = b #-}
+{-# RULES "repB-absB-fusion" [~] forall b. repB (absB b) = b #-}
 
--- Rules for data structure conversion
-{-# RULES "neighbors" [100] forall x y. repb [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] #-}
+-- Rules for hermit conversion
+{-# RULES "neighbors" [~] forall x y. repb [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] #-}
 {-
-{-# RULES "neighbs" [100] forall w h warp p. repb (sort (if warp then Prelude.map (\(x,y) -> (x `mod` w, y `mod` h)) (neighbors p) else Prelude.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) (neighbors p))) = if warp then Set.map (\(x,y) -> (x `mod` w, y `mod` h)) (neighbors p) else Set.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) (neighbors p) #-}
+{-# RULES "neighbs" [~] forall w h warp p. repb (sort (if warp then Prelude.map (\(x,y) -> (x `mod` w, y `mod` h)) (neighbors p) else Prelude.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) (neighbors p))) = if warp then Set.map (\(x,y) -> (x `mod` w, y `mod` h)) (neighbors p) else Set.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) (neighbors p) #-}
 
-{-# RULES "isAlive" [100] forall b p. elem p (board (absB b)) = Set.member p (board b) #-}
-{-# RULES "isEmpty" [100] forall b p. not (elem p (board (absB b))) = Set.notMember p (board b) #-}
+{-# RULES "isAlive" [~] forall b p. elem p (board (absB b)) = Set.member p (board b) #-}
+{-# RULES "isEmpty" [~] forall b p. not (elem p (board (absB b))) = Set.notMember p (board b) #-}
 
-{-# RULES "liveneighbs" [100] forall b. length . Prelude.filter (isAlive (absB b)) . (neighbs (config (absB b))) = size . Set.filter (isAlive b) . (neighbs (config b)) #-}
+{-# RULES "liveneighbs" [~] forall b. length . Prelude.filter (isAlive (absB b)) . (neighbs (config (absB b))) = size . Set.filter (isAlive b) . (neighbs (config b)) #-}
 
-{-# RULES "survivors" [100] forall b. [ p | p <- board (absB b), elem (liveneighbs (absB b) p) [2,3] ] = Set.filter (\p -> elem (liveneighbs b p) [2,3]) (board b) #-}
+{-# RULES "survivors" [~] forall b. [ p | p <- board (absB b), elem (liveneighbs (absB b) p) [2,3] ] = Set.filter (\p -> elem (liveneighbs b p) [2,3]) (board b) #-}
 
-{-# RULES "births" [100] forall b. [ p | p <- nub (concat (Prelude.map (neighbs (config (absB b))) (board (absB b)))), isEmpty (absB b) p, liveneighbs (absB b) p == 3 ] = Set.filter (\p -> (isEmpty b p) && (liveneighbs b p == 3)) (Set.foldr (\p s -> union s (neighbs (config b) p)) Set.empty (board b)) #-}
+{-# RULES "births" [~] forall b. [ p | p <- nub (concat (Prelude.map (neighbs (config (absB b))) (board (absB b)))), isEmpty (absB b) p, liveneighbs (absB b) p == 3 ] = Set.filter (\p -> (isEmpty b p) && (liveneighbs b p == 3)) (Set.foldr (\p s -> union s (neighbs (config b) p)) Set.empty (board b)) #-}
 
-{-# RULES "nextgen" [100] forall b. sort (survivors (absB b) ++ births (absB b)) = survivors b `union` births b #-}
+{-# RULES "nextgen" [~] forall b. sort (survivors (absB b) ++ births (absB b)) = survivors b `union` births b #-}
 -}
 
 
