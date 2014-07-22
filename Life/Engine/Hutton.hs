@@ -5,7 +5,7 @@ import Data.List
 
 import Life.Types
 
-type Board = LifeBoard Config [Pos]
+type Board = LifeBoard [Pos]
 
 neighbors :: Pos -> [Pos]
 neighbors (x,y) = [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]

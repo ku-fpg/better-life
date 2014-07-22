@@ -5,8 +5,8 @@ type Pos = (Int,Int)
 type Size = (Int,Int)
 type Config = (Size,Bool)
 
-data LifeBoard c b = LifeBoard 
-		{ config :: c
+data LifeBoard b = LifeBoard
+		{ config :: Config
 		, board :: b }
 	deriving Show
 

@@ -1,4 +1,3 @@
-{-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 module NewLife where
 
 -- Libraries required for Hermit transformations
@@ -90,11 +89,13 @@ repBB f = repB . f . absB
 absBB :: (Board' -> Board') -> (Board -> Board)
 absBB f = absB . f . repB
 
--- Rules for data structure conversion
-{-
--- NONE OF THE FOLLOWING RULES WORK they must be rewritten to remove ambiguity between original and transformed functions.  
-{-# RULES "neighbors" [100] forall x y. repb [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] #-}
 
+-- Needed because the fusion rule we generate isn't too useful yet.
+{-# RULES "repB-absB-fusion" [100] forall b. repB (absB b) = b #-}
+
+-- Rules for data structure conversion
+{-# RULES "neighbors" [100] forall x y. repb [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] #-}
+{-
 {-# RULES "neighbs" [100] forall w h warp p. repb (sort (if warp then Prelude.map (\(x,y) -> (x `mod` w, y `mod` h)) (neighbors p) else Prelude.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) (neighbors p))) = if warp then Set.map (\(x,y) -> (x `mod` w, y `mod` h)) (neighbors p) else Set.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) (neighbors p) #-}
 
 {-# RULES "isAlive" [100] forall b p. elem p (board (absB b)) = Set.member p (board b) #-}
@@ -108,6 +109,5 @@ absBB f = absB . f . repB
 
 {-# RULES "nextgen" [100] forall b. sort (survivors (absB b) ++ births (absB b)) = survivors b `union` births b #-}
 -}
--- Needed because the fusion rule we generate isn't too useful yet.
-{-# RULES "repB-absB-fusion" [100] forall b. repB (absB b) = b #-}
+
 

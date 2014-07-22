@@ -6,7 +6,7 @@ import Data.List (sort,nub,(\\))
 
 import Life.Types
 
-type Board = LifeBoard Config (Array Pos Bool)
+type Board = LifeBoard (Array Pos Bool)
 
 neighbors :: Pos -> [Pos]
 neighbors (x,y) = [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
