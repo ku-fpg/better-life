@@ -90,8 +90,8 @@ absBB f = absB . f . repB
 
 
 -- Rules for hermit conversion
-{-# RULES "board-absB" forall b. board (absB b) = absb (board b) #-}
-{-# RULES "elem-board'" forall p b. elem p (absb b) = Set.member p b #-}
+{-# RULES "board-absB"  [~] forall b. board (absB b) = absb (board b) #-}
+{-# RULES "elem-board'" [~] forall p b. elem p (absb b) = Set.member p b #-}
 
 {-
 {-# RULES "neighbors" [~] forall x y. repb [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] #-}
