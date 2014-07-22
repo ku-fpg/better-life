@@ -3,9 +3,7 @@ module NewLife where
 
 -- Libraries required for Hermit transformations
 import Life.Types
-
 import Data.Set as Set
-import Data.Function (fix)
 
 -- The new data structure to be used in the implementation
 --import Life.Engine.Hutton
