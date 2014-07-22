@@ -10,6 +10,9 @@ data LifeBoard b = LifeBoard
 		, board :: b }
 	deriving Show
 
+-- Standard implementation
+type Board = LifeBoard [Pos]
+
 class Life b where
 	-- create
 	empty :: Config -> b

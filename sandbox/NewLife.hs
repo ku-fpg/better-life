@@ -6,16 +6,14 @@ import Life.Types
 import Data.Set as Set
 
 -- The new data structure to be used in the implementation
---import Life.Engine.Hutton
-type Board = LifeBoard [Pos] -- Board type from Life/Engine/Hutton.hs
-type Board' = LifeBoard (Set Pos)  -- The new Board type we want
+type Board' = LifeBoard (Set Pos)
 
 instance Life Board' where
 	empty c = LifeBoard c Set.empty
 	dims b = fst $ config b
 	diff b1 b2 = LifeBoard (config b1) $ board b1 \\ board b2
 	next b = undefined
-	inv p b = LifeBoard (config b) $ 
+	inv p b = LifeBoard (config b) $
 		if member p $ board b
 		then delete p $ board b
 		else insert p $ board b
