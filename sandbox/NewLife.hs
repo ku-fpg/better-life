@@ -1,3 +1,4 @@
+{-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 module NewLife where
 
 -- Libraries required for Hermit transformations
