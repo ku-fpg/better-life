@@ -89,12 +89,12 @@ absBB :: (Board' -> Board') -> (Board -> Board)
 absBB f = absB . f . repB
 
 
--- Needed because the fusion rule we generate isn't too useful yet.
-{-# RULES "repB-absB-fusion" [~] forall b. repB (absB b) = b #-}
-
 -- Rules for hermit conversion
-{-# RULES "neighbors" [~] forall x y. repb [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] #-}
+{-# RULES "board-absB" forall b. board (absB b) = absb (board b) #-}
+{-# RULES "elem-board'" forall p b. elem p (absb b) = Set.member p b #-}
+
 {-
+{-# RULES "neighbors" [~] forall x y. repb [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] #-}
 {-# RULES "neighbs" [~] forall w h warp p. repb (sort (if warp then Prelude.map (\(x,y) -> (x `mod` w, y `mod` h)) (neighbors p) else Prelude.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) (neighbors p))) = if warp then Set.map (\(x,y) -> (x `mod` w, y `mod` h)) (neighbors p) else Set.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) (neighbors p) #-}
 
 {-# RULES "isAlive" [~] forall b p. elem p (board (absB b)) = Set.member p (board b) #-}
