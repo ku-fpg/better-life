@@ -3,8 +3,10 @@ module Life.Engine.Hutton where
 
 import Data.List
 
-import NewLife -- so we have access to abs/rep functions
+import NewLife hiding (Board) -- so we have access to abs/rep functions
 import Life.Types
+
+type Board = LifeBoard [Pos]
 
 neighbors :: Pos -> [Pos]
 neighbors (x,y) = [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]

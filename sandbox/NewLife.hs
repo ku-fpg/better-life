@@ -5,6 +5,8 @@ module NewLife where
 import Life.Types
 import Data.Set as Set
 
+-- Standard implementation
+type Board = LifeBoard [Pos]
 -- The new data structure to be used in the implementation
 type Board' = LifeBoard (Set Pos)
 
