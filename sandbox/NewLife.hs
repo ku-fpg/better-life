@@ -43,6 +43,7 @@ absB b = LifeBoard (config b) $ absb (board b)
 repPb :: (Pos -> [Pos]) -> (Pos -> Set Pos)
 repPb f = repb . f
 
+-- abstraction of (Pos -> Set Pos)
 absPb :: (Pos -> Set Pos) -> (Pos -> [Pos])
 absPb f = absb . f
 
@@ -93,14 +94,10 @@ absBB f = absB . f . repB
 
 -- Rules for hermit conversion
 {-# RULES "board-absB"  [~] forall b. board (absB b) = absb (board b) #-}
-{-# RULES "elem-board'" [~] forall p b. elem p (absb b) = Set.member p b #-}
-
+{-# RULES "elem-board'" [~] forall p b. elem p (absb b) = member p b #-}
+{-# RULES "not-elem-board'" [~] forall p b. not (elem p (absb b)) = notMember p b #-}
 {-
-{-# RULES "neighbors" [~] forall x y. repb [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)] #-}
-{-# RULES "neighbs" [~] forall w h warp p. repb (sort (if warp then Prelude.map (\(x,y) -> (x `mod` w, y `mod` h)) (neighbors p) else Prelude.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) (neighbors p))) = if warp then Set.map (\(x,y) -> (x `mod` w, y `mod` h)) (neighbors p) else Set.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) (neighbors p) #-}
-
-{-# RULES "isAlive" [~] forall b p. elem p (board (absB b)) = Set.member p (board b) #-}
-{-# RULES "isEmpty" [~] forall b p. not (elem p (board (absB b))) = Set.notMember p (board b) #-}
+{-# RULES "repb-neighbs" [~] forall w b mf ff. repb (sort (if w then Prelude.map mf (absb b) else Prelude.filter ff (absb b))) = if w then Set.map mf b else Set.filter ff b #-}
 
 {-# RULES "liveneighbs" [~] forall b. length . Prelude.filter (isAlive (absB b)) . (neighbs (config (absB b))) = size . Set.filter (isAlive b) . (neighbs (config b)) #-}
 

@@ -1,0 +1,41 @@
+binding-of 'neighbors
+fix-intro
+down
+split-1-beta neighbors [|absPb|] [|repPb|]
+{ 
+rhs-of 'g
+any-call (unfold 'repPb)
+bash
+ }
+let-subst
+alpha-let ['neighbors']
+{ 
+let-bind
+nonrec-rhs
+unfold
+bash
+ }
+top
+innermost let-float
+binding-of 'neighbs
+fix-intro
+down
+split-1-beta neighbs [|absCPb|] [|repCPb|]
+{ 
+rhs-of 'g
+any-call (unfold 'repCPb)
+bash
+ }
+let-subst
+alpha-let ['neighbs']
+{ 
+let-bind
+nonrec-rhs
+unfold
+bash
+ }
+top
+innermost let-float
+load-and-run scripts/isEmpty.hss
+load-and-run scripts/isAlive.hss
+

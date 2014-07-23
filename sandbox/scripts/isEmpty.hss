@@ -1,0 +1,23 @@
+binding-of 'isEmpty
+fix-intro
+down
+split-1-beta isEmpty [|absBPB|] [|repBPB|]
+{ 
+rhs-of 'g
+any-call (unfold 'isAlive)
+any-call (unfold 'repBPB)
+bash
+one-td let-subst
+any-call (unfold-rule board-absB)
+any-call (unfold-rule not-elem-board')
+ }
+let-subst
+alpha-let ['isEmpty']
+{ 
+let-bind
+nonrec-rhs
+unfold
+bash
+ }
+top
+innermost let-float
