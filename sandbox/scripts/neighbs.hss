@@ -13,18 +13,15 @@ bash
 any-call (case-float-arg-unsafe)
 any-call (case-float-arg-unsafe)
 any-call (case-float-arg-unsafe)
+
 -- Need to change Prelude.filter and Prelude.map to Set.filter and Set.map
 -- any-call (unfold-rule repb-filter-absb) --why aren't these working!?!
 -- any-call (unfold-rule repb-map-absb)
-}
-let-subst
-alpha-let ['neighbs']
-{ 
-let-bind
-nonrec-rhs
-unfold
-bash
-}
-top
-innermost let-float
+--}
+--let-subst
+--alpha-let ['neighbs']
+--{ let-bind ; nonrec-rhs ; unfold ; bash }
+--}
+--top
+--innermost let-float
 
