@@ -4,6 +4,7 @@ module NewLife where
 -- Libraries required for Hermit transformations
 import Life.Types
 import Data.Set as Set
+import Data.List (sort)
 
 -- Standard implementation
 type Board = LifeBoard [Pos]
@@ -96,9 +97,11 @@ absBB f = absB . f . repB
 {-# RULES "board-absB"  [~] forall b. board (absB b) = absb (board b) #-}
 {-# RULES "elem-board'" [~] forall p b. elem p (absb b) = member p b #-}
 {-# RULES "not-elem-board'" [~] forall p b. not (elem p (absb b)) = notMember p b #-}
-{-
-{-# RULES "repb-neighbs" [~] forall w b mf ff. repb (sort (if w then Prelude.map mf (absb b) else Prelude.filter ff (absb b))) = if w then Set.map mf b else Set.filter ff b #-}
 
+{-# RULES "filter-board" [~] forall f nf p. Prelude.filter f (absPb nf p) = absb (Set.filter f (nf p)) #-}
+{-# RULES "map-board" [~] forall f nf p. Prelude.map f (absPb nf p) = absb (Set.map f (nf p)) #-}
+
+{-
 {-# RULES "liveneighbs" [~] forall b. length . Prelude.filter (isAlive (absB b)) . (neighbs (config (absB b))) = size . Set.filter (isAlive b) . (neighbs (config b)) #-}
 
 {-# RULES "survivors" [~] forall b. [ p | p <- board (absB b), elem (liveneighbs (absB b) p) [2,3] ] = Set.filter (\p -> elem (liveneighbs b p) [2,3]) (board b) #-}

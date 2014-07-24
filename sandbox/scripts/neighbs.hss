@@ -1,0 +1,23 @@
+load-and-run scripts/neighbors.hss
+binding-of 'neighbs
+fix-intro
+down
+split-1-beta neighbs [|absCPb|] [|repCPb|]
+{ 
+rhs-of 'g
+any-call (unfold 'repCPb)
+bash
+-- Need to change Prelude.filter and Prelude.map to Set.filter and Set.map
+-- Not sure how to proceed with this change
+ }
+let-subst
+alpha-let ['neighbs']
+{ 
+let-bind
+nonrec-rhs
+unfold
+bash
+ }
+top
+innermost let-float
+

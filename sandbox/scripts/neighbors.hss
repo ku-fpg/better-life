@@ -1,0 +1,20 @@
+binding-of 'neighbors
+fix-intro
+down
+split-1-beta neighbors [|absPb|] [|repPb|]
+{ 
+rhs-of 'g
+any-call (unfold 'repPb)
+bash
+ }
+let-subst
+alpha-let ['neighbors']
+{ 
+let-bind
+nonrec-rhs
+unfold
+bash
+ }
+top
+innermost let-float
+

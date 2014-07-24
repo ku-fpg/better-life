@@ -9,11 +9,10 @@ import Life.Types
 type Board = LifeBoard [Pos]
 
 neighbors :: Pos -> [Pos]
-neighbors (x,y) = [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
+neighbors (x,y) = sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
 
 neighbs :: Config -> Pos -> [Pos]
-neighbs ((w,h),warp) p = sort $
-		if warp
+neighbs ((w,h),warp) p = sort $ if warp
 		then map (\(x,y) -> (x `mod` w, y `mod` h)) $ neighbors p
 		else filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) $ neighbors p
 
@@ -40,8 +39,8 @@ instance Life Board where
 	dims b = fst $ config b
 	diff b1 b2 = LifeBoard (config b1) $ board b1 \\ board b2
 	next b = nextgen b
-	inv p b = LifeBoard (config b) $
-		if isAlive b p
+	inv p b = LifeBoard (config b) $ 
+		if isAlive b p 
 		then filter ((/=) p) $ board b
 		else sort $ p : board b
 	alive b = board b
