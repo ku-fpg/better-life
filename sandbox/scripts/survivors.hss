@@ -1,0 +1,17 @@
+binding-of 'survivors
+fix-intro
+down
+split-1-beta survivors [|absBb|] [|repBb|]
+{ 
+rhs-of 'g
+any-call (unfold 'liveneighbs)
+any-call (unfold 'repBb)
+bash
+-- Need to convert list comprehension into a Set.filter call
+-- also use liveneighbs'
+--}
+--let-subst
+--alpha-let ['survivors']
+--{ let-bind ; nonrec-rhs ; unfold ; bash }
+--top
+--innermost let-float

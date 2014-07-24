@@ -1,0 +1,20 @@
+--load-and-run scripts/neighbs.hss
+load-and-run scripts/isAlive.hss
+binding-of 'liveneighbs
+fix-intro
+down
+split-1-beta liveneighbs [|absBPI|] [|repBPI|]
+{ 
+rhs-of 'g
+any-call (unfold 'neighbs)
+any-call (unfold 'isAlive)
+any-call (unfold 'repBPI)
+bash
+-- Need to convert Prelude.length to Set.size
+-- also call neighbs' and isAlive' instead of neighbs and isAlive
+--}
+--let-subst
+--alpha-let ['liveneighbs']
+--{ let-bind ; nonrec-rhs ; unfold ; bash }
+--top
+--innermost let-float

@@ -9,15 +9,10 @@ any-call (unfold 'repBPB)
 bash
 one-td let-subst
 any-call (unfold-rule board-absB)
-any-call (unfold-rule not-elem-board')
+any-call (unfold-rule not-elem-absb)
  }
 let-subst
 alpha-let ['isEmpty']
-{ 
-let-bind
-nonrec-rhs
-unfold
-bash
- }
+{ let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float

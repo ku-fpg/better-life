@@ -9,11 +9,10 @@ any-call (unfold 'repCPb)
 any-call (unfold 'neighbors)
 any-call (unfold-rule absPb-to-absb)
 any-call (unfold-rule repPb-to-repb)
---bash
---any-call (case-float-arg-unsafe)
---any-call (case-float-arg-unsafe)
---any-call (case-float-arg-unsafe)
-
+bash
+any-call (case-float-arg-unsafe)
+any-call (case-float-arg-unsafe)
+any-call (case-float-arg-unsafe)
 -- Need to change Prelude.filter and Prelude.map to Set.filter and Set.map
 -- any-call (unfold-rule repb-filter-absb) --why aren't these working!?!
 -- any-call (unfold-rule repb-map-absb)
@@ -24,4 +23,5 @@ any-call (unfold-rule repPb-to-repb)
 --}
 --top
 --innermost let-float
+
 

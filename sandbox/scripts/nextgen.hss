@@ -1,0 +1,20 @@
+load-and-run scripts/births.hss
+load-and-run scripts/survivors.hss
+binding-of 'nextgen
+fix-intro
+down
+split-1-beta nextgen [|absBB|] [|repBB|]
+{ 
+rhs-of 'g
+any-call (unfold 'births)
+any-call (unfold 'survivors)
+any-call (unfold 'repBB)
+bash
+-- Need to convert list concatenation into a Set.union
+-- also use births' and survivors'
+--}
+--let-subst
+--alpha-let ['nextgen']
+--{ let-bind ; nonrec-rhs ; unfold ; bash }
+--top
+--innermost let-float
