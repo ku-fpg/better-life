@@ -3,8 +3,9 @@ module Life.Engine.Hutton where
 
 import Data.List
 
-import NewLife hiding (Board) -- so we have access to abs/rep functions
 import Life.Types
+
+import NewLife hiding (Board) -- so we have access to abs/rep functions
 
 type Board = LifeBoard [Pos]
 
@@ -12,9 +13,9 @@ neighbors :: Pos -> [Pos]
 neighbors (x,y) = sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
 
 neighbs :: Config -> Pos -> [Pos]
-neighbs ((w,h),warp) p = sort $ if warp
-		then map (\(x,y) -> (x `mod` w, y `mod` h)) $ neighbors p
-		else filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) $ neighbors p
+neighbs ((w,h),warp) p = if warp
+	then sort $ map (\(x,y) -> (x `mod` w, y `mod` h)) $ neighbors p
+	else filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) $ neighbors p
 
 isAlive :: Board -> Pos -> Bool
 isAlive b p = elem p $ board b

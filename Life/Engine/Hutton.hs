@@ -12,8 +12,8 @@ neighbors (x,y) = sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+
 
 neighbs :: Config -> Pos -> [Pos]
 neighbs ((w,h),warp) p = if warp
-		then sort $ map (\(x,y) -> (x `mod` w, y `mod` h)) $ neighbors p
-		else filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) $ neighbors p
+	then sort $ map (\(x,y) -> (x `mod` w, y `mod` h)) $ neighbors p
+	else filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) $ neighbors p
 
 isAlive :: Board -> Pos -> Bool
 isAlive b p = elem p $ board b

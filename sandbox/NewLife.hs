@@ -51,11 +51,11 @@ absPb f = absb . f
 -- repCPb and absCPb can be used for the neighbs function
 -- representation of (Config -> Pos -> [Pos])
 repCPb :: (Config -> Pos -> [Pos]) -> (Config -> Pos -> Set Pos)
-repCPb f c = repb . (f c)
+repCPb f c = repPb (f c)
 
 -- abstraction of (Config -> Pos -> Set Pos)
 absCPb :: (Config -> Pos -> Set Pos) -> (Config -> Pos -> [Pos])
-absCPb f c = absb . (f c)
+absCPb f c = absPb (f c)
 
 -- repBPB and absBPB can be used for isAlive and isEmpty
 -- representation of (Board -> Pos -> Bool)
@@ -97,11 +97,15 @@ absBB f = absB . f . repB
 {-# RULES "board-absB"  [~] forall b. board (absB b) = absb (board b) #-}
 {-# RULES "elem-board'" [~] forall p b. elem p (absb b) = member p b #-}
 {-# RULES "not-elem-board'" [~] forall p b. not (elem p (absb b)) = notMember p b #-}
+{-# RULES "absPb-to-absb" [~] forall f. absPb f = absb . f #-}
+{-# RULES "repPb-to-repb" [~] forall f. repPb f = repb . f #-}
 
-{-# RULES "filter-board" [~] forall f nf p. Prelude.filter f (absPb nf p) = absb (Set.filter f (nf p)) #-}
-{-# RULES "map-board" [~] forall f nf p. Prelude.map f (absPb nf p) = absb (Set.map f (nf p)) #-}
+{-# RULES "repb-filter-absb" [~] forall f b. repb (Prelude.filter f (absb b)) = Set.filter f b #-}
+{-# RULES "repb-map-absb" [~] forall f b. repb (sort (Prelude.map f (absb b))) = Set.map f b #-}
 
 {-
+{-# RULES "repb-neighbs" [~] forall w ff mf b. repb (if w then sort (Prelude.map mf (absb b)) else Prelude.filter ff (absb b)) = if w then Set.map mf b else Set.filter ff b #-}
+
 {-# RULES "liveneighbs" [~] forall b. length . Prelude.filter (isAlive (absB b)) . (neighbs (config (absB b))) = size . Set.filter (isAlive b) . (neighbs (config b)) #-}
 
 {-# RULES "survivors" [~] forall b. [ p | p <- board (absB b), elem (liveneighbs (absB b) p) [2,3] ] = Set.filter (\p -> elem (liveneighbs b p) [2,3]) (board b) #-}
