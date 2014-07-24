@@ -14,8 +14,8 @@ any-call (case-float-arg-unsafe)
 any-call (case-float-arg-unsafe)
 any-call (case-float-arg-unsafe)
 -- Need to change Prelude.filter and Prelude.map to Set.filter and Set.map
--- any-call (unfold-rule repb-filter-absb) --why aren't these working!?!
--- any-call (unfold-rule repb-map-absb)
+--any-call (unfold-rule repb-filter)
+--any-call (unfold-rule repb-map)
 --}
 --let-subst
 --alpha-let ['neighbs']

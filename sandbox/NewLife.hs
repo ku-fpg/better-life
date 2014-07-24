@@ -100,10 +100,13 @@ absBB f = absB . f . repB
 {-# RULES "absPb-to-absb" [~] forall f. absPb f = absb . f #-}
 {-# RULES "repPb-to-repb" [~] forall f. repPb f = repb . f #-}
 
+{-# RULES "repb-filter" [~] forall f b. repb (Prelude.filter f b) = Set.filter f (repb b) #-}
+{-# RULES "repb-map" [~] forall f b. repb (sort (Prelude.map f b)) = Set.map f (repb b) #-}
+
+{-
 {-# RULES "repb-filter-absb" [~] forall f b. repb (Prelude.filter f (absb b)) = Set.filter f b #-}
 {-# RULES "repb-map-absb" [~] forall f b. repb (sort (Prelude.map f (absb b))) = Set.map f b #-}
 
-{-
 {-# RULES "length-absb" [~] forall b. length . Prelude.filter (isAlive (absB b)) . (neighbs (config (absB b))) = size . Set.filter (isAlive b) . (neighbs (config b)) #-}
 
 {-# RULES "survivors" [~] forall b. [ p | p <- board (absB b), elem (liveneighbs (absB b) p) [2,3] ] = Set.filter (\p -> elem (liveneighbs b p) [2,3]) (board b) #-}
