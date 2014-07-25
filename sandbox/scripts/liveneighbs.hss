@@ -7,7 +7,7 @@ split-1-beta liveneighbs [|absBPI|] [|repBPI|]
 rhs-of 'g
 any-call (unfold 'neighbs)
 any-call (unfold 'isAlive)
-any-call (unfold-rule absBPB-fun)
+any-call (unfold 'absBPB)
 any-call (unfold-rule absCPb-fun)
 any-call (unfold-rule absPb-fun)
 any-call (unfold 'repBPI)

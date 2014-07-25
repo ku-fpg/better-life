@@ -6,10 +6,10 @@ split-1-beta survivors [|absBb|] [|repBb|]
 { 
 rhs-of 'g
 any-call (unfold 'liveneighbs)
-any-call (unfold 'repBb)
+any-call (unfold 'absBPI)
 bash
 -- Need to convert list comprehension into a Set.filter call
--- also use liveneighbs'
+--any-call (unfold-rule 'repBb)
 --}
 --let-subst
 --alpha-let ['survivors']
