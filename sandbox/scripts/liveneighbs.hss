@@ -4,14 +4,14 @@ load-and-run scripts/neighbs.hss
 binding-of 'liveneighbs
 fix-intro
 down
-split-1-beta liveneighbs [|absBPI|] [|repBPI|]
+split-1-beta liveneighbs [|absBx|] [|repBx|]
 { 
 rhs-of 'g
 any-call (unfold 'neighbs)
 any-call (unfold 'isAlive)
-any-call (unfold 'absBPB)
 any-call (unfold 'absCPb)
-any-call (unfold 'repBPI)
+any-call (unfold 'absBx)
+any-call (unfold 'repBx)
 bash
 one-td let-subst
 any-call (unfold-rule config-absB)

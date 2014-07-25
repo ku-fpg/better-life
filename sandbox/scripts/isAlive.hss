@@ -1,9 +1,9 @@
 binding-of 'isAlive                             -- focus on isAlive
 fix-intro                                       -- intro a trivial fix
 down                                            -- focus on the fix
-split-1-beta isAlive [| absBPB |] [| repBPB |]  -- do w/w split with proper abs/rep functions
+split-1-beta isAlive [|absBx|] [|repBx|]        -- do w/w split with proper abs/rep functions
 { rhs-of 'g                                     -- focus on rhs of g
-  any-call (unfold 'repBPB)                     -- unfold repBPB
+  any-call (unfold 'repBx)                     -- unfold repBPB
   bash                                          -- cleanup
   one-td let-subst                              -- inline the binding which converts back to Board
   any-call (unfold-rule board-absB)             -- move board selector past absB

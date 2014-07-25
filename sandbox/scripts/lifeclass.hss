@@ -1,0 +1,125 @@
+load-and-run scripts/nextgen.hss
+{
+binding-of '$cempty
+fix-intro
+down
+split-1-beta $cempty [|absCB|] [|repCB|]
+{ 
+rhs-of 'g
+any-call (unfold 'repCB)
+any-call (unfold 'repB)
+bash
+any-call (unfold-rule lifeboard)
+}
+let-subst
+alpha-let ['$cempty']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+}
+innermost let-float
+
+{
+binding-of '$cdims
+fix-intro
+down
+split-1-beta $cdims [|absBx|] [|repBx|]
+{ 
+rhs-of 'g
+bash
+any-call (unfold 'repBx)
+bash
+any-call (unfold-rule config-absB)
+}
+let-subst
+alpha-let ['$cdims']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+}
+innermost let-float
+
+{
+binding-of '$cdiff
+fix-intro
+down
+split-1-beta $cdiff [|absBBB|] [|repBBB|]
+{ 
+rhs-of 'g
+any-call (unfold 'repBBB)
+bash
+one-td let-subst
+any-call (unfold-rule config-absB)
+any-call (unfold-rule board-absB)
+any-call (unfold-rule diff-absb)
+any-call (unfold-rule repB-L-absb)
+}
+let-subst
+alpha-let ['$cdiff']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+}
+innermost let-float
+
+{
+binding-of '$cinv
+fix-intro
+down
+split-1-beta $cinv [|absPBB|] [|repPBB|]
+{ 
+rhs-of 'g
+any-call (unfold 'isAlive)
+any-call (unfold 'absBx)
+any-call (unfold 'repPBB)
+bash
+one-td let-subst
+any-call (unfold-rule config-absB)
+any-call (unfold-rule board-absB)
+any-call (unfold-rule repB-absB)
+any-call (unfold 'repB)
+any-call (unfold-rule sort-absb)
+any-call (unfold-rule filter-absb)
+bash
+any-call (case-float-arg-unsafe)
+any-call (unfold-rule repb-absb)
+}
+let-subst
+alpha-let ['$cinv']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+}
+innermost let-float
+
+{
+binding-of '$cnext
+fix-intro
+down
+split-1-beta $cnext [|absBB|] [|repBB|]
+{ 
+rhs-of 'g
+any-call (unfold 'nextgen)
+any-call (unfold 'repBB)
+any-call (unfold 'absBB)
+bash
+any-call (unfold-rule repB-absB)
+bash
+}
+let-subst
+alpha-let ['$cnext']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+}
+innermost let-float
+
+{
+binding-of '$calive
+fix-intro
+down
+split-1-beta $calive [|absBb|] [|repBb|]
+{ 
+rhs-of 'g
+any-call (unfold 'repBb)
+bash
+any-call (unfold-rule board-absB)
+any-call (unfold-rule repb-absb)
+bash
+}
+let-subst
+alpha-let ['$calive']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+}
+innermost let-float
+

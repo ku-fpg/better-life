@@ -6,7 +6,7 @@ split-1-beta survivors [|absBb|] [|repBb|]
 { 
 rhs-of 'g
 any-call (unfold 'liveneighbs)
-any-call (unfold 'absBPI)
+any-call (unfold 'absBx)
 any-call (unfold 'repBb)
 bash
 occurrence-of 'repb ; up

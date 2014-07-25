@@ -14,7 +14,7 @@ one-td let-subst
 any-call (unfold-rule config-absB)
 any-call (unfold-rule repB-absB)
 any-call (unfold-rule sort++absb)
-any-call (unfold-rule repB-LifeBoard-absb)
+any-call (unfold-rule repB-L-absb)
 }
 let-subst
 alpha-let ['nextgen']

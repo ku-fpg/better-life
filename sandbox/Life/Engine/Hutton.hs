@@ -47,6 +47,7 @@ instance Life Board where
 		if isAlive b p 
 		then filter ((/=) p) $ board b
 		else sort $ p : board b
+	{-# NOINLINE alive #-}
 	alive b = board b
 
 

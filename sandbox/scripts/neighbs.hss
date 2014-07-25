@@ -15,6 +15,7 @@ any-call (case-float-arg-unsafe)
 -- Need to change Prelude.filter and Prelude.map to Set.filter and Set.map
 --any-call (unfold-rule repb-filter) -- These are not working!!
 --any-call (unfold-rule repb-map)
+--any-call (unfold-rule repb-absb)
 }
 let-subst
 alpha-let ['neighbs']
