@@ -8,13 +8,19 @@ split-1-beta liveneighbs [|absBPI|] [|repBPI|]
 rhs-of 'g
 any-call (unfold 'neighbs)
 any-call (unfold 'isAlive)
+any-call (unfold-rule absBPB-fun)
+any-call (unfold-rule absCPb-fun)
+any-call (unfold-rule absPb-fun)
 any-call (unfold 'repBPI)
 bash
--- Need to convert Prelude.length to Set.size
--- also call neighbs' and isAlive' instead of neighbs and isAlive
---}
---let-subst
---alpha-let ['liveneighbs']
---{ let-bind ; nonrec-rhs ; unfold ; bash }
---top
---innermost let-float
+one-td let-subst
+any-call (unfold-rule config-absB)
+any-call (unfold-rule repB-absB)
+any-call (unfold-rule filter-absb)
+any-call (unfold-rule length-absb)
+}
+let-subst
+alpha-let ['liveneighbs']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+top
+innermost let-float

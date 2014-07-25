@@ -95,13 +95,21 @@ absBB f = absB . f . repB
 
 -- Rules for hermit conversion
 {-# RULES "board-absB"  [~] forall b. board (absB b) = absb (board b) #-}
-{-# RULES "elem-absb" [~] forall p b. elem p (absb b) = member p b #-}
 {-# RULES "not-elem-absb" [~] forall p b. not (elem p (absb b)) = notMember p b #-}
-{-# RULES "absPb-to-absb" [~] forall f. absPb f = absb . f #-}
-{-# RULES "repPb-to-repb" [~] forall f. repPb f = repb . f #-}
-
+{-# RULES "elem-absb" [~] forall p b. elem p (absb b) = member p b #-}
 {-# RULES "repb-filter" [~] forall f b. repb (Prelude.filter f b) = Set.filter f (repb b) #-}
 {-# RULES "repb-map" [~] forall f b. repb (sort (Prelude.map f b)) = Set.map f (repb b) #-}
+
+{-# RULES "absPb-fun" [~] forall f. absPb f = absb . f #-}
+{-# RULES "repPb-fun" [~] forall f. repPb f = repb . f #-}
+{-# RULES "absBPB-fun" [~] forall f. absBPB f = f . repB #-}
+{-# RULES "absCPb-fun" [~] forall f c. absCPb f c = absPb (f c) #-}
+{-# RULES "config-absB" [~] forall b. config (absB b) = config b #-}
+{-# RULES "repB-absB" [~] forall b. repB (absB b) = b #-}
+{-# RULES "filter-absb" [~] forall f b. Prelude.filter f (absb b) = absb (Set.filter f b) #-}
+{-# RULES "length-absb" [~] forall b. length (absb b) = size b #-}
+
+--{-# RULES "length-size [~] forall af nf b. length (filter (af (repB b)) (absb (f (config b)  #-}
 
 {-
 {-# RULES "repb-filter-absb" [~] forall f b. repb (Prelude.filter f (absb b)) = Set.filter f b #-}
