@@ -1,4 +1,3 @@
-load-and-run scripts/isEmpty.hss
 binding-of 'isAlive                             -- focus on isAlive
 fix-intro                                       -- intro a trivial fix
 down                                            -- focus on the fix

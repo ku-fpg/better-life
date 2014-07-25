@@ -1,3 +1,5 @@
+load-and-run scripts/isEmpty.hss
+load-and-run scripts/isAlive.hss
 load-and-run scripts/neighbs.hss
 binding-of 'liveneighbs
 fix-intro
@@ -8,8 +10,7 @@ rhs-of 'g
 any-call (unfold 'neighbs)
 any-call (unfold 'isAlive)
 any-call (unfold 'absBPB)
-any-call (unfold-rule absCPb-fun)
-any-call (unfold-rule absPb-fun)
+any-call (unfold 'absCPb)
 any-call (unfold 'repBPI)
 bash
 one-td let-subst

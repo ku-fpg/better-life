@@ -7,13 +7,18 @@ split-1-beta nextgen [|absBB|] [|repBB|]
 rhs-of 'g
 any-call (unfold 'births)
 any-call (unfold 'survivors)
+any-call (unfold 'absBb)
 any-call (unfold 'repBB)
 bash
--- Need to convert list concatenation into a Set.union
--- also use births' and survivors'
---}
---let-subst
---alpha-let ['nextgen']
---{ let-bind ; nonrec-rhs ; unfold ; bash }
---top
---innermost let-float
+one-td let-subst
+any-call (unfold-rule config-absB)
+any-call (unfold-rule repB-absB)
+any-call (unfold-rule sort++absb)
+any-call (unfold-rule repB-LifeBoard-absb)
+}
+let-subst
+alpha-let ['nextgen']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+top
+innermost let-float
+

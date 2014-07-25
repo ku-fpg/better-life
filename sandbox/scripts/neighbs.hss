@@ -5,16 +5,15 @@ down
 split-1-beta neighbs [|absCPb|] [|repCPb|]
 { 
 rhs-of 'g
-any-call (unfold 'repCPb)
 any-call (unfold 'neighbors)
-any-call (unfold-rule absPb-fun)
-any-call (unfold-rule repPb-fun)
+any-call (unfold 'absPb)
+any-call (unfold 'repCPb)
 bash
 any-call (case-float-arg-unsafe)
 any-call (case-float-arg-unsafe)
 any-call (case-float-arg-unsafe)
 -- Need to change Prelude.filter and Prelude.map to Set.filter and Set.map
---any-call (unfold-rule repb-filter)
+--any-call (unfold-rule repb-filter) -- These are not working!!
 --any-call (unfold-rule repb-map)
 }
 let-subst
@@ -22,5 +21,4 @@ alpha-let ['neighbs']
 { let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
-
 

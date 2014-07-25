@@ -5,16 +5,24 @@ down
 split-1-beta births [|absBb|] [|repBb|]
 { 
 rhs-of 'g
-any-call (unfold 'neighbs)
 any-call (unfold 'isEmpty)
+any-call (unfold 'neighbs)
 any-call (unfold 'liveneighbs)
+any-call (unfold 'absBPB)
+any-call (unfold 'absBPI)
+any-call (unfold 'absCPb)
 any-call (unfold 'repBb)
 bash
--- Need to convert list comprehension into a Set.filter
--- also use neighbs' isEmpty' and liveneighbs'
---}
---let-subst
---alpha-let ['births']
---{ let-bind ; nonrec-rhs ; unfold ; bash }
---top
---innermost let-float
+one-td let-subst
+any-call (unfold-rule repb-filter)
+any-call (unfold-rule board-absB)
+any-call (unfold-rule config-absB)
+any-call (unfold-rule repB-absB)
+any-call (unfold-rule ncm-absb)
+any-call (unfold-rule repb-absb)
+}
+let-subst
+alpha-let ['births']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+top
+innermost let-float
