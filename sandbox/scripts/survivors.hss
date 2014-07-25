@@ -1,4 +1,3 @@
-load-and-run scripts/isEmpty.hss
 load-and-run scripts/liveneighbs.hss
 binding-of 'survivors
 fix-intro

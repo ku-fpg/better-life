@@ -1,3 +1,4 @@
+load-and-run scripts/survivors.hss
 binding-of 'births
 fix-intro
 down

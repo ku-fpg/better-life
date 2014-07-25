@@ -1,5 +1,4 @@
 load-and-run scripts/neighbs.hss
-load-and-run scripts/isAlive.hss
 binding-of 'liveneighbs
 fix-intro
 down

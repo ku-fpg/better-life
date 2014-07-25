@@ -1,3 +1,4 @@
+load-and-run scripts/isAlive.hss
 binding-of 'neighbors
 fix-intro
 down

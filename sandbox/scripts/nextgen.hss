@@ -1,4 +1,3 @@
-load-and-run scripts/survivors.hss
 load-and-run scripts/births.hss
 binding-of 'nextgen
 fix-intro
