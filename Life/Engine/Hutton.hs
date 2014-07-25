@@ -25,10 +25,13 @@ liveneighbs :: Board -> Pos -> Int
 liveneighbs b = length . filter (isAlive b) . (neighbs (config b))
 
 survivors :: Board -> [Pos]
-survivors b = [ p | p <- board b, elem (liveneighbs b p) [2,3] ]
+survivors b = filter (\p -> elem (liveneighbs b p) [2,3]) $ board b
+--[ p | p <- board b, elem (liveneighbs b p) [2,3] ]
 
 births :: Board -> [Pos]
-births b = [ p | p <- nub $ concatMap (neighbs (config b)) $ board b, isEmpty b p, liveneighbs b p == 3 ]
+births b = filter (\p -> isEmpty b p && liveneighbs b p == 3) 
+		$ nub $ concatMap (neighbs (config b)) $ board b
+--[ p | p <- nub $ concatMap (neighbs (config b)) $ board b, isEmpty b p, liveneighbs b p == 3 ]
 
 nextgen :: Board -> Board
 nextgen b = LifeBoard (config b) $ sort $ survivors b ++ births b

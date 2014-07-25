@@ -31,7 +31,7 @@ survivors b = filter (\p -> elem (liveneighbs b p) [2,3]) $ board b
 
 births :: Board -> Set Pos
 births b = filter (\p -> (isEmpty b p) && (liveneighbs b p == 3)) $ 
-	foldr (\p s -> union s (neighbs (config b) p)) Set.empty $ board b
+	unions $ toList $ map (neighbs (config b)) b
 
 nextgen :: Board -> Board
 nextgen b = LifeBoard (config b) $ survivors b `union` births b
