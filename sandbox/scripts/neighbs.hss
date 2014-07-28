@@ -3,19 +3,14 @@ binding-of 'neighbs
 fix-intro
 down
 split-1-beta neighbs [|absCPb|] [|repCPb|]
-{ 
+{
 rhs-of 'g
-any-call (unfold 'neighbors)
-any-call (unfold 'absPb)
-any-call (unfold 'repCPb)
+repeat (any-call (unfold ['neighbors, 'absPb, 'repCPb]))
 bash
-any-call (case-float-arg-unsafe)
-any-call (case-float-arg-unsafe)
-any-call (case-float-arg-unsafe)
--- Need to change Prelude.filter and Prelude.map to Set.filter and Set.map
---any-call (unfold-rule repb-filter) -- These are not working!!
---any-call (unfold-rule repb-map)
---any-call (unfold-rule repb-absb)
+innermost case-float-arg-unsafe
+any-call (unfold-rule repb-filter)
+any-call (unfold-rule repb-map)
+any-call (unfold-rule repb-absb)
 }
 let-subst
 alpha-let ['neighbs']

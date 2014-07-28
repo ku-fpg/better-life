@@ -2,7 +2,7 @@ binding-of 'neighbors
 fix-intro
 down
 split-1-beta neighbors [|absPb|] [|repPb|]
-{ 
+{
 rhs-of 'g
 any-call (unfold 'repPb)
 any-call (unfold 'repb)
