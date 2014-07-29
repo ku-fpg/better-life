@@ -7,7 +7,7 @@ import Data.Set as Set
 
 import Life.Types
 
-type Board = LifeBoard (Set Pos)
+type Board = LifeBoard Config (Set Pos)
 
 neighbors :: Pos -> Set Pos
 neighbors (x,y) = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]

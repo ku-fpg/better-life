@@ -5,11 +5,6 @@ type Pos = (Int,Int)
 type Size = (Int,Int)
 type Config = (Size,Bool)
 
-data LifeBoard b = LifeBoard
-		{ config :: Config
-		, board :: b }
-	deriving Show
-
 class Life b where
 	-- create
 	empty :: Config -> b
@@ -35,5 +30,10 @@ runLife n b = runLife (n-1) (next b)
 --   config . empty        == id
 --   inv pos . inv pos == id
 --   scene (config board) (alive board) == board
+
+data LifeBoard c b = LifeBoard
+		{ config :: c
+		, board :: b }
+	deriving Show
 
 
