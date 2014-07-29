@@ -96,23 +96,22 @@ absBB f = absB . f . repB
 
 
 -- Rules for hermit conversion
-{-# RULES "not-elem-absb" [~] forall p b. not (elem p (absb b)) = notMember p b #-}
-{-# RULES "elem-absb" [~] forall p b. elem p (absb b) = member p b #-}
-{-# RULES "repb-filter" [~] forall f b. repb (Prelude.filter f b) = Set.filter f (repb b) #-}
-{-# RULES "repb-map" [~] forall f b. repb (sort (Prelude.map f b)) = Set.map f (repb b) #-}
-{-# RULES "filter-absb" [~] forall f b. Prelude.filter f (absb b) = absb (Set.filter f b) #-}
-{-# RULES "length-absb" [~] forall b. length (absb b) = size b #-}
-{-# RULES "ncm-absb" [~] forall f b. nub (concatMap (\p -> absb (f p)) (absb b)) = absb (unions (toList(Set.map (\p -> f p) b))) #-}
-{-# RULES "sort++absb" [~] forall b1 b2. sort (absb b1 ++ absb b2) = absb (union b1 b2) #-}
-
 {-# RULES "board-absB"  [~] forall b. board (absB b) = absb (board b) #-}
 {-# RULES "config-absB" [~] forall b. config (absB b) = config b #-}
 {-# RULES "repB-absB" [~] forall b. repB (absB b) = b #-}
 {-# RULES "repb-absb" [~] forall b. repb (absb b) = b #-}
-{-# RULES "repB-L-absb" [~] forall c b. repB (LifeBoard c (absb b)) = LifeBoard c b #-}
 
-{-# RULES "lifeboard" [~] forall c. LifeBoard c (repb []) = LifeBoard c Set.empty #-}
+{-# RULES "repb-null" [~] forall c. LifeBoard c (repb []) = LifeBoard c Set.empty #-}
+{-# RULES "not-elem-absb" [~] forall p b. not (elem p (absb b)) = notMember p b #-}
+{-# RULES "elem-absb" [~] forall p b. elem p (absb b) = member p b #-}
+{-# RULES "length-absb" [~] forall b. length (absb b) = size b #-}
+{-# RULES "filter-absb" [~] forall f b. Prelude.filter f (absb b) = absb (Set.filter f b) #-}
+{-# RULES "sort-map-absb" [~] forall f b. sort (Prelude.map f (absb b)) = absb (Set.map f b) #-}
+{-# RULES "sort-++-absb" [~] forall b1 b2. sort (absb b1 ++ absb b2) = absb (union b1 b2) #-}
+{-# RULES "ncm-absb" [~] forall f b. nub (concatMap (\p -> absb (f p)) (absb b)) = absb (unions (toList (Set.map (\p -> f p) b))) #-}
 {-# RULES "diff-absb" [~] forall b1 b2. absb b1 List.\\ absb b2 = absb (b1 Set.\\ b2) #-}
-{-# RULES "sort-absb" [~] forall b p. sort (p : absb b) = absb (insert p b) #-}
+{-# RULES "insertion" [~] forall b p. sort (p : absb b) = absb (insert p b) #-}
+{-# RULES "deletion" [~] forall b p. Prelude.filter ((/=) p) (absb b) = absb (delete p b) #-}
+{-# RULES "LifeBoard-absb" [~] forall c b. LifeBoard c (absb b) = absB (LifeBoard c b) #-}
 
 

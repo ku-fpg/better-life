@@ -8,8 +8,8 @@ rhs-of 'g
 repeat (any-call (unfold ['neighbors, 'absPb, 'repCPb]))
 bash
 innermost case-float-arg-unsafe
-any-call (unfold-rule repb-filter)
-any-call (unfold-rule repb-map)
+any-call (unfold-rule filter-absb)
+any-call (unfold-rule sort-map-absb)
 any-call (unfold-rule repb-absb)
 }
 let-subst

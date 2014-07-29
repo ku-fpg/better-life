@@ -12,3 +12,4 @@ life x c = (runLife x) . (scene c)
 main :: IO ()
 main = print $ life 500 ((20,20),True) glider
 
+

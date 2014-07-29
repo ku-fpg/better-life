@@ -4,8 +4,7 @@ down
 split-1-beta isEmpty [|absBx|] [|repBx|]
 { 
 rhs-of 'g
-any-call (unfold 'isAlive)
-any-call (unfold 'repBx)
+repeat (any-call (unfold ['isAlive, 'repBx]))
 bash
 one-td let-subst
 any-call (unfold-rule board-absB)

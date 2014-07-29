@@ -5,16 +5,13 @@ down
 split-1-beta survivors [|absBb|] [|repBb|]
 { 
 rhs-of 'g
-any-call (unfold 'liveneighbs)
-any-call (unfold 'absBx)
-any-call (unfold 'repBb)
+repeat (any-call (unfold ['liveneighbs, 'absBx, 'repBb]))
 bash
-occurrence-of 'repb ; up
-unfold-rule repb-filter ; up
-let-subst ; up ; up
+one-td let-subst
 any-call (unfold-rule board-absB)
-any-call (unfold-rule repb-absb)
+any-call (unfold-rule filter-absb)
 any-call (unfold-rule repB-absB)
+any-call (unfold-rule repb-absb)
 }
 let-subst
 alpha-let ['survivors']
