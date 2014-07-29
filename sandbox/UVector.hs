@@ -66,7 +66,3 @@ repBB f = repB . f . absB
 absBB :: (Board' -> Board') -> (Board -> Board)
 absBB f = absB . f . repB
 
-
-main = do let x = [(0,0), (0,1)]
-
-          print x
