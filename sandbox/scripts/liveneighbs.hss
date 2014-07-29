@@ -1,23 +1,19 @@
+load-and-run scripts/neighbs.hss
 load-and-run scripts/isEmpty.hss
 load-and-run scripts/isAlive.hss
-load-and-run scripts/neighbs.hss
 binding-of 'liveneighbs
 fix-intro
 down
 split-1-beta liveneighbs [|absBx|] [|repBx|]
 { 
 rhs-of 'g
-any-call (unfold 'neighbs)
-any-call (unfold 'isAlive)
-any-call (unfold 'absCPb)
-any-call (unfold 'absBx)
-any-call (unfold 'repBx)
+repeat (any-call (unfold ['neighbs, 'isAlive, 'absCPb, 'absBx, 'repBx]))
 bash
 one-td let-subst
-any-call (unfold-rule config-absB)
-any-call (unfold-rule repB-absB)
 any-call (unfold-rule filter-absb)
 any-call (unfold-rule length-absb)
+any-call (unfold-rule config-absB)
+any-call (unfold-rule repB-absB)
 }
 let-subst
 alpha-let ['liveneighbs']

@@ -1,16 +1,15 @@
 binding-of 'neighbors
 fix-intro
 down
-split-1-beta neighbors [|absPb|] [|repPb|]
+split-1-beta neighbors [|absPb|] [|repPb|]	-- Perform w/w split on neighbors
 {
 rhs-of 'g
-any-call (unfold 'repPb)
-any-call (unfold 'repb)
+repeat (any-call (unfold ['repPb, 'repb]))	-- Unfold repPb and repb to inline list->set conversion
 bash
 }
 let-subst
 alpha-let ['neighbors']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
+{ let-bind ; nonrec-rhs ; unfold ; bash }	-- Inline g and float to top-level as neighbors'
 top
 innermost let-float
 
