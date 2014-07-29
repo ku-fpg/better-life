@@ -1,17 +1,18 @@
-load-and-run scripts/liveneighbs.hss
+load-and-run HERMIT/Set/scripts/liveneighbs.hss
 binding-of 'survivors
 fix-intro
 down
-split-1-beta survivors [|absBb|] [|repBb|]
+split-1-beta survivors [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['liveneighbs, 'absBx, 'repBb]))
+repeat (any-call (unfold ['liveneighbs, 'absBx, 'repBB]))
 bash
 one-td let-subst
+any-call (unfold-rule config-absB)
 any-call (unfold-rule board-absB)
 any-call (unfold-rule filter-absb)
+any-call (unfold-rule LifeBoard-absb)
 any-call (unfold-rule repB-absB)
-any-call (unfold-rule repb-absb)
 }
 let-subst
 alpha-let ['survivors']

@@ -9,7 +9,7 @@ bash
 one-td let-subst
 any-call (unfold-rule board-absB)
 any-call (unfold-rule not-elem-absb)
- }
+}
 let-subst
 alpha-let ['isEmpty']
 { let-bind ; nonrec-rhs ; unfold ; bash }

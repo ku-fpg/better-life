@@ -1,4 +1,4 @@
-load-and-run scripts/nextgen.hss
+load-and-run HERMIT/Set/scripts/nextgen.hss
 binding-of '$cnext
 fix-intro
 down

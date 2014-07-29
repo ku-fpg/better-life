@@ -1,10 +1,10 @@
 binding-of '$cempty
 fix-intro
 down
-split-1-beta $cempty [|absCB|] [|repCB|]
+split-1-beta $cempty [|absxB|] [|repxB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['repCB, 'repB]))
+repeat (any-call (unfold ['repxB, 'repB]))
 bash
 any-call (unfold-rule repb-null)
 }

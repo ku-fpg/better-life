@@ -1,10 +1,10 @@
 binding-of 'neighbors
 fix-intro
 down
-split-1-beta neighbors [|absPb|] [|repPb|]	-- Perform w/w split on neighbors
+split-1-beta neighbors [|absxB|] [|repxB|]	-- Perform w/w split on neighbors
 {
 rhs-of 'g
-repeat (any-call (unfold ['repPb, 'repb]))	-- Unfold repPb and repb to inline list->set conversion
+any-call (unfold 'repxB)	-- Unfold repPb and repb to inline list->set conversion
 bash
 }
 let-subst

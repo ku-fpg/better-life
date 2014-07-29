@@ -1,5 +1,5 @@
 {-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
-module NewLife where
+module HERMIT.Set.Life where
 
 -- Libraries required for Hermit transformations
 import Life.Types
@@ -7,9 +7,9 @@ import Data.Set as Set
 import Data.List as List (sort,nub,(\\))
 
 -- Standard implementation
-type Board = LifeBoard [Pos]
+type Board = LifeBoard Config [Pos]
 -- The new data structure to be used in the implementation
-type Board' = LifeBoard (Set Pos)
+type Board' = LifeBoard Config (Set Pos)
 
 ----------------------------------------------------------------------
 -- Transformations required by hermit for worker/wrapper conversions
@@ -32,13 +32,33 @@ repB b = LifeBoard (config b) $ repb (board b)
 absB :: Board' -> Board
 absB b = LifeBoard (config b) $ absb (board b)
 
--- representation of (Config -> Board) "empty"
-repCB :: (Config -> Board) -> (Config -> Board')
-repCB f = repB . f
+-- representation of "empty", "neighbors"
+repxB f = repB . f
 
--- abstraction of (Config -> Board') "empty"
-absCB :: (Config -> Board') -> (Config -> Board)
-absCB f = absB . f
+-- abstraction of "empty", "neighbors"
+absxB f = absB . f
+
+-- representation of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
+repBx f = f . absB
+
+-- abstraction of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
+absBx f = f . repB
+
+-- representation of (Config -> Pos -> [Pos]) "neighbs"
+repCPB :: (Config -> Pos -> Board) -> (Config -> Pos -> Board')
+repCPB f = repxB . f
+
+-- abstraction of (Config -> Pos -> Set Pos) "neighbs"
+absCPB :: (Config -> Pos -> Board') -> (Config -> Pos -> Board)
+absCPB f = absxB . f
+
+-- representation of (Board -> Board) "births", "survivors", "nextgen", "next"
+repBB :: (Board -> Board) -> (Board' -> Board')
+repBB f = repB . f . absB
+
+-- abstraction of (Board' -> Board') "births", "survivors", "nextgen", "next"
+absBB :: (Board' -> Board') -> (Board -> Board)
+absBB f = absB . f . repB
 
 -- representation of (Board -> Board -> Board) "diff"
 repBBB :: (Board -> Board -> Board) -> Board' -> Board' -> Board'
@@ -56,46 +76,10 @@ repPBB f p = repB . (f p) . absB
 absPBB :: (Pos -> Board' -> Board') -> Pos -> Board -> Board
 absPBB f p = absB . (f p) . repB
 
--- representation of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
-repBx f = f . absB
-
--- abstraction of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
-absBx f = f . repB
-
--- representation of (Pos -> [Pos]) "neighbors"
-repPb :: (Pos -> [Pos]) -> (Pos -> Set Pos)
-repPb f = repb . f
-
--- abstraction of (Pos -> Set Pos) "neighbors"
-absPb :: (Pos -> Set Pos) -> (Pos -> [Pos])
-absPb f = absb . f
-
--- representation of (Config -> Pos -> [Pos]) "neighbs"
-repCPb :: (Config -> Pos -> [Pos]) -> (Config -> Pos -> Set Pos)
-repCPb f c = repPb (f c)
-
--- abstraction of (Config -> Pos -> Set Pos) "neighbs"
-absCPb :: (Config -> Pos -> Set Pos) -> (Config -> Pos -> [Pos])
-absCPb f c = absPb (f c)
-
--- representation of (Board -> [Pos]) "births" and "survivors"
-repBb :: (Board -> [Pos]) -> (Board' -> Set Pos)
-repBb f = repb . f . absB
-
--- abstraction of (Board' -> Set Pos) "births" and "survivors"
-absBb :: (Board' -> Set Pos) -> (Board -> [Pos])
-absBb f = absb . f . repB
-
--- representation of (Board -> Board) "nextgen" and "next"
-repBB :: (Board -> Board) -> (Board' -> Board')
-repBB f = repB . f . absB
-
--- abstraction of (Board' -> Board') "nextgen" and "next"
-absBB :: (Board' -> Board') -> (Board -> Board)
-absBB f = absB . f . repB
-
 
 -- Rules for hermit conversion
+{-# RULES "repB-LifeBoard" [~] forall c b. repB (LifeBoard c b) = LifeBoard c (repb b) #-}
+{-# RULES "LifeBoard-absb" [~] forall c b. LifeBoard c (absb b) = absB (LifeBoard c b) #-}
 {-# RULES "board-absB"  [~] forall b. board (absB b) = absb (board b) #-}
 {-# RULES "config-absB" [~] forall b. config (absB b) = config b #-}
 {-# RULES "repB-absB" [~] forall b. repB (absB b) = b #-}
@@ -108,10 +92,8 @@ absBB f = absB . f . repB
 {-# RULES "filter-absb" [~] forall f b. Prelude.filter f (absb b) = absb (Set.filter f b) #-}
 {-# RULES "sort-map-absb" [~] forall f b. sort (Prelude.map f (absb b)) = absb (Set.map f b) #-}
 {-# RULES "sort-++-absb" [~] forall b1 b2. sort (absb b1 ++ absb b2) = absb (union b1 b2) #-}
-{-# RULES "ncm-absb" [~] forall f b. nub (concatMap (\p -> absb (f p)) (absb b)) = absb (unions (toList (Set.map (\p -> f p) b))) #-}
+{-# RULES "ncm-absb" [~] forall f b. nub (concatMap (\p -> absb (board (f p))) (absb b)) = absb (unions (toList (Set.map (\p -> board (f p)) b))) #-}
 {-# RULES "diff-absb" [~] forall b1 b2. absb b1 List.\\ absb b2 = absb (b1 Set.\\ b2) #-}
 {-# RULES "insertion" [~] forall b p. sort (p : absb b) = absb (insert p b) #-}
 {-# RULES "deletion" [~] forall b p. Prelude.filter ((/=) p) (absb b) = absb (delete p b) #-}
-{-# RULES "LifeBoard-absb" [~] forall c b. LifeBoard c (absb b) = absB (LifeBoard c b) #-}
-
 

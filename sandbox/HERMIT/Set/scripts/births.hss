@@ -1,21 +1,20 @@
-load-and-run scripts/survivors.hss
+load-and-run HERMIT/Set/scripts/survivors.hss
 binding-of 'births
 fix-intro
 down
-split-1-beta births [|absBb|] [|repBb|]
+split-1-beta births [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['isEmpty, 'neighbs, 'liveneighbs, 'absBx, 'absCPb, 'repBb]))
+repeat (any-call (unfold ['isEmpty, 'neighbs, 'liveneighbs, 'absBx, 'absCPB, 'repBB]))
 bash
 one-td let-subst
+any-call (unfold-rule config-absB)
 any-call (unfold-rule board-absB)
 any-call (unfold-rule ncm-absb)
 one-td let-subst
-bash
 any-call (unfold-rule filter-absb)
-any-call (unfold-rule config-absB)
+any-call (unfold-rule LifeBoard-absb)
 any-call (unfold-rule repB-absB)
-any-call (unfold-rule repb-absb)
 }
 let-subst
 alpha-let ['births']

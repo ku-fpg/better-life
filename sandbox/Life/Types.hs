@@ -31,8 +31,8 @@ runLife n b = runLife (n-1) (next b)
 --   inv pos . inv pos == id
 --   scene (config board) (alive board) == board
 
-data LifeBoard b = LifeBoard
-		{ config :: Config
+data LifeBoard c b = LifeBoard
+		{ config :: c
 		, board :: b }
 	deriving Show
 
