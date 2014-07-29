@@ -83,7 +83,6 @@ absPBB f p = absB . (f p) . repB
 {-# RULES "board-absB"  [~] forall b. board (absB b) = absb (board b) #-}
 {-# RULES "config-absB" [~] forall b. config (absB b) = config b #-}
 {-# RULES "repB-absB" [~] forall b. repB (absB b) = b #-}
-{-# RULES "repb-absb" [~] forall b. repb (absb b) = b #-}
 
 {-# RULES "repb-null" [~] forall c. LifeBoard c (repb []) = LifeBoard c Set.empty #-}
 {-# RULES "not-elem-absb" [~] forall p b. not (elem p (absb b)) = notMember p b #-}

@@ -6,7 +6,7 @@ import Data.List
 import Life.Types
 
 import HERMIT.Set.Life hiding (Board) -- so we have access to abs/rep functions
-import HERMIT.UVector.Life hiding (Board) -- so we have access to abs/rep functions
+--import HERMIT.UVector.Life hiding (Board) -- so we have access to abs/rep functions
 
 type Board = LifeBoard Config [Pos]
 
