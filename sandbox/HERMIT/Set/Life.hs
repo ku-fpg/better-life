@@ -86,7 +86,7 @@ absPBB f p = absB . (f p) . repB
 {-# RULES "repB-absB" [~] forall b. repB (absB b) = b #-}
 
 -- Rules that convert list-based combinators into set-based combinators
--- For conversion to LifeBoard.empty
+-- For conversion to Set.empty
 {-# RULES "repb-null" [~] forall c. LifeBoard c (repb []) = LifeBoard c Set.empty #-}
 -- For conversion to Set.notMember)
 {-# RULES "not-elem-absb" [~] forall p b. not (elem p (absb b)) = notMember p b #-}
