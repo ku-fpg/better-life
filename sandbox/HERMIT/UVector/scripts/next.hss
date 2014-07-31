@@ -1,0 +1,19 @@
+load-and-run HERMIT/Set/scripts/nextgen.hss
+binding-of '$cnext
+fix-intro
+down
+split-1-beta $cnext [|absBB|] [|repBB|]
+{ 
+rhs-of 'g
+repeat (any-call (unfold ['nextgen, 'repBB, 'absBB]))
+bash
+any-call (unfold-rule repB-absB)
+bash
+}
+let-subst
+alpha-let ['$cnext']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+top
+innermost let-float
+
+

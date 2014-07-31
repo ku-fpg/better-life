@@ -1,0 +1,16 @@
+binding-of '$cempty
+fix-intro
+down
+split-1-beta $cempty [|absxB|] [|repxB|]
+{ 
+rhs-of 'g
+repeat (any-call (unfold ['repxB, 'repB]))
+--bash
+--any-call (unfold-rule repb-null)
+--}
+--let-subst
+--alpha-let ['$cempty']
+--{ let-bind ; nonrec-rhs ; unfold ; bash }
+--top
+--innermost let-float
+
