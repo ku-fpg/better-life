@@ -1,4 +1,4 @@
-load-and-run HERMIT/Set/scripts/survivors.hss
+load-and-run HERMIT/UVector/scripts/survivors.hss
 binding-of 'births
 fix-intro
 down
@@ -11,13 +11,13 @@ one-td let-subst
 any-call (unfold-rule config-absB)
 any-call (unfold-rule board-absB)
 any-call (unfold-rule ncm-absb)
-one-td let-subst
-any-call (unfold-rule filter-absb)
-any-call (unfold-rule LifeBoard-absb)
 any-call (unfold-rule repB-absB)
+any-call (unfold-rule filter-bir)
+one-td let-subst
+any-call (unfold-rule LifeBoard-absb)
 }
 let-subst
 alpha-let ['births']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
+{ let-bind ; nonrec-rhs ; unfold ; simplify } --bash
 top
 innermost let-float

@@ -1,4 +1,4 @@
-load-and-run HERMIT/Set/scripts/liveneighbs.hss
+load-and-run HERMIT/UVector/scripts/liveneighbs.hss
 binding-of 'survivors
 fix-intro
 down
@@ -10,12 +10,13 @@ bash
 one-td let-subst
 any-call (unfold-rule config-absB)
 any-call (unfold-rule board-absB)
-any-call (unfold-rule filter-absb)
+any-call (unfold-rule repB-absB)
+any-call (unfold-rule filter-sur)
 any-call (unfold-rule LifeBoard-absb)
 any-call (unfold-rule repB-absB)
 }
 let-subst
 alpha-let ['survivors']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
+{ let-bind ; nonrec-rhs ; unfold ; simplify } -- bash
 top
 innermost let-float

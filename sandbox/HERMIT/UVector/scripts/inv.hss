@@ -7,17 +7,16 @@ rhs-of 'g
 repeat (any-call (unfold ['isAlive, 'absBx, 'repPBB]))
 bash
 one-td let-subst
-any-call (unfold-rule board-absB)
-any-call (unfold-rule insertion)
-any-call (unfold-rule deletion)
-any-call (case-float-arg-unsafe)
-any-call (unfold-rule LifeBoard-absb)
 any-call (unfold-rule config-absB)
+any-call (unfold-rule board-absB)
+any-call (unfold-rule if-absb)
+simplify
+one-td let-subst
 any-call (unfold-rule repB-absB)
 }
 let-subst
 alpha-let ['$cinv']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
+{ let-bind ; nonrec-rhs ; unfold ; simplify } --bash
 top
 innermost let-float
 

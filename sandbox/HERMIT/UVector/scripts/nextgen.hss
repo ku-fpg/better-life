@@ -1,4 +1,4 @@
-load-and-run HERMIT/Set/scripts/births.hss
+load-and-run HERMIT/UVector/scripts/births.hss
 binding-of 'nextgen
 fix-intro
 down
@@ -11,7 +11,7 @@ one-td let-subst
 any-call (unfold-rule config-absB)
 any-call (unfold-rule board-absB)
 any-call (unfold-rule sort-++-absb)
-any-call (unfold-rule LifeBoard-absb)
+any-call (unfold-rule LifeBoard-absb-config)
 any-call (unfold-rule repB-absB)
 }
 let-subst

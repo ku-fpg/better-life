@@ -1,4 +1,3 @@
-{-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 module HERMIT.Set.Life where
 
 -- Libraries required for Hermit transformations
@@ -11,9 +10,8 @@ type Board = LifeBoard Config [Pos]
 -- The new data structure to be used in the implementation
 type Board' = LifeBoard Config (Set Pos)
 
-----------------------------------------------------------------------
--- Transformations required by hermit for worker/wrapper conversions
 
+-- Transformations required by hermit for worker/wrapper conversions
 -- repb and absb change the underlying board field
 {-# NOINLINE repb #-}
 repb :: [Pos] -> Set Pos
