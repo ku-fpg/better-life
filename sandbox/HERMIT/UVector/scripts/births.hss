@@ -15,6 +15,7 @@ any-call (unfold-rule repB-absB)
 any-call (unfold-rule filter-bir)
 one-td let-subst
 any-call (unfold-rule LifeBoard-absb)
+any-call (unfold-rule repB-absB)
 }
 let-subst
 alpha-let ['births']

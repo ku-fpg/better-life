@@ -10,11 +10,7 @@ rhs-of 'g
 repeat (any-call (unfold ['neighbs, 'isAlive, 'absCPB, 'absBx, 'repBx]))
 bash
 one-td let-subst
-any-call (unfold-rule config-absB)
-any-call (unfold-rule board-absB)
-any-call (unfold-rule filter-id)
-any-call (unfold-rule length-absb)
-bash
+any-call (unfold-rule length-vector)
 }
 let-subst
 alpha-let ['liveneighbs']

@@ -10,7 +10,7 @@ any-call (unfold-rule repB-null)
 }
 let-subst
 alpha-let ['$cempty']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
+{ let-bind ; nonrec-rhs ; unfold ; simplify }
 top
 innermost let-float
 

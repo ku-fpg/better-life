@@ -87,15 +87,13 @@ absPBB f p = absB . (f p) . repB
 
 -- Rules that convert list-based combinators into vector-based combinators
 -- For conversion to Vector.empty
-{-# RULES "repB-null" [~] forall c. repB (LifeBoard c []) = LifeBoard c Vector.empty #-}
+{-# RULES "repB-null" [~] forall c. repB (LifeBoard c []) = LifeBoard c (generate ((fst (fst c))*(snd (fst c))) (\i -> False)) #-}
 -- For conversion to Vector.!
 {-# RULES "elem-absb" [~] forall p c b. Prelude.elem p (absb (fst c) b) = b ! ((snd p)*(snd (fst c)) + (fst p)) #-}
 -- For conversion to Vector.\\
 {-# RULES "diff-absb" [~] forall b1 b2. (absb (fst (config b1)) (board b1)) \\ (absb (fst (config b2)) (board b2)) = absb (fst (config b1))(generate (Vector.length (board b1)) (\i -> ((board b1) ! i) /= ((board b2) ! i))) #-}
--- For conversion to Vector.filter
-{-# RULES "filter-id" [~] forall f b c. Prelude.filter f (absb (fst c) b) = absb (fst c) (Vector.filter id b) #-}
--- For conversion to Vector.length
-{-# RULES "length-absb" [~] forall b c. Prelude.length (absb (fst c) b) = Vector.length b #-}
+-- For conversion of liveneighbs
+{-# RULES "length-vector" [~] forall f b1 b2. Prelude.length (Prelude.filter (f (repB (absB b1))) (board (absB b2))) = foldl' (\acc arg -> if arg then acc + 1 else acc) 0 (Vector.zipWith (&&) (board b1) (board b2)) #-}
 -- For conversion to Vector.generate for survivors function
 {-# RULES "filter-sur" [~] forall f b n. Prelude.filter (\p -> Prelude.elem (f b p) n) (absb (fst (config b)) (board b)) = absb (fst (config b)) (generate (Vector.length (board b)) (\i -> Prelude.elem (f b (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b))))) n)) #-}
 -- For nub-concatMap chain in births function
