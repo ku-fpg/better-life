@@ -5,7 +5,6 @@ import Life.Engine.Hutton
 import Life.Scenes
 
 import Criterion.Main
-import Control.DeepSeq
 
 -- Runs the Life (without display) for the specified number of generations
 life :: Int -> Config -> [Pos] -> Board
