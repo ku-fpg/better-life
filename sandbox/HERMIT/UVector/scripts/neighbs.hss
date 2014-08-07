@@ -6,11 +6,11 @@ split-1-beta neighbs [|absCPB|] [|repCPB|]
 rhs-of 'g
 any-call (unfold 'repCPB)
 bash
-innermost case-float-arg-unsafe
-any-call (let-float-arg)
-any-call (case-float-arg-unsafe)
-any-call (unfold-rule repB-LifeBoard)
-bash
+--innermost case-float-arg-unsafe
+--any-call (let-float-arg)
+--any-call (case-float-arg-unsafe)
+--any-call (unfold-rule repB-LifeBoard)
+--bash
 }
 let-subst
 alpha-let ['neighbs']

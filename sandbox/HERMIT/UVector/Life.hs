@@ -31,10 +31,10 @@ absB :: Board' -> Board
 absB b = LifeBoard c $ absb (fst c) $ board b
 	where c = config b
 
--- representation of "empty", "neighbors"
+-- representation of "empty"
 repxB f = repB . f
 
--- abstraction of "empty", "neighbors"
+-- abstraction of "empty"
 absxB f = absB . f
 
 -- representation of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
@@ -43,13 +43,13 @@ repBx f = f . absB
 -- abstraction of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
 absBx f = f . repB
 
--- representation of (Config -> Pos -> [Pos]) "neighbs"
-repCPB :: (Config -> Pos -> Board) -> (Config -> Pos -> Board')
-repCPB f c = repxB (f c)
+-- representation of (Config -> Pos -> Board) "neighbs"
+repCPB :: (Config -> Pos -> Board) -> (Config -> Pos -> [Pos])
+repCPB f c = board . (f c)
 
--- abstraction of (Config -> Pos -> Set Pos) "neighbs"
-absCPB :: (Config -> Pos -> Board') -> (Config -> Pos -> Board)
-absCPB f c = absxB (f c)
+-- abstraction of (Config -> Pos -> [Pos]) "neighbs"
+absCPB :: (Config -> Pos -> [Pos]) -> (Config -> Pos -> Board)
+absCPB f c = (LifeBoard c) . sort . (f c)
 
 -- representation of (Board -> Board) "nextgen" and "next"
 repBB :: (Board -> Board) -> (Board' -> Board')
@@ -78,7 +78,6 @@ absPBB f p = absB . (f p) . repB
 
 -- Rules for hermit conversion
 -- Rules that move abs and rep functions up/down the AST
-{-# RULES "repB-LifeBoard" [~] forall c b. repB (LifeBoard c b) = LifeBoard c (repb (fst c) b) #-}
 {-# RULES "LifeBoard-absb" [~] forall c b. LifeBoard c (absb (fst c) b) = absB (LifeBoard c b) #-}
 {-# RULES "LifeBoard-absb-config" [~] forall b c v. LifeBoard (config b) (absb (fst c) v) = absB (LifeBoard (config b) v) #-}
 {-# RULES "board-absB"  [~] forall b. board (absB b) = absb (fst (config b)) (board b) #-}
@@ -93,16 +92,14 @@ absPBB f p = absB . (f p) . repB
 -- For conversion to Vector.\\
 {-# RULES "diff-absb" [~] forall b1 b2. (absb (fst (config b1)) (board b1)) \\ (absb (fst (config b2)) (board b2)) = absb (fst (config b1))(generate (Vector.length (board b1)) (\i -> ((board b1) ! i) /= ((board b2) ! i))) #-}
 -- For conversion of liveneighbs
-{-# RULES "length-vector" [~] forall f b1 b2. Prelude.length (Prelude.filter (f (repB (absB b1))) (board (absB b2))) = foldl' (\acc arg -> if arg then acc + 1 else acc) 0 (Vector.zipWith (&&) (board b1) (board b2)) #-}
+{-# RULES "board-absCPB" [~] forall f c x. board (absCPB f c x) = f c x #-}
 -- For conversion to Vector.generate for survivors function
 {-# RULES "filter-sur" [~] forall f b n. Prelude.filter (\p -> Prelude.elem (f b p) n) (absb (fst (config b)) (board b)) = absb (fst (config b)) (generate (Vector.length (board b)) (\i -> Prelude.elem (f b (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b))))) n)) #-}
--- For nub-concatMap chain in births function
-{-# RULES "ncm-absb" [~] forall f b. nub (Prelude.concatMap (\p -> absb (fst (config (f (config b) p))) (board (f (config b) p))) (absb (fst (config b)) (board b))) = absb (fst (config b)) (Prelude.foldr1 (Vector.zipWith (||)) [ board (f (config b) (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b))))) | i <- [0..Vector.length (board b) - 1] ]) #-}
 -- For conversion to Vector.generate in births function
-{-# RULES "filter-bir" [~] forall f1 f2 b n v. Prelude.filter (\p -> f1 b p && f2 b p == n) (absb (fst (config b)) v) = absb (fst (config b)) (generate (Vector.length v) (\i ->  let p = (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b)))) in f1 b p && f2 b p == n)) #-}
+{-# RULES "filter-bir" [~] forall f f1 f2 b n s. Prelude.filter (\p -> f1 b p && f2 b p == n) (nub (Prelude.concatMap f (absb s (board b)))) = absb s (generate (Vector.length (board b)) (\i -> let w = fst s in let p = (i `mod` w, i `div` w) in f1 b p && f2 b p == n)) #-}
 -- For conversion to Vector.zipWith in nextgen function
 {-# RULES "sort-++-absb" [~] forall b1 b2. sort (absb (fst (config b1)) (board b1) Prelude.++ absb (fst (config b2)) (board b2)) = absb (fst (config b1)) (Vector.zipWith (||) (board b1) (board b2)) #-}
 -- For conversion to Vector.update in inv function
-{-# RULES "if-absb" [~] forall a b f p. LifeBoard (config b) (if a then Prelude.filter f (absb (fst (config b)) (board b)) else sort ((:) p (absb (fst (config b)) (board b)))) = let i = fst (fst (config b)) * fst p + snd p in absB (LifeBoard (config b) ((//) (board b) [(i, not (board b ! i))])) #-}
+{-# RULES "if-absb" [~] forall a b c f p. LifeBoard c (if a then Prelude.filter f (absb (fst c) (board b)) else sort ((:) p (absb (fst c) (board b)))) = let i = fst (fst c) * fst p + snd p in absB (LifeBoard (config b) ((//) (board b) [(i, not (board b ! i))])) #-}
 
 
