@@ -18,6 +18,6 @@ any-call (unfold-rule repB-absB)
 }
 let-subst
 alpha-let ['births']
-{ let-bind ; nonrec-rhs ; unfold ; simplify } --bash
+{ let-bind ; nonrec-rhs ; unfold ; simplify }
 top
 innermost let-float
