@@ -1,9 +1,9 @@
-module SetCanvas where
+module UVectorCanvas where
 
 import Graphics.Blank
 
 import Life.Types
-import Life.Engine.Set
+import Life.Engine.UVector
 import Life.Display.Canvas
 import Life.Scenes
 
