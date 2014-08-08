@@ -32,10 +32,13 @@ clean:
 	rm -rf examples/HuttonEngine examples/HuttonCanvas
 	rm -rf examples/SetEngine examples/SetCanvas
 	rm -rf examples/UVectorEngine examples/UVectorCanvas
+	rm -rf sandbox/examples/HuttonEngineS sandbox/examples/HuttonCanvasS
+	rm -rf sandbox/examples/HuttonEngineV sandbox/examples/HuttonCanvasV
 	rm -rf examples/*~ examples/*.hi examples/*.o
 	rm -rf *~ Reference/*~ Life/*~ Life/*.hi Life/*.o
 	rm -rf Life/Engine/*~ Life/Engine/*.hi Life/Engine/*.o
 	rm -rf Life/Display/*~ Life/Display/*.hi Life/Display/*.o
+	rm -rf sandbox/examples/*~ sandbox/examples/*.hi sandbox/examples/*.o
 	rm -rf sandbox/Life/*~ sandbox/Life/*.hi sandbox/Life/*.o
 	rm -rf sandbox/Life/Engine/*~ sandbox/Life/Engine/*.hi sandbox/Life/Engine/*.o
 	rm -rf sandbox/Life/Display/*~ sandbox/Life/Display/*.hi sandbox/Life/Display/*.o
@@ -43,7 +46,4 @@ clean:
 	rm -rf sandbox/HERMIT/Set/*~ sandbox/HERMIT/Set/*.hi sandbox/HERMIT/Set/*.o
 	rm -rf sandbox/HERMIT/UVector/scripts/*~
 	rm -rf sandbox/HERMIT/UVector/*~ sandbox/HERMIT/UVector/*.hi sandbox/HERMIT/UVector/*.o
-	rm -rf sandbox/examples/*~ sandbox/examples/*.hi sandbox/examples/*.o
-	rm -rf sandbox/examples/HuttonEngineS sandbox/examples/HuttonEngineV
-	rm -rf sandbox/examples/HuttonCanvasS sandbox/examples/HuttonCanvasV
 
