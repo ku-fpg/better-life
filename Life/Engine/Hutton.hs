@@ -28,7 +28,7 @@ survivors b = LifeBoard (config b) $ filter (\p -> elem (liveneighbs b p) [2,3])
 
 births :: Board -> Board
 births b = LifeBoard (config b) $ filter (\p -> isEmpty b p && liveneighbs b p == 3) 
-				$ nub $ concatMap (neighbs (config b)) $ board b
+				$ nub $ concatMap (board . (neighbs (config b))) $ board b
 --[ p | p <- nub $ concatMap (neighbs (config b)) $ board b, isEmpty b p, liveneighbs b p == 3 ]
 
 nextgen :: Board -> Board

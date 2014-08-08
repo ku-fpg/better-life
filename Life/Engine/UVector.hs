@@ -29,7 +29,7 @@ births :: Board -> Board
 births b = LifeBoard (config b) $ generate 
 				(Vector.length (board b)) 
 				(\i -> let w = fst $ fst $ config b
-					p = (i `div` w, i `mod` w)) 
+					in let p = (i `div` w, i `mod` w) 
 					in (isEmpty b p) && (liveneighbs b p == 3))
                                                                          
 nextgen :: Board -> Board
