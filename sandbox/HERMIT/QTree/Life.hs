@@ -108,10 +108,10 @@ absPBB f p = absB . (f p) . repB
 {-# RULES "elem-absb" [~] forall p b. elem p (absb b) = getLocation p b #-}
 -- For conversion of survivors function
 {-# RULES "filter-sur" [~] forall f b n. 
-	filter (\p -> elem (f (repB (absB b)) p) n) (absb (board b))
+	filter (\p -> elem (f b p) n) (absb (board b))
 	= 
 	absb (let sz = fst (config b)
-		in foldr (\p qt -> setLocation p qt (getLocation p qt && elem (f b p) n)) (makeTree sz False) (indices sz))
+		in foldr (\p qt -> setLocation p qt (getLocation p (board b) && elem (f b p) n)) (makeTree sz False) (indices sz))
  #-}
 -- For conversion of births function
 {-# RULES "filter-bir" [~] forall f f1 f2 b n. 
@@ -136,13 +136,10 @@ absPBB f p = absB . (f p) . repB
  #-}
 -- For conversion to Vector.update in inv function
 {-# RULES "if-absb" [~] forall a b c f p. 
-	LifeBoard c (if a then Prelude.filter f (absb (board b)) else sort ((:) p (absb (board b)))) 
+	LifeBoard c (if a then filter f (absb (board b)) else sort ((:) p (absb (board b)))) 
 	= 
 	let bb = board b 
 	in LifeBoard (config b) (absb (setLocation p bb (not (getLocation p bb))))
  #-}
-{-
-{-# RULES "LifeBoard-absb-config" [~] forall b c v. LifeBoard (config b) (absb (fst c) v) = absB (LifeBoard (config b) v) #-}
 
--}
 

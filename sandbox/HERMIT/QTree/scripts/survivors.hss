@@ -10,6 +10,7 @@ bash
 one-td let-subst
 any-call (unfold-rule config-absB)
 any-call (unfold-rule board-absB)
+any-call (unfold-rule repB-absB)
 any-call (unfold-rule filter-sur)
 any-call (unfold-rule LifeBoard-absb)
 any-call (unfold-rule repB-absB)
