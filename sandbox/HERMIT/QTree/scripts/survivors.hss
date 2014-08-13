@@ -1,0 +1,22 @@
+load-and-run HERMIT/QTree/scripts/liveneighbs.hss
+binding-of 'survivors
+fix-intro
+down
+split-1-beta survivors [|absBB|] [|repBB|]
+{ 
+rhs-of 'g
+repeat (any-call (unfold ['liveneighbs, 'absBx, 'repBB]))
+bash
+one-td let-subst
+any-call (unfold-rule config-absB)
+any-call (unfold-rule board-absB)
+any-call (unfold-rule filter-sur)
+any-call (unfold-rule LifeBoard-absb)
+any-call (unfold-rule repB-absB)
+bash
+}
+let-subst
+alpha-let ['survivors']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+top
+innermost let-float
