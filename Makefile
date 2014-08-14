@@ -16,6 +16,12 @@ VectorEngine:
 VectorCanvas:
 	ghc -threaded examples/UVectorCanvas.hs
 
+QTreeEngine:
+	ghc examples/QTreeEngine.hs
+
+QTreeCanvas:
+	ghc -threaded examples/QTreeCanvas.hs
+
 HermitSetEngine:
 	cd sandbox; hermit examples/HuttonEngineS.hs +Life.Engine.HuttonS HERMIT/Set/lifeclass.hss
 
@@ -26,6 +32,12 @@ HermitVectorEngine:
 	cd sandbox; hermit examples/HuttonEngineV.hs +Life.Engine.HuttonV HERMIT/UVector/lifeclass.hss
 
 HermitVectorCanvas:
+	cd sandbox ; hermit examples/HuttonCanvasV.hs +Life.Engine.HuttonV HERMIT/UVector/lifeclass.hss -- -threaded
+
+HermitQTreeEngine:
+	cd sandbox; hermit examples/HuttonEngineV.hs +Life.Engine.HuttonV HERMIT/UVector/lifeclass.hss
+
+HermitQTreeCanvas:
 	cd sandbox ; hermit examples/HuttonCanvasV.hs +Life.Engine.HuttonV HERMIT/UVector/lifeclass.hss -- -threaded
 
 clean:
