@@ -7,15 +7,6 @@ import Life.Types
 
 type Board = LifeBoard Config (Acc (A.Array DIM2 Int))
 
-
-glid :: Board
-glid = LifeBoard ((5,5), False) $ (use  $ A.fromList (Z :. 5 :. 5) [1, 0, 0, 0, 0,
-                                                                    0, 0, 0, 0, 0,
-                                                                    0, 0, 0, 1, 0,
-                                                                    0, 0, 0, 0, 1,
-                                                                    0, 0, 1, 1, 1])
-
-
 nextgen :: Board -> Board 
 nextgen b = let b' = liveneighbs b
             in LifeBoard (config b) $ A.zipWith (survivorsOrBirths) (board b) (board b')
