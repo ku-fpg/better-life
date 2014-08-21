@@ -1,9 +1,10 @@
 {-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
-module Life.Engine.Hutton where
-
-import Data.List
+module Life.Engine.HuttonS where
 
 import Life.Types
+import Data.List
+
+import HERMIT.Set.Life hiding (Board) -- so we have access to abs/rep functions
 
 type Board = LifeBoard Config [Pos]
 
@@ -43,6 +44,7 @@ instance Life Board where
 		if isAlive b p 
 		then filter ((/=) p) $ board b
 		else sort $ p : board b
+	{-# NOINLINE alive #-}
 	alive b = board b
 
 

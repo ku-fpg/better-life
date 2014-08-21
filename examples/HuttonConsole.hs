@@ -1,4 +1,4 @@
-module HuttonConsole where
+module Main where
 
 import Life.Types
 import Life.Engine.Hutton

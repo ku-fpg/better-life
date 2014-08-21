@@ -1,9 +1,9 @@
-module SetCanvas where
+module Main where
 
 import Graphics.Blank
 
 import Life.Types
-import Life.Engine.Set
+import Life.Engine.HuttonV
 import Life.Display.Canvas
 import Life.Scenes
 
@@ -18,8 +18,8 @@ s50 = (50,50)
 
 testG = life (s50,True) glider
 
-testGG = life (s50,True) gliderGun
-
 testGFlat = life (s50,False) glider
+
+testGGTorus = life (s50,True) gliderGun
 
 

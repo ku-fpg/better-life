@@ -1,0 +1,19 @@
+binding-of 'isAlive
+fix-intro
+down
+split-1-beta isAlive [|absBx|] [|repBx|]
+{
+rhs-of 'g
+any-call (unfold 'repBx)
+bash
+one-td let-subst
+any-call (unfold-rule board-absB)
+any-call (unfold-rule elem-absb)
+}
+let-subst
+alpha-let ['isAlive']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+top
+innermost let-float
+
+

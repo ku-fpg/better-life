@@ -2,7 +2,7 @@ module Main where
 
 import Life.Types
 import Life.Scenes
-import Life.Engine.Set
+import Life.Engine.QTree
 
 -- Libraries for testing
 import qualified Life.Engine.Hutton as Hutton 	-- Needed to test correctness with QuickCheck
