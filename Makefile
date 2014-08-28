@@ -35,10 +35,10 @@ HermitVectorCanvas:
 	cd sandbox ; hermit examples/HuttonCanvasV.hs +Life.Engine.HuttonV HERMIT/UVector/lifeclass.hss -- -threaded
 
 HermitQTreeEngine:
-	cd sandbox; hermit examples/HuttonEngineV.hs +Life.Engine.HuttonV HERMIT/UVector/lifeclass.hss
+	cd sandbox; hermit examples/HuttonEngineQ.hs +Life.Engine.HuttonV HERMIT/QTree/lifeclass.hss
 
 HermitQTreeCanvas:
-	cd sandbox ; hermit examples/HuttonCanvasV.hs +Life.Engine.HuttonV HERMIT/UVector/lifeclass.hss -- -threaded
+	cd sandbox ; hermit examples/HuttonCanvasQ.hs +Life.Engine.HuttonV HERMIT/QTree/lifeclass.hss -- -threaded
 
 clean:
 	rm -rf examples/HuttonEngine examples/HuttonCanvas
