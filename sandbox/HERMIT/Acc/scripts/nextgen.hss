@@ -1,0 +1,6 @@
+binding-of 'nextgen
+fix-intro
+down
+split-1-beta nextgen [|absBB|] [|repBB|]
+{
+rhs-of 'g

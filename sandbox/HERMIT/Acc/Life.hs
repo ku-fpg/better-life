@@ -34,18 +34,27 @@ absb (w,h) arr = let prs = A.reshape (A.index1 (lift (w * h))) $ A.generate (ind
 -- repB and absB change the entire Board structure
 {-# NOINLINE repB #-}
 repB :: Board -> Board'
-repB b = LifeBoard c $ repb (fst c) $ board b
+repB b = LifeBoard c $ repb (Prelude.fst c) $ board b
          where c = config b
 
 {-# NOINLINE absB #-}
 absB :: Board' -> Board
-absB b = LifeBoard c $ absb (fst c) $ board b
+absB b = LifeBoard c $ absb (Prelude.fst c) $ board b
          where c = config b
+
+-- representation of (Board -> Board) "nextgen"
+repBB :: (Board -> Board) -> (Board' -> Board')
+repBB f = repB . f . absB
+-- abstraction of (Board' -> Board') "nextgen" 
+absBB :: (Board' -> Board') -> (Board -> Board)
+absBB f = absB . f . repB
 
 -- Rules for hermit conversion
 -- Rules that move abs and rep functions up/down the AST
-{-# RULES "LifeBoard-absb" [~] forall c b. LifeBoard c (absb (fst c) b) = absB (LifeBoard c b) #-}
-{-# RULES "LifeBoard-absb-config" [~] forall b c v. LifeBoard (config b) (absb (fst c) v) = absB (LifeBoard (config b) v) #-}
-{-# RULES "board-absB"  [~] forall b. board (absB b) = absb (fst (config b)) (board b) #-}
+{-# RULES "LifeBoard-absb" [~] forall c b. LifeBoard c (absb (Prelude.fst c) b) = absB (LifeBoard c b) #-}
+{-# RULES "LifeBoard-absb-config" [~] forall b c v. LifeBoard (config b) (absb (Prelude.fst c) v) = absB (LifeBoard (config b) v) #-}
+{-# RULES "board-absB"  [~] forall b. board (absB b) = absb (Prelude.fst (config b)) (board b) #-}
 {-# RULES "config-absB" [~] forall b. config (absB b) = config b #-}
 {-# RULES "repB-absB" [~] forall b. repB (absB b) = b #-}
+
+
