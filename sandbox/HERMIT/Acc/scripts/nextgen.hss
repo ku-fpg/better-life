@@ -4,3 +4,9 @@ down
 split-1-beta nextgen [|absBB|] [|repBB|]
 {
 rhs-of 'g
+repeat (any-call (unfold ['births, 'aurvivors, 'absBB, 'repBB]))
+bash
+one-td let-subst
+any-call (unfold-rule config-absB)
+any-call (unfold-rule board-absB)
+any-call (unfold-rule seq-par)

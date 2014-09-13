@@ -1,9 +1,10 @@
+{-# LANGUAGE TypeSynonymInstances, FlexibleInstances, TypeOperators, ScopedTypeVariables #-}
 module HERMIT.Acc.Life where
 
 import Life.Types
 import qualified Data.Array.Accelerate as A
 import Data.Array.Accelerate
-import Data.Array.Accelerate.CUDA
+import Data.Array.Accelerate.Interpreter
 
 import qualified Data.List as List
 
@@ -58,3 +59,13 @@ absBB f = absB . f . repB
 {-# RULES "repB-absB" [~] forall b. repB (absB b) = b #-}
 
 
+{-# RULES "seq-par" [~] forall c b1 b2 . repB (LifeBoard c (List.sort (b1 Prelude.++ b2))) = let pattern :: Stencil3x3 Int -> Exp Int
+                                                                                                 pattern ((t1,t2,t3), (l,m,r), (bt1, bt2, bt3)) = t1 + t2 + t3 + l + r + bt1 + bt2 + bt3
+                                                                                                 liveneighbs :: Board' -> Board'
+                                                                                                 liveneighbs b = if Prelude.snd $ config b
+                                                                                                                 then LifeBoard (config b) (stencil pattern Wrap (board b))
+                                                                                                                 else LifeBoard (config b) $ stencil pattern (Constant 0) (board b)
+                                                                                                 survivorsOrBirths :: Exp Int -> Exp Int -> Exp Int
+                                                                                                 survivorsOrBirths cell neighbs = (cell ==* 1 &&* (neighbs ==*2 ||* neighbs ==* 3)) ? (1, (cell ==* 0 &&* neighbs ==* 3) ? (1,0))
+                                                                                                 b' = liveneighbs (LifeBoard c (repb (Prelude.fst c) b1))
+                                                                                              in LifeBoard c $ (A.zipWith (survivorsOrBirths) (repb (Prelude.fst c) b1) (board b')) #-}
