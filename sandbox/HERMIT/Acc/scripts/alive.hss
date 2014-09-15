@@ -1,0 +1,16 @@
+binding-of '$calive
+fix-intro
+down
+split-1-beta $calive [|absBx|] [|repBx|]
+{
+rhs-of 'g
+any-call (unfold 'repBx)
+bash
+any-call (unfold-rule board-absB)
+bash
+}
+let-subst
+alpha-let ['$calive']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+top
+innermost let-float

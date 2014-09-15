@@ -1,0 +1,8 @@
+
+load-and-run HERMIT/Acc/scripts/empty.hss
+load-and-run HERMIT/Acc/scripts/alive.hss
+load-and-run HERMIT/Acc/scripts/dims.hss
+load-and-run HERMIT/Acc/scripts/diff.hss
+load-and-run HERMIT/Acc/scripts/next.hss
+load-and-run HERMIT/Acc/scripts/inv.hss
+continue

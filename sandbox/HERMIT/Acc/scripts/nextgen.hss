@@ -4,9 +4,15 @@ down
 split-1-beta nextgen [|absBB|] [|repBB|]
 {
 rhs-of 'g
-repeat (any-call (unfold ['births, 'aurvivors, 'absBB, 'repBB]))
+repeat (any-call (unfold ['births, 'survivors, 'absBB, 'repBB]))
 bash
 one-td let-subst
 any-call (unfold-rule config-absB)
 any-call (unfold-rule board-absB)
 any-call (unfold-rule seq-par)
+}
+let-subst
+alpha-let ['nextgen']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+top
+innermost let-float
