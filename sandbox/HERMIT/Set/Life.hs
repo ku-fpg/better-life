@@ -31,15 +31,19 @@ absB :: Board' -> Board
 absB b = LifeBoard (config b) $ absb (board b)
 
 -- representation of "empty", "neighbors"
+repxB :: (a -> Board) -> a -> Board'
 repxB f = repB . f
 
 -- abstraction of "empty", "neighbors"
+absxB :: (a -> Board') -> a -> Board
 absxB f = absB . f
 
 -- representation of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
+repBx :: (Board -> a) -> Board' -> a
 repBx f = f . absB
 
 -- abstraction of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
+absBx :: (Board' -> a) -> Board -> a
 absBx f = f . repB
 
 -- representation of (Config -> Pos -> [Pos]) "neighbs"
