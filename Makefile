@@ -40,11 +40,18 @@ HermitQTreeEngine:
 HermitQTreeCanvas:
 	cd sandbox ; hermit examples/HuttonCanvasQ.hs +Life.Engine.HuttonV HERMIT/QTree/lifeclass.hss -- -threaded
 
+HermitAccEngine:
+	cd sandbox; hermit examples/HuttonEngineA.hs +Life.Engine.HuttonA HERMIT/Acc/lifeclass.hss
+
+HermitAccCanvas:
+	cd sandbox ; hermit examples/HuttonCanvasA.hs +Life.Engine.HuttonA HERMIT/Acc/lifeclass.hss -- -threaded
+
 clean:
 	rm -rf examples/HuttonEngine examples/HuttonCanvas
 	rm -rf examples/SetEngine examples/SetCanvas
 	rm -rf examples/UVectorEngine examples/UVectorCanvas
 	rm -rf examples/QTreeEngine examples/QTreeCanvas
+	rm -rf sandbox/examples/HuttonEngineA sandbox/examples/HuttonCanvasA
 	rm -rf sandbox/examples/HuttonEngineS sandbox/examples/HuttonCanvasS
 	rm -rf sandbox/examples/HuttonEngineV sandbox/examples/HuttonCanvasV
 	rm -rf sandbox/examples/HuttonEngineQ sandbox/examples/HuttonCanvasQ
@@ -62,4 +69,6 @@ clean:
 	rm -rf sandbox/HERMIT/UVector/*~ sandbox/HERMIT/UVector/*.hi sandbox/HERMIT/UVector/*.o
 	rm -rf sandbox/HERMIT/QTree/scripts/*~
 	rm -rf sandbox/HERMIT/QTree/*~ sandbox/HERMIT/QTree/*.hi sandbox/HERMIT/QTree/*.o
+	rm -rf sandbox/HERMIT/Acc/scripts/*~
+	rm -rf sandbox/HERMIT/Acc/*~ sandbox/HERMIT/Acc/*.hi sandbox/HERMIT/Acc/*.o
 
