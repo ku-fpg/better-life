@@ -5,7 +5,7 @@ down
 split-1-beta births [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['isEmpty, 'neighbs, 'liveneighbs, 'absBx, 'absCPB, 'repBB]))
+repeat (any-call (unfold ['isEmpty, 'neighbs, 'liveneighbs, 'repBB, 'absCPB, 'absBx]))
 bash
 one-td let-subst
 any-call (unfold-rule config-absB)
@@ -21,3 +21,4 @@ alpha-let ['births']
 { let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
+

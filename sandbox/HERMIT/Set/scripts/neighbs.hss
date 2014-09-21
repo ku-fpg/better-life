@@ -10,6 +10,7 @@ innermost case-float-arg-unsafe
 any-call (let-float-arg)
 any-call (case-float-arg-unsafe)
 any-call (unfold-rule repB-LifeBoard)
+any-call (unfold 'repb)
 }
 let-subst
 alpha-let ['neighbs']
