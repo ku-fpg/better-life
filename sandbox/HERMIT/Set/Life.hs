@@ -30,14 +30,6 @@ repB b = LifeBoard (config b) $ repb (board b)
 absB :: Board' -> Board
 absB b = LifeBoard (config b) $ absb (board b)
 
--- representation of "empty", "neighbors"
-repxB :: (a -> Board) -> a -> Board'
-repxB f = repB . f
-
--- abstraction of "empty", "neighbors"
-absxB :: (a -> Board') -> a -> Board
-absxB f = absB . f
-
 -- representation of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
 repBx :: (Board -> a) -> Board' -> a
 repBx f = f . absB
@@ -45,6 +37,14 @@ repBx f = f . absB
 -- abstraction of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
 absBx :: (Board' -> a) -> Board -> a
 absBx f = f . repB
+
+-- representation of "empty", "neighbors"
+repxB :: (a -> Board) -> a -> Board'
+repxB f = repB . f
+
+-- abstraction of "empty", "neighbors"
+absxB :: (a -> Board') -> a -> Board
+absxB f = absB . f
 
 -- representation of (Config -> Pos -> [Pos]) "neighbs"
 repCPB :: (Config -> Pos -> Board) -> (Config -> Pos -> Board')
@@ -56,27 +56,27 @@ absCPB f = absxB . f
 
 -- representation of (Board -> Board) "births", "survivors", "nextgen", "next"
 repBB :: (Board -> Board) -> (Board' -> Board')
-repBB f = repB . f . absB
+repBB f = (repxB f) . absB
 
 -- abstraction of (Board' -> Board') "births", "survivors", "nextgen", "next"
 absBB :: (Board' -> Board') -> (Board -> Board)
-absBB f = absB . f . repB
+absBB f = (absxB f) . repB
 
 -- representation of (Board -> Board -> Board) "diff"
 repBBB :: (Board -> Board -> Board) -> Board' -> Board' -> Board'
-repBBB f b = repB . (f (absB b)) . absB
+repBBB f b = repBB (f (absB b))
 
 -- abstraction of (Board' -> Board' -> Board') "diff"
 absBBB :: (Board' -> Board' -> Board') -> Board -> Board -> Board
-absBBB f b = absB . (f (repB b)) . repB
+absBBB f b = absBB (f (repB b))
 
 -- representation of (Pos -> Board -> Board) "inv"
 repPBB :: (Pos -> Board -> Board) -> Pos -> Board' -> Board'
-repPBB f p = repB . (f p) . absB
+repPBB f = repBB . f
 
 -- abstraction of (Pos -> Board' -> Board') "inv"
 absPBB :: (Pos -> Board' -> Board') -> Pos -> Board -> Board
-absPBB f p = absB . (f p) . repB
+absPBB f = absBB . f
 
 
 -- Rules for hermit conversion
