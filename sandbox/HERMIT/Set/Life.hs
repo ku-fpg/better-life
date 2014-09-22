@@ -56,19 +56,19 @@ absCPB f = absxB . f
 
 -- representation of (Board -> Board) "births", "survivors", "nextgen", "next"
 repBB :: (Board -> Board) -> (Board' -> Board')
-repBB f = (repxB f) . absB
+repBB = repBx . repxB
 
 -- abstraction of (Board' -> Board') "births", "survivors", "nextgen", "next"
 absBB :: (Board' -> Board') -> (Board -> Board)
-absBB f = (absxB f) . repB
+absBB = absBx . absxB
 
 -- representation of (Board -> Board -> Board) "diff"
 repBBB :: (Board -> Board -> Board) -> Board' -> Board' -> Board'
-repBBB f b = repBB (f (absB b))
+repBBB f = repBB . f . absB
 
 -- abstraction of (Board' -> Board' -> Board') "diff"
 absBBB :: (Board' -> Board' -> Board') -> Board -> Board -> Board
-absBBB f b = absBB (f (repB b))
+absBBB f = absBB . f . repB
 
 -- representation of (Pos -> Board -> Board) "inv"
 repPBB :: (Pos -> Board -> Board) -> Pos -> Board' -> Board'
