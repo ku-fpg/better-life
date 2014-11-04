@@ -28,6 +28,6 @@ lifeCanvas dc b = do
 	send dc $ do 
 		clearRect (0, 0, width dc, height dc)
 		renderBalls $ alive b
-	threadDelay $ 50 * 50
+	--threadDelay $ 50 * 50
 	lifeCanvas dc $ next b
 

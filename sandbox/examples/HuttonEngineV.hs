@@ -3,12 +3,12 @@ module Main where
 -- Libraries for hermit conversion
 import Life.Types
 import Life.Scenes
-import Life.Engine.HuttonV			-- Target module for hermit
+import Life.Engine.HuttonV            -- Target module for hermit
 
 -- Libraries for testing
-import qualified Life.Engine.UVector as Vector	-- Needed to test correctness with QuickCheck
-import Test.QuickCheck 				-- For correctness tests
-import Criterion.Main 				-- For performance tests
+import qualified Life.Engine.UVector as Vector    -- Needed to test correctness with QuickCheck
+import Test.QuickCheck                 -- For correctness tests
+import Criterion.Main                 -- For performance tests
 
 -- Runs the Life (without display) for the specified number of generations
 life :: Int -> Config -> [Pos] -> Board
@@ -25,13 +25,15 @@ testHermit x c b = alive (life x c b) == alive (lifeVector x c b)
 -- Tests conversion against original for correctness and performance
 main :: IO ()
 main = do
-	quickCheck $ testHermit 1000 ((20,20),True) glider
-	quickCheck $ testHermit 1000 ((50,50),False) gliderGun
-	defaultMain
-		[ bench "Set-G-20x20" $ whnf (life 1000000 ((20,20),True)) glider
-		, bench "Hutton-G-20x20" $ whnf (lifeVector 1000000 ((20,20),True)) glider
-		, bench "Set-GG-50x50" $ whnf (life 1000000 ((50,50),False)) gliderGun
-		, bench "Hutton-GG-50x50" $ whnf (lifeVector 1000000 ((50,50),False)) gliderGun
-		]
+    --quickCheck $ testHermit 1000 ((20,20),True) glider
+    --quickCheck $ testHermit 1000 ((50,50),False) gliderGun
+    defaultMain
+        [ bench "Hutton-G-20x20" $ nf (board . life 10 ((20,20),True)) glider
+        , bench "Vector-G-20x20" $ nf (board . lifeVector 10 ((20,20),True)) glider
+        , bench "Hutton-GG-50x50" $ nf (board . life 10 ((50,50),False)) gliderGun
+        , bench "Vector-GG-50x50" $ nf (board . lifeVector 10 ((50,50),False)) gliderGun
+        , bench "Hutton-Acorn-200x200" $ nf (board . life 10 ((200,200),False)) acorn
+        , bench "Vector-Acorn-200x200" $ nf (board . lifeVector 10 ((200,200),False)) acorn
+        ]
 
 

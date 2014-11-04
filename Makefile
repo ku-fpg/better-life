@@ -41,7 +41,7 @@ HermitQTreeCanvas:
 	cd sandbox ; hermit examples/HuttonCanvasQ.hs +Life.Engine.HuttonV HERMIT/QTree/lifeclass.hss -- -threaded
 
 HermitAccEngine:
-	cd sandbox; hermit examples/HuttonEngineA.hs +Life.Engine.HuttonA HERMIT/Acc/lifeclass.hss
+	cd sandbox; hermit examples/HuttonEngineA.hs +Life.Engine.HuttonA HERMIT/Acc/lifeclass.hss -- -threaded
 
 HermitAccCanvas:
 	cd sandbox ; hermit examples/HuttonCanvasA.hs +Life.Engine.HuttonA HERMIT/Acc/lifeclass.hss -- -threaded

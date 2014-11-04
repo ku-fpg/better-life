@@ -9,6 +9,7 @@ import Life.Engine.HuttonA  -- Target module for hermit
 import qualified Life.Engine.Acc as Acc -- Needed to test correctness with QuickCheck
 import Test.QuickCheck -- For correctness tests
 import Criterion.Main -- For performance tests
+import qualified Data.Array.Accelerate.CUDA as C
 
 -- Runs the Life (without display) for the specified number of generations
 life :: Int -> Config -> [Pos] -> Board
@@ -19,19 +20,21 @@ lifeAcc x c = (runLife x) . (scene c)
 
 
 -- QuickCheck test of source code engine vs. hermit converted engine
-testHermit x c b = alive (life x c b) == alive (lifeAcc x c b)
+--testHermit x c b = alive (life x c b) == alive (lifeAcc x c b)
 
 
 -- Tests conversion against original for correctness and performance
 main :: IO ()
 main = do
-    quickCheck $ testHermit 1000 ((20,20),True) glider
-    quickCheck $ testHermit 1000 ((50,50),False) gliderGun
+    --quickCheck $ testHermit 1000 ((20,20),True) glider
+    --quickCheck $ testHermit 1000 ((50,50),False) gliderGun
     defaultMain
-        [ bench "Acc-G-20x20" $ whnf (life 1000000 ((20,20),True)) glider
-        , bench "Hutton-G-20x20" $ whnf (lifeAcc 1000000 ((20,20),True)) glider
-        , bench "Acc-GG-50x50" $ whnf (life 1000000 ((50,50),False)) gliderGun
-        , bench "Hutton-GG-50x50" $ whnf (lifeAcc 1000000 ((50,50),False)) gliderGun
+        [ bench "Hutton-G-20x20" $ nf (board . life 10 ((20,20),False)) glider
+        , bench "Acc-G-20x20" $ whnf (C.run . board . lifeAcc 10 ((20,20),False)) glider
+        , bench "Hutton-GG-50x50" $ nf (board . life 10 ((50,50),False)) gliderGun
+        , bench "Acc-GG-50x50" $ whnf (C.run . board . lifeAcc 10 ((50,50),False)) gliderGun
+        , bench "Hutton-Acorn-200x200" $ nf (board . life 10 ((200,200),False)) acorn
+        , bench "Acc-Acorn-200x200" $ whnf (C.run . board . lifeAcc 10 ((200,200),False)) acorn
         ]
 
 
