@@ -3,7 +3,7 @@ better-life
 
 Creating a better life
 
-This repository exists as a complete library that can be used to create various representations of the "Game of Life" originally created by Grahm Hutton.
+This repository exists as a complete library that can be used to create various representations of the "Game of Life" originally created by Graham Hutton.
 
 It also serves as a working example for the HERMIT GHC Plugin.  
 
