@@ -10,7 +10,7 @@ any-call (unfold-rule board-absB)
 }
 let-subst
 alpha-let ['$calive']
-{ let-bind ; nonrec-rhs ; unfold ; simplify }
+{ let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
 

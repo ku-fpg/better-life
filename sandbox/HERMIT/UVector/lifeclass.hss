@@ -4,9 +4,9 @@
 
 load-and-run HERMIT/UVector/scripts/empty.hss
 load-and-run HERMIT/UVector/scripts/alive.hss
+load-and-run HERMIT/UVector/scripts/inv.hss
 load-and-run HERMIT/UVector/scripts/dims.hss
 load-and-run HERMIT/UVector/scripts/diff.hss
 load-and-run HERMIT/UVector/scripts/next.hss
-load-and-run HERMIT/UVector/scripts/inv.hss
 continue
 

@@ -11,12 +11,12 @@ one-td let-subst
 any-call (unfold-rule config-absB)
 any-call (unfold-rule board-absB)
 any-call (unfold-rule sort-++-absb)
-any-call (unfold-rule LifeBoard-absb-config)
+any-call (unfold-rule LifeBoard-absb)
 any-call (unfold-rule repB-absB)
 }
 let-subst
 alpha-let ['nextgen']
-{ let-bind ; nonrec-rhs ; unfold ; simplify }
+{ let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
 

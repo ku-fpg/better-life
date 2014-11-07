@@ -1,3 +1,4 @@
+load-and-run HERMIT/UVector/scripts/isAlive.hss
 binding-of '$cinv
 fix-intro
 down
@@ -7,16 +8,16 @@ rhs-of 'g
 repeat (any-call (unfold ['isAlive, 'absBx, 'repPBB]))
 bash
 one-td let-subst
+any-call (unfold-rule repB-absB)
 any-call (unfold-rule config-absB)
 any-call (unfold-rule board-absB)
 any-call (unfold-rule if-absb)
-simplify
-one-td let-subst
+bash
 any-call (unfold-rule repB-absB)
 }
 let-subst
 alpha-let ['$cinv']
-{ let-bind ; nonrec-rhs ; unfold ; simplify } --bash
+{ let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
 

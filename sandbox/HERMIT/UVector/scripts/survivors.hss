@@ -5,7 +5,7 @@ down
 split-1-beta survivors [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['liveneighbs, 'absBx, 'repBB]))
+repeat (any-call (unfold ['liveneighbs, 'repBB, 'absBx]))
 bash
 one-td let-subst
 any-call (unfold-rule config-absB)
@@ -17,6 +17,6 @@ any-call (unfold-rule repB-absB)
 }
 let-subst
 alpha-let ['survivors']
-{ let-bind ; nonrec-rhs ; unfold ; simplify } -- bash
+{ let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float

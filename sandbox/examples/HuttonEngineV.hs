@@ -25,7 +25,7 @@ test x c b = alive (life x c b) == alive (lifeVector x c b)
 -- Tests conversion against original for correctness and performance
 main :: IO ()
 main = do
-    quickCheck $ test 10 ((20,20),True) glider
+    quickCheck $ test 0 ((20,20),True) glider
     --quickCheck $ test 1000 ((50,50),False) gliderGun
 {-    defaultMain
         [ bench "Hutton-G-20x20" $ nf (board . life 10 ((20,20),True)) glider
