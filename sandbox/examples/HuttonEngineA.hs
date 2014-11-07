@@ -30,11 +30,8 @@ main = do
     --quickCheck $ testHermit 1000 ((50,50),False) gliderGun
     defaultMain
         [ bench "Hutton-G-20x20" $ nf (board . life 10 ((20,20),False)) glider
-        , bench "Acc-G-20x20" $ whnf (C.run . board . lifeAcc 10 ((20,20),False)) glider
         , bench "Hutton-GG-50x50" $ nf (board . life 10 ((50,50),False)) gliderGun
-        , bench "Acc-GG-50x50" $ whnf (C.run . board . lifeAcc 10 ((50,50),False)) gliderGun
         , bench "Hutton-Acorn-200x200" $ nf (board . life 10 ((200,200),False)) acorn
-        , bench "Acc-Acorn-200x200" $ whnf (C.run . board . lifeAcc 10 ((200,200),False)) acorn
         ]
 
 

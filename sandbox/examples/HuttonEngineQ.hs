@@ -28,10 +28,9 @@ main = do
 	quickCheck $ testHermit 1000 ((20,20),True) glider
 	quickCheck $ testHermit 1000 ((50,50),False) gliderGun
 	defaultMain
-		[ bench "Set-G-20x20" $ whnf (life 1000000 ((20,20),True)) glider
-		, bench "Hutton-G-20x20" $ whnf (lifeQTree 1000000 ((20,20),True)) glider
-		, bench "Set-GG-50x50" $ whnf (life 1000000 ((50,50),False)) gliderGun
-		, bench "Hutton-GG-50x50" $ whnf (lifeQTree 1000000 ((50,50),False)) gliderGun
+		[ bench "QTree-G-20x20" $ nf (life 1000 ((20,20),True)) glider
+		, bench "QTree-GG-50x50" $ nf (life 1000 ((50,50),False)) gliderGun
+		, bench "QTree-A-50x50" $ nf (life 1000 ((50,50),False)) acorn
 		]
 
 
