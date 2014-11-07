@@ -38,21 +38,29 @@ repBx f = f . absB
 absBx :: (Board' -> a) -> Board -> a
 absBx f = f . repB
 
--- representation of "empty", "neighbors"
+-- representation of "empty"
 repxB :: (a -> Board) -> a -> Board'
 repxB f = repB . f
 
--- abstraction of "empty", "neighbors"
+-- abstraction of "empty"
 absxB :: (a -> Board') -> a -> Board
 absxB f = absB . f
 
--- representation of (Config -> Pos -> [Pos]) "neighbs"
-repCPB :: (Config -> Pos -> Board) -> (Config -> Pos -> Board')
-repCPB f = repxB . f
+-- representation of (Pos -> Board -> Board) "inv"
+repPBB :: (Pos -> Board -> Board) -> Pos -> Board' -> Board'
+repPBB f p = repB . (f p) . absB
 
--- abstraction of (Config -> Pos -> Set Pos) "neighbs"
-absCPB :: (Config -> Pos -> Board') -> (Config -> Pos -> Board)
-absCPB f = absxB . f
+-- abstraction of (Pos -> Board' -> Board') "inv"
+absPBB :: (Pos -> Board' -> Board') -> Pos -> Board -> Board
+absPBB f p = absB . (f p) . repB
+
+-- representation of (Board -> Board -> Board) "diff"
+repBBB :: (Board -> Board -> Board) -> Board' -> Board' -> Board'
+repBBB f b = repB . (f (absB b)) . absB
+
+-- abstraction of (Board' -> Board' -> Board') "diff"
+absBBB :: (Board' -> Board' -> Board') -> Board -> Board -> Board
+absBBB f b = absB . (f (repB b)) . repB
 
 -- representation of (Board -> Board) "births", "survivors", "nextgen", "next"
 repBB :: (Board -> Board) -> (Board' -> Board')
@@ -61,22 +69,6 @@ repBB = repBx . repxB
 -- abstraction of (Board' -> Board') "births", "survivors", "nextgen", "next"
 absBB :: (Board' -> Board') -> (Board -> Board)
 absBB = absBx . absxB
-
--- representation of (Board -> Board -> Board) "diff"
-repBBB :: (Board -> Board -> Board) -> Board' -> Board' -> Board'
-repBBB f = repBB . f . absB
-
--- abstraction of (Board' -> Board' -> Board') "diff"
-absBBB :: (Board' -> Board' -> Board') -> Board -> Board -> Board
-absBBB f = absBB . f . repB
-
--- representation of (Pos -> Board -> Board) "inv"
-repPBB :: (Pos -> Board -> Board) -> Pos -> Board' -> Board'
-repPBB f = repBB . f
-
--- abstraction of (Pos -> Board' -> Board') "inv"
-absPBB :: (Pos -> Board' -> Board') -> Pos -> Board -> Board
-absPBB f = absBB . f
 
 
 -- Rules for hermit conversion
@@ -90,22 +82,22 @@ absPBB f = absBB . f
 -- Rules that convert list-based combinators into set-based combinators
 -- For conversion to Set.empty
 {-# RULES "repb-null" [~] forall c. LifeBoard c (repb []) = LifeBoard c Set.empty #-}
--- For conversion to Set.notMember)
-{-# RULES "not-elem-absb" [~] forall p b. not (elem p (absb b)) = notMember p b #-}
 -- For conversion to Set.member
 {-# RULES "elem-absb" [~] forall p b. elem p (absb b) = member p b #-}
--- For conversion to Set.size
-{-# RULES "length-absb" [~] forall b. length (absb b) = size b #-}
--- For conversion to Set.filter
-{-# RULES "filter-absb" [~] forall f b. Prelude.filter f (absb b) = absb (Set.filter f b) #-}
--- For conversion to Set.union
-{-# RULES "sort-++-absb" [~] forall b1 b2. sort (absb b1 ++ absb b2) = absb (union b1 b2) #-}
--- For nub-concatMap chain in births function
-{-# RULES "ncm-absb" [~] forall f b. nub (concatMap (\p -> absb (board (f p))) (absb b)) = absb (unions (toList (Set.map (\p -> board (f p)) b))) #-}
--- For conversion to Set.\\
-{-# RULES "diff-absb" [~] forall b1 b2. absb b1 List.\\ absb b2 = absb (b1 Set.\\ b2) #-}
 -- For conversion to Set.insert
 {-# RULES "insertion" [~] forall b p. sort (p : absb b) = absb (insert p b) #-}
 -- For conversion to Set.delete
 {-# RULES "deletion" [~] forall b p. Prelude.filter ((/=) p) (absb b) = absb (delete p b) #-}
+-- For conversion to Set.\\
+{-# RULES "diff-absb" [~] forall b1 b2. absb b1 List.\\ absb b2 = absb (b1 Set.\\ b2) #-}
+-- For conversion to Set.notMember)
+{-# RULES "not-member" [~] forall p b. not (member p b) = notMember p b #-}
+-- For conversion for if x then absb y else absb z
+{-# RULES "LifeBoard-if-absb" [~] forall c v b1 b2. LifeBoard c (if v then absb b1 else absb b2) = LifeBoard c (absb (if v then b1 else b2)) #-}
+-- For conversion to Set.filter
+{-# RULES "filter-absb" [~] forall f b. Prelude.filter f (absb b) = absb (Set.filter f b) #-}
+-- For nub-concatMap chain in births function
+{-# RULES "ncm-absb" [~] forall f b. nub (concatMap f (absb b)) = absb (unions (toList (Set.map (fromDistinctAscList . f) b))) #-}
+-- For conversion to Set.union
+{-# RULES "sort-++-absb" [~] forall b1 b2. sort (absb b1 ++ absb b2) = absb (union b1 b2) #-}
 

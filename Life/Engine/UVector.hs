@@ -27,10 +27,9 @@ survivors b = LifeBoard (config b) $ Vector.zipWith (&&) (generate (Vector.lengt
                                                                       
 births :: Board -> Board
 births b = LifeBoard (config b) $ generate 
-				(Vector.length (board b)) 
-				(\i -> let w = fst $ fst $ config b
-					in let p = (i `mod` w, i `div` w) 
-					in (isEmpty b p) && (liveneighbs b p == 3))
+	(Vector.length (board b)) 
+	(\i -> let p = (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b)))) 
+		in (isEmpty b p) && (liveneighbs b p == 3))
                                                                          
 nextgen :: Board -> Board
 nextgen b = LifeBoard (config b) $ Vector.zipWith (||) (board (survivors b)) $ board $ births b

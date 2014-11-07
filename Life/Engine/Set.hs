@@ -1,7 +1,7 @@
 {-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 module Life.Engine.Set where
 
-import Prelude hiding (map,filter,foldr)
+import Prelude hiding (foldr)
 import Data.List (sort)
 import Data.Set as Set
 
@@ -9,11 +9,11 @@ import Life.Types
 
 type Board = LifeBoard Config (Set Pos)
 
-neighbs :: Config -> Pos -> Board
-neighbs c@((w,h),warp) (x,y) = LifeBoard c $ if warp
-		then map (\(x,y) -> (x `mod` w, y `mod` h)) neighbors
-		else filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) neighbors
-	where neighbors = fromDistinctAscList $ sort [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
+neighbs :: Config -> Pos -> [Pos]
+neighbs c@((w,h),warp) (x,y) = sort $ if warp
+		then Prelude.map (\(x,y) -> (x `mod` w, y `mod` h)) neighbors
+		else Prelude.filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) neighbors
+	where neighbors = [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
 
 isAlive :: Board -> Pos -> Bool
 isAlive b p = member p $ board b
@@ -22,14 +22,14 @@ isEmpty :: Board -> Pos -> Bool
 isEmpty b p = notMember p $ board b
 
 liveneighbs :: Board -> Pos -> Int
-liveneighbs b = size . filter (isAlive b) . board . (neighbs (config b))
+liveneighbs b = length . Prelude.filter (isAlive b) . (neighbs (config b))
 
 survivors :: Board -> Board
-survivors b = LifeBoard (config b) $ filter (\p -> elem (liveneighbs b p) [2,3]) $ board b
+survivors b = LifeBoard (config b) $ Set.filter (\p -> elem (liveneighbs b p) [2,3]) $ board b
 
 births :: Board -> Board
-births b = LifeBoard (config b) $ filter (\p -> (isEmpty b p) && (liveneighbs b p == 3))
-				$ unions $ toList $ map (board . (neighbs (config b))) $ board b
+births b = LifeBoard (config b) $ Set.filter (\p -> (isEmpty b p) && (liveneighbs b p == 3))
+				$ unions $ toList $ Set.map (fromDistinctAscList . (neighbs (config b))) $ board b
 
 nextgen :: Board -> Board
 nextgen b = LifeBoard (config b) $ board (survivors b) `union` board (births b)

@@ -25,12 +25,12 @@ testHermit x c b = alive (life x c b) == alive (lifeSet x c b)
 -- Tests conversion against original for correctness and performance
 main :: IO ()
 main = do
-    --quickCheck $ testHermit 1000 ((20,20),True) glider
+    quickCheck $ testHermit 1000 ((20,20),True) glider
     --quickCheck $ testHermit 1000 ((50,50),False) gliderGun
-    defaultMain
+{-    defaultMain
         [ bench "Glider-20x20" $ nf (board . life 100 ((20,20),True)) glider
         , bench "GliderGun-50x50" $ nf (board . life 100 ((50,50),False)) gliderGun
         , bench "Acorn-50x50" $ nf (board . life 100 ((50,50),False)) acorn
         ]
-
+-}
 

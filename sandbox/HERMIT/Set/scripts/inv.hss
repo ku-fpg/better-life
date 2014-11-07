@@ -1,3 +1,4 @@
+load-and-run HERMIT/Set/scripts/isAlive.hss
 binding-of '$cinv
 fix-intro
 down
@@ -10,7 +11,7 @@ one-td let-subst
 any-call (unfold-rule board-absB)
 any-call (unfold-rule insertion)
 any-call (unfold-rule deletion)
-any-call (case-float-arg-unsafe)
+any-call (unfold-rule LifeBoard-if-absb)
 any-call (unfold-rule LifeBoard-absb)
 any-call (unfold-rule config-absB)
 any-call (unfold-rule repB-absB)

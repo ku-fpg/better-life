@@ -4,11 +4,11 @@ down
 split-1-beta isEmpty [|absBx|] [|repBx|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['isAlive, 'repBx]))
+repeat (any-call (unfold ['isAlive, 'isAlive', 'absBx, 'repBx]))
 bash
 one-td let-subst
-any-call (unfold-rule board-absB)
-any-call (unfold-rule not-elem-absb)
+any-call (unfold-rule not-member)
+any-call (unfold-rule repB-absB)
 }
 let-subst
 alpha-let ['isEmpty']

@@ -1,19 +1,14 @@
-load-and-run HERMIT/Set/scripts/neighbs.hss
 load-and-run HERMIT/Set/scripts/isEmpty.hss
-load-and-run HERMIT/Set/scripts/isAlive.hss
 binding-of 'liveneighbs
 fix-intro
 down
 split-1-beta liveneighbs [|absBx|] [|repBx|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['neighbs, 'isAlive, 'absCPB, 'absBx, 'repBx]))
+repeat (any-call (unfold ['isAlive, 'absBx, 'repBx]))
 bash
 one-td let-subst
 any-call (unfold-rule config-absB)
-any-call (unfold-rule board-absB)
-any-call (unfold-rule filter-absb)
-any-call (unfold-rule length-absb)
 any-call (unfold-rule repB-absB)
 }
 let-subst
