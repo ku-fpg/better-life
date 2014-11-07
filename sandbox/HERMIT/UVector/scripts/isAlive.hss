@@ -13,8 +13,7 @@ bash
 }
 let-subst
 alpha-let ['isAlive']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
+{ let-bind ; nonrec-rhs ; unfold ; simplify } --bash
 top
 innermost let-float
-
 

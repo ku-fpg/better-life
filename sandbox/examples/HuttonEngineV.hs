@@ -19,18 +19,18 @@ lifeVector x c = (runLife x) . (scene c)
 
 
 -- QuickCheck test of source code engine vs. hermit converted engine
-testHermit x c b = alive (life x c b) == alive (lifeVector x c b)
+test x c b = alive (life x c b) == alive (lifeVector x c b)
 
 
 -- Tests conversion against original for correctness and performance
 main :: IO ()
 main = do
-    --quickCheck $ testHermit 1000 ((20,20),True) glider
-    --quickCheck $ testHermit 1000 ((50,50),False) gliderGun
-    defaultMain
+    quickCheck $ test 10 ((20,20),True) glider
+    --quickCheck $ test 1000 ((50,50),False) gliderGun
+{-    defaultMain
         [ bench "Hutton-G-20x20" $ nf (board . life 10 ((20,20),True)) glider
         , bench "Hutton-GG-50x50" $ nf (board . life 10 ((50,50),False)) gliderGun
         , bench "Hutton-Acorn-200x200" $ nf (board . life 10 ((200,200),False)) acorn
         ]
-
+-}
 

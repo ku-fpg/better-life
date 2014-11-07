@@ -12,7 +12,7 @@ bash
 }
 let-subst
 alpha-let ['$cnext']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
+{ let-bind ; nonrec-rhs ; unfold ; simplify }
 top
 innermost let-float
 

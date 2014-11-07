@@ -13,6 +13,6 @@ bash
 }
 let-subst
 alpha-let ['isEmpty']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
+{ let-bind ; nonrec-rhs ; unfold ; simplify }
 top
 innermost let-float

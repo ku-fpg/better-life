@@ -14,11 +14,11 @@ type Board' = LifeBoard Config (Vector Bool)
 -- repb and absb change the underlying board field
 {-# NOINLINE repb #-}
 repb :: Size -> [Pos] -> Vector Bool
-repb sz xs = fromList [(y,z) `Prelude.elem` xs | y <- [0..((fst sz) - 1)], z <- [0..((snd sz) - 1)]]
+repb sz ps = fromList [(x,y) `Prelude.elem` ps | x <- [0..((fst sz) - 1)], y <- [0..((snd sz) - 1)]]
 
 {-# NOINLINE absb #-}
 absb :: Size -> Vector Bool -> [Pos]
-absb sz v = [ (y,z) | y <- [0..(fst sz) - 1], z <- [0..(snd sz) - 1], v ! (z * (snd sz) + y) ]
+absb sz v = [ (x,y) | x <- [0..(fst sz) - 1], y <- [0..(snd sz) - 1], v ! (y * (fst sz) + x) ]
 
 -- repB and absB change the entire Board structure
 {-# NOINLINE repB #-}
@@ -37,19 +37,11 @@ repxB f = repB . f
 -- abstraction of "empty"
 absxB f = absB . f
 
--- representation of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
+-- representation of "dims", "alive", "isAlive", "isEmpty"
 repBx f = f . absB
 
--- abstraction of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
+-- abstraction of "dims", "alive", "isAlive", "isEmpty"
 absBx f = f . repB
-
--- representation of (Config -> Pos -> Board) "neighbs"
-repCPB :: (Config -> Pos -> Board) -> (Config -> Pos -> [Pos])
-repCPB f c = board . (f c)
-
--- abstraction of (Config -> Pos -> [Pos]) "neighbs"
-absCPB :: (Config -> Pos -> [Pos]) -> (Config -> Pos -> Board)
-absCPB f c = (LifeBoard c) . sort . (f c)
 
 -- representation of (Board -> Board) "nextgen" and "next"
 repBB :: (Board -> Board) -> (Board' -> Board')
@@ -88,11 +80,9 @@ absPBB f p = absB . (f p) . repB
 -- For conversion to Vector.empty
 {-# RULES "repB-null" [~] forall c. repB (LifeBoard c []) = LifeBoard c (generate ((fst (fst c))*(snd (fst c))) (\i -> False)) #-}
 -- For conversion to Vector.!
-{-# RULES "elem-absb" [~] forall p c b. Prelude.elem p (absb (fst c) b) = b ! ((snd p)*(snd (fst c)) + (fst p)) #-}
+{-# RULES "elem-absb" [~] forall p c b. Prelude.elem p (absb (fst c) b) = b ! ((snd p)*(fst (fst c)) + (fst p)) #-}
 -- For conversion to Vector.\\
 {-# RULES "diff-absb" [~] forall b1 b2. (absb (fst (config b1)) (board b1)) \\ (absb (fst (config b2)) (board b2)) = absb (fst (config b1))(generate (Vector.length (board b1)) (\i -> ((board b1) ! i) /= ((board b2) ! i))) #-}
--- For conversion of liveneighbs
-{-# RULES "board-absCPB" [~] forall f c x. board (absCPB f c x) = f c x #-}
 -- For conversion to Vector.generate for survivors function
 {-# RULES "filter-sur" [~] forall f b n. Prelude.filter (\p -> Prelude.elem (f b p) n) (absb (fst (config b)) (board b)) = absb (fst (config b)) (generate (Vector.length (board b)) (\i -> Prelude.elem (f b (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b))))) n)) #-}
 -- For conversion to Vector.generate in births function
@@ -100,6 +90,6 @@ absPBB f p = absB . (f p) . repB
 -- For conversion to Vector.zipWith in nextgen function
 {-# RULES "sort-++-absb" [~] forall b1 b2. sort (absb (fst (config b1)) (board b1) Prelude.++ absb (fst (config b2)) (board b2)) = absb (fst (config b1)) (Vector.zipWith (||) (board b1) (board b2)) #-}
 -- For conversion to Vector.update in inv function
-{-# RULES "if-absb" [~] forall a b c f p. LifeBoard c (if a then Prelude.filter f (absb (fst c) (board b)) else sort ((:) p (absb (fst c) (board b)))) = let i = fst (fst c) * fst p + snd p in absB (LifeBoard (config b) ((//) (board b) [(i, not (board b ! i))])) #-}
+{-# RULES "if-absb" [~] forall a b c f p. LifeBoard c (if a then Prelude.filter f (absb (fst c) (board b)) else sort ((:) p (absb (fst c) (board b)))) = let i = fst (fst c) * snd p + fst p in absB (LifeBoard (config b) ((//) (board b) [(i, not (board b ! i))])) #-}
 
 

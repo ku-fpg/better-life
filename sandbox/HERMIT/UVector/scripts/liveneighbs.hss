@@ -1,4 +1,3 @@
-load-and-run HERMIT/UVector/scripts/neighbs.hss
 load-and-run HERMIT/UVector/scripts/isEmpty.hss
 load-and-run HERMIT/UVector/scripts/isAlive.hss
 binding-of 'liveneighbs
@@ -7,15 +6,14 @@ down
 split-1-beta liveneighbs [|absBx|] [|repBx|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['neighbs, 'isAlive, 'absBx, 'repBx]))
+repeat (any-call (unfold ['isAlive, 'absBx, 'repBx]))
 bash
 one-td let-subst
-any-call (unfold-rule board-absCPB)
 any-call (unfold-rule config-absB)
 any-call (unfold-rule repB-absB)
 }
 let-subst
 alpha-let ['liveneighbs']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
+{ let-bind ; nonrec-rhs ; unfold ; simplify }
 top
 innermost let-float

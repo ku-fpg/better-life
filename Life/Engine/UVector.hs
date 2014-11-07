@@ -13,7 +13,7 @@ neighbs c@((w,h),warp) (x,y) = if warp
 	where neighbors = [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
 
 isAlive :: Board -> Pos -> Bool
-isAlive b (x,y) = board b ! (x * (fst (fst (config b))) + y)
+isAlive b (x,y) = board b ! (y * (fst (fst (config b))) + x)
 
 isEmpty :: Board -> Pos -> Bool
 isEmpty b = not . (isAlive b)
@@ -23,13 +23,13 @@ liveneighbs b = Prelude.length . Prelude.filter (isAlive b) . (neighbs (config b
 
 survivors :: Board -> Board
 survivors b = LifeBoard (config b) $ Vector.zipWith (&&) (generate (Vector.length (board b)) f) $ board b
-	where f = \i -> Prelude.elem (liveneighbs b (i `div` (fst (fst (config b))), i `mod` (fst (fst (config b))))) [2,3]
+	where f = \i -> Prelude.elem (liveneighbs b (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b))))) [2,3]
                                                                       
 births :: Board -> Board
 births b = LifeBoard (config b) $ generate 
 				(Vector.length (board b)) 
 				(\i -> let w = fst $ fst $ config b
-					in let p = (i `div` w, i `mod` w) 
+					in let p = (i `mod` w, i `div` w) 
 					in (isEmpty b p) && (liveneighbs b p == 3))
                                                                          
 nextgen :: Board -> Board
@@ -41,7 +41,7 @@ instance Life Board where
 	diff b1 b2 = LifeBoard (config b1) $ generate (Vector.length (board b1)) (\i -> ((board b1) ! i) /= ((board b2) ! i))
 	next b = nextgen b
 	inv p b = LifeBoard (config b) $ (board b) // [(i, not (board b ! i))]
-			where i = fst (fst (config b)) * fst p + snd p
-	alive b = [ (x,y) | x <- [0..fst (fst (config b)) - 1], y <- [0.. snd (fst (config b)) - 1], (board b) ! (x * fst (fst (config b)) + y) ]
+			where i = fst (fst (config b)) * snd p + fst p
+	alive b = [ (x,y) | x <- [0..fst (fst (config b)) - 1], y <- [0.. snd (fst (config b)) - 1], (board b) ! (y * fst (fst (config b)) + x) ]
 
 

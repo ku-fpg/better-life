@@ -15,7 +15,7 @@ any-call (unfold-rule repB-absB)
 }
 let-subst
 alpha-let ['$cdiff']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
+{ let-bind ; nonrec-rhs ; unfold ; simplify }
 top
 innermost let-float
 
