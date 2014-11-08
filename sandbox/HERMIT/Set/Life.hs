@@ -63,12 +63,12 @@ absBBB :: (Board' -> Board' -> Board') -> Board -> Board -> Board
 absBBB f b = absB . (f (repB b)) . repB
 
 -- representation of (Board -> Board) "births", "survivors", "nextgen", "next"
-repBB :: (Board -> Board) -> (Board' -> Board')
-repBB = repBx . repxB
+repBB :: (Board -> Board) -> Board' -> Board'
+repBB = repB . f . absB
 
 -- abstraction of (Board' -> Board') "births", "survivors", "nextgen", "next"
-absBB :: (Board' -> Board') -> (Board -> Board)
-absBB = absBx . absxB
+absBB :: (Board' -> Board') -> Board -> Board
+absBB = absB . f . repB
 
 
 -- Rules for hermit conversion
