@@ -47,12 +47,12 @@ absxB :: (a -> Board') -> a -> Board
 absxB f = absB . f
 
 -- representation of (Pos -> Board -> Board) "inv"
-repPBB :: (Pos -> Board -> Board) -> Pos -> Board' -> Board'
-repPBB f p = repB . (f p) . absB
+repxBB :: (a -> Board -> Board) -> a -> Board' -> Board'
+repxBB f x = repB . (f x) . absB
 
 -- abstraction of (Pos -> Board' -> Board') "inv"
-absPBB :: (Pos -> Board' -> Board') -> Pos -> Board -> Board
-absPBB f p = absB . (f p) . repB
+absxBB :: (a -> Board' -> Board') -> a -> Board -> Board
+absxBB f x = absB . (f x) . repB
 
 -- representation of (Board -> Board -> Board) "diff"
 repBBB :: (Board -> Board -> Board) -> Board' -> Board' -> Board'
