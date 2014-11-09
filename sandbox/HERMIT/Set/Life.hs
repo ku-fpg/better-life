@@ -64,40 +64,42 @@ absBBB f b = absB . (f (repB b)) . repB
 
 -- representation of (Board -> Board) "births", "survivors", "nextgen", "next"
 repBB :: (Board -> Board) -> Board' -> Board'
-repBB = repB . f . absB
+repBB f = repB . f . absB
 
 -- abstraction of (Board' -> Board') "births", "survivors", "nextgen", "next"
 absBB :: (Board' -> Board') -> Board -> Board
-absBB = absB . f . repB
+absBB f = absB . f . repB
 
 
 -- Rules for hermit conversion
--- Rules that move abs and rep functions up/down the AST
-{-# RULES "repB-LifeBoard" [~] forall c b. repB (LifeBoard c b) = LifeBoard c (repb b) #-}
-{-# RULES "LifeBoard-absb" [~] forall c b. LifeBoard c (absb b) = absB (LifeBoard c b) #-}
-{-# RULES "board-absB"  [~] forall b. board (absB b) = absb (board b) #-}
-{-# RULES "config-absB" [~] forall b. config (absB b) = config b #-}
-{-# RULES "repB-absB" [~] forall b. repB (absB b) = b #-}
+{-# RULES "empty-b" [~] repxB (\c -> LifeBoard c []) = (\c -> LifeBoard c Set.empty) #-}
 
--- Rules that convert list-based combinators into set-based combinators
--- For conversion to Set.empty
-{-# RULES "repb-null" [~] forall c. LifeBoard c (repb []) = LifeBoard c Set.empty #-}
--- For conversion to Set.member
-{-# RULES "elem-absb" [~] forall p b. elem p (absb b) = member p b #-}
--- For conversion to Set.insert
-{-# RULES "insertion" [~] forall b p. sort (p : absb b) = absb (insert p b) #-}
--- For conversion to Set.delete
-{-# RULES "deletion" [~] forall b p. Prelude.filter ((/=) p) (absb b) = absb (delete p b) #-}
--- For conversion to Set.\\
-{-# RULES "diff-absb" [~] forall b1 b2. absb b1 List.\\ absb b2 = absb (b1 Set.\\ b2) #-}
--- For conversion to Set.notMember)
-{-# RULES "not-member" [~] forall p b. not (member p b) = notMember p b #-}
--- For conversion for if x then absb y else absb z
-{-# RULES "LifeBoard-if-absb" [~] forall c v b1 b2. LifeBoard c (if v then absb b1 else absb b2) = LifeBoard c (absb (if v then b1 else b2)) #-}
--- For conversion to Set.filter
-{-# RULES "filter-absb" [~] forall f b. Prelude.filter f (absb b) = absb (Set.filter f b) #-}
--- For nub-concatMap chain in births function
-{-# RULES "ncm-absb" [~] forall f b. nub (concatMap f (absb b)) = absb (unions (toList (Set.map (fromDistinctAscList . f) b))) #-}
--- For conversion to Set.union
-{-# RULES "sort-++-absb" [~] forall b1 b2. sort (absb b1 ++ absb b2) = absb (union b1 b2) #-}
+{-# RULES "isAlive" [~] repBx (\b p -> elem p (board b)) = (\b p -> member p (board b)) #-}
+
+{-# RULES "inv" [~] forall f. 
+	repPBB (\p b -> LifeBoard (config b) (if absBx f b p
+					then Prelude.filter ((/=) p) (board b) 
+					else sort (p : (board b)))) 
+	= (\p b -> LifeBoard (config b) (if f b p 
+					then insert p (board b) 
+					else delete p (board b))) #-}
+
+{-# RULES "alive" [~] repBx (\b -> (board b)) = (\b -> toAscList (board b)) #-}
+
+{-# RULES "dims" [~] repBx (\b -> case (config b) of (s,w) -> s) = (\b -> case (config b) of (s,w) -> s) #-}
+
+{-# RULES "diff-b" [~] repBBB (\b1 b2 -> LifeBoard (config b1) (board b1 List.\\ board b2)) = (\b1 b2 -> LifeBoard (config b1) (board b1 Set.\\ board b2)) #-}
+
+{-# RULES "isEmpty" [~] forall f. repBx (\b p -> not (f b p)) = (\b p -> notMember p (board b)) #-}
+
+{-# RULES "liveneighbs" [~] forall f1 f2. repBx (\b x -> length (Prelude.filter (absBx f1 b) (f2 (config b) x))) = (\b x -> length (Prelude.filter (f1 b) (f2 (config b) x))) #-}
+
+{-# RULES "survivors" [~] forall f n. repBB (\b -> LifeBoard (config b) (Prelude.filter (\p -> elem (absBx f b p) n) (board b)))  = (\b -> LifeBoard (config b) (Set.filter (\p -> elem (f b p) n) (board b))) #-}
+
+{-# RULES "births" [~] forall f1 f2 f3 n. repBB (\b -> LifeBoard (config b) (Prelude.filter (\p -> absBx f1 b p && absBx f2 b p == n) (nub (concatMap (f3 (config b)) (board b))))) = (\b -> LifeBoard (config b) (Set.filter (\p -> f1 b p && f2 b p == n) (unions (toList (Set.map (fromDistinctAscList . (f3 (config b))) (board b)))))) #-}
+
+{-# RULES "nextgen" [~] forall f1 f2. repBB (\b -> LifeBoard (config b) (sort (board (absBB f1 b) ++ board (absBB f2 b)))) = (\b -> LifeBoard (config b) (union (board (f1 b)) (board (f2 b)))) #-}
+
+{-# RULES "next" [~] forall f. repBB (absBB f) = f #-}
+
 

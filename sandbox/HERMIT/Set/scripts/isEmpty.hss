@@ -4,11 +4,8 @@ down
 split-1-beta isEmpty [|absBx|] [|repBx|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['isAlive, 'isAlive', 'absBx, 'repBx]))
 bash
-one-td let-subst
-any-call (unfold-rule not-member)
-any-call (unfold-rule repB-absB)
+any-call (unfold-rule isEmpty)
 }
 let-subst
 alpha-let ['isEmpty']

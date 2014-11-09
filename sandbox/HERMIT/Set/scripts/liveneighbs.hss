@@ -5,11 +5,9 @@ down
 split-1-beta liveneighbs [|absBx|] [|repBx|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['isAlive, 'absBx, 'repBx]))
+repeat (any-call (unfold ['isAlive]))
 bash
-one-td let-subst
-any-call (unfold-rule config-absB)
-any-call (unfold-rule repB-absB)
+any-call (unfold-rule liveneighbs)
 }
 let-subst
 alpha-let ['liveneighbs']

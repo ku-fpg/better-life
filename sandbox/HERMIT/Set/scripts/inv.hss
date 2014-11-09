@@ -5,16 +5,9 @@ down
 split-1-beta $cinv [|absPBB|] [|repPBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['isAlive, 'absBx, 'repPBB]))
+repeat (any-call (unfold ['isAlive]))
 bash
-one-td let-subst
-any-call (unfold-rule board-absB)
-any-call (unfold-rule insertion)
-any-call (unfold-rule deletion)
-any-call (unfold-rule LifeBoard-if-absb)
-any-call (unfold-rule LifeBoard-absb)
-any-call (unfold-rule config-absB)
-any-call (unfold-rule repB-absB)
+any-call (unfold-rule inv)
 }
 let-subst
 alpha-let ['$cinv']
