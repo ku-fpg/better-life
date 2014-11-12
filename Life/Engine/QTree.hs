@@ -3,14 +3,13 @@ module Life.Engine.QTree where
 
 import Data.QuadTree
 import Data.Boolean (xor)
-import Data.List (sort,nub)
 
 import Life.Types
 
 type Board = LifeBoard Config (QuadTree Bool)
 
 neighbs :: Config -> Pos -> [Pos]
-neighbs ((w,h),warp) (x,y) = sort $ if warp
+neighbs ((w,h),warp) (x,y) = if warp
 		then map (\(x,y) -> (x `mod` w, y `mod` h)) neighbors
 		else filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) neighbors
 	where neighbors = [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]

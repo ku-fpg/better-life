@@ -1,14 +1,14 @@
 {-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 module Life.Engine.Hutton where
 
-import Data.List
+import Data.List (nub,(\\))
 
 import Life.Types
 
 type Board = LifeBoard Config [Pos]
 
 neighbs :: Config -> Pos -> [Pos]
-neighbs c@((w,h),warp) (x,y) = sort $ if warp
+neighbs c@((w,h),warp) (x,y) = if warp
 		then map (\(x,y) -> (x `mod` w, y `mod` h)) neighbors
 		else filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) neighbors
 	where neighbors = [(x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)]
@@ -32,7 +32,7 @@ births b = LifeBoard (config b) $ filter (\p -> isEmpty b p && liveneighbs b p =
 --[ p | p <- nub $ concatMap (neighbs (config b)) $ board b, isEmpty b p, liveneighbs b p == 3 ]
 
 nextgen :: Board -> Board
-nextgen b = LifeBoard (config b) $ sort $ board (survivors b) ++ board (births b)
+nextgen b = LifeBoard (config b) $ board (survivors b) ++ board (births b)
 
 instance Life Board where
 	empty c = LifeBoard c []
@@ -42,6 +42,6 @@ instance Life Board where
 	inv p b = LifeBoard (config b) $ 
 		if isAlive b p 
 		then filter ((/=) p) $ board b
-		else sort $ p : board b
+		else p : board b
 	alive b = board b
 
