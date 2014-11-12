@@ -77,7 +77,7 @@ absBB f = absB . f . repB
 {-# RULES "isAlive" [~] repBx (\b p -> elem p (board b)) = (\b p -> member p (board b)) #-}
 
 {-# RULES "inv" [~] forall f. 
-	repPBB (\p b -> LifeBoard (config b) (if absBx f b p
+	repxBB (\p b -> LifeBoard (config b) (if absBx f b p
 					then Prelude.filter ((/=) p) (board b) 
 					else sort (p : (board b)))) 
 	= (\p b -> LifeBoard (config b) (if f b p 

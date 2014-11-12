@@ -3,7 +3,7 @@ module Main where
 -- Libraries for hermit conversion
 import Life.Types
 import Life.Scenes
-import Life.Engine.HuttonV            -- Target module for hermit
+import Life.Engine.HERMIT.HuttonV            -- Target module for hermit
 
 -- Libraries for testing
 import qualified Life.Engine.UVector as Vector    -- Needed to test correctness with QuickCheck

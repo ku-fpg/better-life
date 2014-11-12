@@ -1,5 +1,5 @@
 {-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
-module Life.Engine.HuttonV where
+module Life.Engine.HERMIT.HuttonV where
 
 import Life.Types
 import Data.List

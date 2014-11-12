@@ -3,7 +3,7 @@ module Main where
 import Graphics.Blank
 
 import Life.Types
-import Life.Engine.HuttonS
+import Life.Engine.HERMIT.HuttonS
 import Life.Display.Canvas
 import Life.Scenes
 
