@@ -1,4 +1,4 @@
-{-# LANGUAGE TypeSynonymInstances, FlexibleInstances, TypeOperators #-}
+{-# LANGUAGE TypeSynonymInstances, FlexibleInstances, TypeOperators, ScopedTypeVariables #-}
 module Life.Engine.Acc where
 
 import Data.Array.Accelerate as A
@@ -8,20 +8,20 @@ import Life.Types
 type Board = LifeBoard Config (Acc (A.Array DIM2 Int))
 
 nextgen :: Board -> Board 
-nextgen b = let b' = liveneighbs b
+nextgen b = let pattern :: Stencil3x3 Int-> Exp Int 
+                pattern  ((t1, t2, t3),
+                          (l , m, r),
+                          (b1, b2, b3)) = t1 + t2 + t3 + l + r + b1 + b2 + b3
+                liveneighbs :: Board -> Board
+                liveneighbs b = case (Prelude.snd $ config b) of
+                                     True -> LifeBoard (config b) $ stencil pattern Wrap (board b)
+                                     False -> LifeBoard (config b) $ stencil pattern (Constant 0) (board b)
+                                    
+                survivorsOrBirths :: Exp Int -> Exp Int -> Exp Int
+                survivorsOrBirths cell neighs = (cell ==* 1 &&* (neighs ==* 2 ||* neighs ==* 3)) ? (1, (cell ==* 0 &&* neighs ==* 3) ? (1,0))
+                b' = liveneighbs b
             in LifeBoard (config b) $ A.zipWith (survivorsOrBirths) (board b) (board b')
-            where liveneighbs :: Board -> Board
-                  liveneighbs b = if (Prelude.snd $ config b)
-                                  then LifeBoard (config b) $ stencil pattern Wrap (board b)
-                                  else LifeBoard (config b) $ stencil pattern (Constant 0) (board b)
-                                    where pattern :: Stencil3x3 Int-> Exp Int 
-                                          pattern  ((t1, t2, t3),
-                                                    (l , m, r),
-                                                    (b1, b2, b3)) = t1 + t2 + t3 + l + r + b1 + b2 + b3
-                  survivorsOrBirths :: Exp Int -> Exp Int -> Exp Int
-                  survivorsOrBirths cell neighs = (cell ==* 1 &&* (neighs ==* 2 ||* neighs ==* 3)) ? (1, (cell ==* 0 &&* neighs ==* 3) ? (1,0))
-                  
-                  b' = liveneighbs b
+
 
 instance Life Board where
     empty c@(sz, flag) = LifeBoard c (A.fill (A.index2 (lift $ Prelude.fst sz) (lift $ Prelude.snd sz)) 0)
@@ -41,4 +41,3 @@ instance Life Board where
                   res = A.filter (\pr -> let (i,j) = unlift pr :: (Exp Int, Exp Int)
                                          in ((board b) A.! (index2 i j)) ==* 1) prs
               in toList $ run res
-
