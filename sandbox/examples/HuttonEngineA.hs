@@ -8,7 +8,7 @@ import Life.Engine.HuttonA  -- Target module for hermit
 -- Libraries for testing
 import qualified Life.Engine.Acc as Acc -- Needed to test correctness with QuickCheck
 import Test.QuickCheck -- For correctness tests
-import Criterion.Main -- For performance tests
+--import Criterion.Main -- For performance tests
 import qualified Data.Array.Accelerate.CUDA as C
 
 -- Runs the Life (without display) for the specified number of generations
@@ -25,13 +25,14 @@ lifeAcc x c = (runLife x) . (scene c)
 
 -- Tests conversion against original for correctness and performance
 main :: IO ()
-main = do
+main = do print $ life 100 ((20,20),False) glider
     --quickCheck $ testHermit 1000 ((20,20),True) glider
     --quickCheck $ testHermit 1000 ((50,50),False) gliderGun
-    defaultMain
+
+    {-defaultMain
         [ bench "Hutton-G-20x20" $ nf (board . life 10 ((20,20),False)) glider
         , bench "Hutton-GG-50x50" $ nf (board . life 10 ((50,50),False)) gliderGun
         , bench "Hutton-Acorn-200x200" $ nf (board . life 10 ((200,200),False)) acorn
-        ]
+        ]-}
 
 
