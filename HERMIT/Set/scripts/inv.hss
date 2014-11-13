@@ -2,7 +2,7 @@ load-and-run HERMIT/Set/scripts/isAlive.hss
 binding-of '$cinv
 fix-intro
 down
-split-1-beta $cinv [|absPBB|] [|repPBB|]
+split-1-beta $cinv [|absxBB|] [|repxBB|]
 { 
 rhs-of 'g
 repeat (any-call (unfold ['isAlive]))

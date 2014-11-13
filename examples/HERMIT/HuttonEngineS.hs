@@ -8,6 +8,8 @@ import Life.Engine.HERMIT.HuttonS			-- Target module for hermit
 -- Libraries for testing
 import qualified Life.Engine.Set as Set		-- Needed to test correctness with QuickCheck
 import Test.QuickCheck 				-- For correctness tests
+import Data.List (sort)
+
 import Criterion.Main 				-- For performance tests
 
 -- Runs the Life (without display) for the specified number of generations
@@ -19,13 +21,15 @@ lifeSet x c = (runLife x) . (scene c)
 
 
 -- QuickCheck test of source code engine vs. hermit converted engine
-testHermit x c b = alive (life x c b) == alive (lifeSet x c b)
+testHermit x c b = do
+	print $ liveneighbs (scene c b) (4,3) --sort (alive (life x c b)) 
+	print $ sort (alive (lifeSet x c b))
 
 
 -- Tests conversion against original for correctness and performance
 main :: IO ()
 main = do
-    quickCheck $ testHermit 1000 ((20,20),True) glider
+    testHermit 0 ((20,20),True) glider
     --quickCheck $ testHermit 1000 ((50,50),False) gliderGun
 {-    defaultMain
         [ bench "Glider-20x20" $ nf (board . life 100 ((20,20),True)) glider

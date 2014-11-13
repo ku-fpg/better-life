@@ -3,7 +3,7 @@ module HERMIT.Set.Life where
 -- Libraries required for Hermit transformations
 import Life.Types
 import Data.Set as Set
-import Data.List as List (sort,nub,(\\))
+import Data.List as List (nub,(\\))
 
 -- Standard implementation
 type Board = LifeBoard Config [Pos]
@@ -15,11 +15,11 @@ type Board' = LifeBoard Config (Set Pos)
 -- repb and absb change the underlying board field
 {-# NOINLINE repb #-}
 repb :: [Pos] -> Set Pos
-repb = fromDistinctAscList
+repb = fromList
 
 {-# NOINLINE absb #-}
 absb :: Set Pos -> [Pos]
-absb = toAscList
+absb = toList
 
 -- repB and absB change the entire Board structure
 {-# NOINLINE repB #-}
@@ -79,12 +79,12 @@ absBB f = absB . f . repB
 {-# RULES "inv" [~] forall f. 
 	repxBB (\p b -> LifeBoard (config b) (if absBx f b p
 					then Prelude.filter ((/=) p) (board b) 
-					else sort (p : (board b)))) 
+					else p : (board b))) 
 	= (\p b -> LifeBoard (config b) (if f b p 
 					then insert p (board b) 
 					else delete p (board b))) #-}
 
-{-# RULES "alive" [~] repBx (\b -> (board b)) = (\b -> toAscList (board b)) #-}
+{-# RULES "alive" [~] repBx (\b -> (board b)) = (\b -> toList (board b)) #-}
 
 {-# RULES "dims" [~] repBx (\b -> case (config b) of (s,w) -> s) = (\b -> case (config b) of (s,w) -> s) #-}
 
@@ -96,9 +96,9 @@ absBB f = absB . f . repB
 
 {-# RULES "survivors" [~] forall f n. repBB (\b -> LifeBoard (config b) (Prelude.filter (\p -> elem (absBx f b p) n) (board b)))  = (\b -> LifeBoard (config b) (Set.filter (\p -> elem (f b p) n) (board b))) #-}
 
-{-# RULES "births" [~] forall f1 f2 f3 n. repBB (\b -> LifeBoard (config b) (Prelude.filter (\p -> absBx f1 b p && absBx f2 b p == n) (nub (concatMap (f3 (config b)) (board b))))) = (\b -> LifeBoard (config b) (Set.filter (\p -> f1 b p && f2 b p == n) (unions (toList (Set.map (fromDistinctAscList . (f3 (config b))) (board b)))))) #-}
+{-# RULES "births" [~] forall f1 f2 f3 n. repBB (\b -> LifeBoard (config b) (Prelude.filter (\p -> absBx f1 b p && absBx f2 b p == n) (nub (concatMap (f3 (config b)) (board b))))) = (\b -> LifeBoard (config b) (Set.filter (\p -> f1 b p && f2 b p == n) (unions (toList (Set.map (fromList . (f3 (config b))) (board b)))))) #-}
 
-{-# RULES "nextgen" [~] forall f1 f2. repBB (\b -> LifeBoard (config b) (sort (board (absBB f1 b) ++ board (absBB f2 b)))) = (\b -> LifeBoard (config b) (union (board (f1 b)) (board (f2 b)))) #-}
+{-# RULES "nextgen" [~] forall f1 f2. repBB (\b -> LifeBoard (config b) (board (absBB f1 b) ++ board (absBB f2 b))) = (\b -> LifeBoard (config b) (union (board (f1 b)) (board (f2 b)))) #-}
 
 {-# RULES "next" [~] forall f. repBB (absBB f) = f #-}
 
