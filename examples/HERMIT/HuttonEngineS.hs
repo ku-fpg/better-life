@@ -21,15 +21,13 @@ lifeSet x c = (runLife x) . (scene c)
 
 
 -- QuickCheck test of source code engine vs. hermit converted engine
-testHermit x c b = do
-	print $ liveneighbs (scene c b) (4,3) --sort (alive (life x c b)) 
-	print $ sort (alive (lifeSet x c b))
+testHermit x c b = sort (alive (life x c b)) == sort (alive (lifeSet x c b))
 
 
 -- Tests conversion against original for correctness and performance
 main :: IO ()
 main = do
-    testHermit 0 ((20,20),True) glider
+    quickCheck $ testHermit 1000 ((20,20),True) glider
     --quickCheck $ testHermit 1000 ((50,50),False) gliderGun
 {-    defaultMain
         [ bench "Glider-20x20" $ nf (board . life 100 ((20,20),True)) glider

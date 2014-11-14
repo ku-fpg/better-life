@@ -81,8 +81,8 @@ absBB f = absB . f . repB
 					then Prelude.filter ((/=) p) (board b) 
 					else p : (board b))) 
 	= (\p b -> LifeBoard (config b) (if f b p 
-					then insert p (board b) 
-					else delete p (board b))) #-}
+					then delete p (board b) 
+					else insert p (board b))) #-}
 
 {-# RULES "alive" [~] repBx (\b -> (board b)) = (\b -> toList (board b)) #-}
 
