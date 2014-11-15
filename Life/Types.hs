@@ -1,8 +1,16 @@
 module Life.Types where
 
-type Pos = (Int,Int)
+import Data.List (nub)
+
 type Size = (Int,Int)
 type Config = (Size,Bool)
+type Pos = (Int,Int)
+type Scene = [Pos]
+
+data LifeBoard c b = LifeBoard
+		{ config :: c
+		, board :: b }
+	deriving Show
 
 class Life b where
 	-- create
@@ -16,13 +24,11 @@ class Life b where
 	dims :: b -> Size
 	alive :: b -> [Pos]
 
-data LifeBoard c b = LifeBoard
-		{ config :: c
-		, board :: b }
-	deriving Show
+scenes :: [Scene] -> Scene
+scenes s = nub $ concat s
 
-scene :: Life board => Config -> [Pos] -> board
-scene = foldr inv . empty
+scene :: Life board => Config -> Scene -> board
+scene c@((w,h),_) = foldr inv (empty c) . filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) 
 
 -- Runs Life with the given board for the given number of generations
 -- 	At the end of the run it returns the final board configuration

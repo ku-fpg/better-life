@@ -2,7 +2,7 @@ module Main where
 
 -- Libraries for hermit conversion
 import Life.Types
-import Life.Scenes
+import Life.Formations
 import Life.Engine.HERMIT.HuttonS			-- Target module for hermit
 
 -- Libraries for testing
@@ -27,12 +27,14 @@ testHermit x c b = sort (alive (life x c b)) == sort (alive (lifeSet x c b))
 -- Tests conversion against original for correctness and performance
 main :: IO ()
 main = do
-    quickCheck $ testHermit 1000 ((20,20),True) glider
-    --quickCheck $ testHermit 1000 ((50,50),False) gliderGun
-{-    defaultMain
-        [ bench "Glider-20x20" $ nf (board . life 100 ((20,20),True)) glider
-        , bench "GliderGun-50x50" $ nf (board . life 100 ((50,50),False)) gliderGun
-        , bench "Acorn-50x50" $ nf (board . life 100 ((50,50),False)) acorn
+--    quickCheck $ testHermit 1000 ((20,20),True) glider
+--    quickCheck $ testHermit 1000 ((50,50),False) gliderGun
+    defaultMain
+        [ bench "Glider-20x20" $ whnf (life 10 ((20,20),True)) glider
+		, bench "GliderGun-50x50" $ whnf (life 100000 ((50,50),False)) $ gliderGunL (5,5)
+		, bench "Acorn-100x100" $ whnf (life 100000 ((100,100),True)) $ acorn (20,20)
+		, bench "Battle-100x100" $ whnf (life 100000 ((100,100),False)) $ battle (0,0)
+		, bench "GGuns-100x100" $ whnf (life 100000 ((100,100),False)) $ gguns (0,0)
         ]
--}
+
 
