@@ -2,24 +2,22 @@ module SetCanvas where
 
 import Graphics.Blank
 
-import Life.Types
 import Life.Engine.Set
 import Life.Display.Canvas
-import Life.Scenes
+import Life.Types
+--import Life.Scenes
+-- or
+import Life.Formations
 
 -- Runs Life indefinitely
-life :: Config -> [Pos] -> IO ()
+life :: Config -> Scene -> IO ()
 life c b = blankCanvas 3000 $ \dc -> lifeCanvas dc (scene c b :: Board)
 
-main = life ((50,50),False) gliderGun
+-- Runs Life for the specified number of generations
+-- 	Then it prints the final board configuration as a list of positions
+lifeX :: Int -> Config -> Scene -> IO ()
+lifeX x c s = blankCanvas 3000 $ \dc -> lifeXCanvas x dc (scene c s :: Board)
 
--- Test functions
-s50 = (50,50)
-
-testG = life (s50,True) glider
-
-testGG = life (s50,True) gliderGun
-
-testGFlat = life (s50,False) glider
+main = life ((50,50),False) $ gliderGun (0,0)
 
 

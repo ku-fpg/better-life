@@ -2,9 +2,11 @@ module Main where
 
 import Graphics.Blank
 
-import Life.Types
 import Life.Engine.Hutton
 import Life.Display.Canvas
+import Life.Types
+--import Life.Scenes
+-- or
 import Life.Formations
 
 -- Runs Life indefinitely

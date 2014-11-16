@@ -17,7 +17,7 @@ lifeX :: Int -> Config -> Scene -> IO ()
 lifeX x c s = lifeXConsole x (scene c s :: Board)
 
 -- Runs the original version of Life (size 20x20 with wrapping edges) starting with the "glider" board
--- originalLife = life ((20,20),True) glider
+originalLife = life ((20,20),True) $ glider (0,0)
 
 main = life ((40,40),True) $ gliders3 (0,0)
 

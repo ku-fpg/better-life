@@ -22,7 +22,7 @@ class Life b where
 	inv :: Pos -> b -> b
 	-- projections
 	dims :: b -> Size
-	alive :: b -> [Pos]
+	alive :: b -> Scene
 
 scenes :: [Scene] -> Scene
 scenes s = nub $ concat s
