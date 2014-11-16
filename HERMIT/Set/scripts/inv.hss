@@ -5,8 +5,8 @@ down
 split-1-beta $cinv [|absxBB|] [|repxBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['isAlive]))
-bash
+repeat (any-call (unfold ['repxBB, 'isAlive, 'absBx]))
+simplify
 any-call (unfold-rule inv)
 }
 let-subst

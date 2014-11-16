@@ -4,7 +4,8 @@ down
 split-1-beta $cdiff [|absBBB|] [|repBBB|]
 { 
 rhs-of 'g
-bash
+repeat (any-call (unfold ['repBBB]))
+simplify
 any-call (unfold-rule diff-b)
 }
 let-subst

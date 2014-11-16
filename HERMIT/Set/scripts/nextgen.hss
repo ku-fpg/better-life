@@ -5,8 +5,8 @@ down
 split-1-beta nextgen [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['births, 'survivors]))
-bash
+repeat (any-call (unfold ['repBB, 'births, 'survivors, 'absBB]))
+simplify
 any-call (unfold-rule nextgen)
 }
 let-subst

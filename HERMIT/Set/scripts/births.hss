@@ -5,8 +5,8 @@ down
 split-1-beta births [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['isEmpty, 'liveneighbs]))
-bash
+repeat (any-call (unfold ['repBB, 'isEmpty, 'liveneighbs, 'absBx]))
+simplify
 any-call (unfold-rule births)
 }
 let-subst

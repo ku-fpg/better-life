@@ -5,8 +5,8 @@ down
 split-1-beta $cnext [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['nextgen]))
-bash
+repeat (any-call (unfold ['repBB, 'nextgen, 'absBB]))
+simplify
 any-call (unfold-rule next)
 }
 let-subst

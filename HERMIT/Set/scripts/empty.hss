@@ -4,7 +4,8 @@ down
 split-1-beta $cempty [|absxB|] [|repxB|]
 { 
 rhs-of 'g
-bash
+repeat (any-call (unfold ['repxB]))
+simplify
 any-call (unfold-rule empty-b)
 }
 let-subst

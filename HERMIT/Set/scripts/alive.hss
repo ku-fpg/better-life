@@ -4,7 +4,8 @@ down
 split-1-beta $calive [|absBx|] [|repBx|]
 { 
 rhs-of 'g
-bash
+repeat (any-call (unfold ['repBx]))
+simplify
 any-call (unfold-rule alive)
 }
 let-subst

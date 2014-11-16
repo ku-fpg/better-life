@@ -5,8 +5,8 @@ down
 split-1-beta survivors [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['liveneighbs])) --, 'absBx, 'repBB]))
-bash
+repeat (any-call (unfold ['repBB, 'liveneighbs, 'absBx]))
+simplify
 any-call (unfold-rule survivors)
 }
 let-subst
