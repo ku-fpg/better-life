@@ -1,14 +1,12 @@
-load-and-run HERMIT/QTree/scripts/nextgen.hss
 binding-of '$cnext
 fix-intro
 down
 split-1-beta $cnext [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['nextgen, 'repBB, 'absBB]))
-bash
-any-call (unfold-rule repB-absB)
-bash
+repeat (any-call (unfold ['repBB, 'nextgen, 'absBB]))
+simplify
+any-call (unfold-rule isEmpty)
 }
 let-subst
 alpha-let ['$cnext']

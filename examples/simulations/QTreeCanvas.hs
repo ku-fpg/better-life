@@ -18,6 +18,6 @@ life c b = blankCanvas 3000 $ \dc -> lifeCanvas dc (scene c b :: Board)
 lifeX :: Int -> Config -> Scene -> IO ()
 lifeX x c s = blankCanvas 3000 $ \dc -> lifeXCanvas x dc (scene c s :: Board)
 
-main = life ((50,50),False) $ gliderGun (0,0)
+main = life ((50,50),False) $ gliderGunL (0,0)
 
 

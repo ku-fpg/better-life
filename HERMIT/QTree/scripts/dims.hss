@@ -5,8 +5,8 @@ split-1-beta $cdims [|absBx|] [|repBx|]
 { 
 rhs-of 'g
 any-call (unfold 'repBx)
-bash
-any-call (unfold-rule config-absB)
+simplify
+any-call (unfold-rule dims)
 }
 let-subst
 alpha-let ['$cdims']

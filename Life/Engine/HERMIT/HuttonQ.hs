@@ -37,7 +37,7 @@ nextgen b = LifeBoard (config b) $ board (survivors b) ++ board (births b)
 
 instance Life Board where
 	empty c = LifeBoard c []
-	dims b = fst $ config b
+	dims = fst . config
 	diff b1 b2 = LifeBoard (config b1) $ board b1 \\ board b2
 	next b = nextgen b
 	inv p b = LifeBoard (config b) $ 

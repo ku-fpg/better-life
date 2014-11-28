@@ -1,21 +1,17 @@
-load-and-run HERMIT/QTree/scripts/neighbs.hss
-load-and-run HERMIT/QTree/scripts/isAlive.hss
-load-and-run HERMIT/QTree/scripts/isEmpty.hss
 binding-of 'liveneighbs
 fix-intro
 down
 split-1-beta liveneighbs [|absBx|] [|repBx|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['neighbs, 'isAlive, 'absBx, 'repBx, 'absCPB]))
-bash
-one-td let-subst
-any-call (unfold-rule board-LifeBoard)
-any-call (unfold-rule config-absB)
-any-call (unfold-rule repB-absB)
+repeat (any-call (unfold ['repBx, 'isAlive, 'absBx]))
+simplify
+any-call (unfold-rule dims)
+any-call (unfold-rule liveneighbs)
 }
 let-subst
 alpha-let ['liveneighbs']
 { let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
+

@@ -1,8 +1,6 @@
 module HERMIT.QTree.Life where
 
 import Life.Types
---import Prelude hiding (foldr,foldr1,foldl,foldl1,and,or,any,all,sum,product,concat,concatMap,maximum,minimum)
---import qualified Data.Foldable as Foldable
 import Data.QuadTree
 import Data.Boolean (xor)
 import Data.List ((\\),sort,nub)
@@ -35,8 +33,7 @@ repB b = LifeBoard c $ repb (fst c) $ board b
 
 {-# NOINLINE absB #-}
 absB :: Board' -> Board
-absB b = LifeBoard c $ absb $ board b
-	where c = config b
+absB b = LifeBoard (config b) $ absb $ board b
 
 -- representation of "empty"
 repxB f = repB . f
@@ -50,13 +47,13 @@ repBx f = f . absB
 -- abstraction of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
 absBx f = f . repB
 
--- representation of (Config -> Pos -> Board) "neighbs"
-repCPB :: (Config -> Pos -> Board) -> (Config -> Pos -> [Pos])
-repCPB f c = board . (f c)
+-- representation of (Pos -> Board -> Board) "inv"
+repxBB :: (a -> Board -> Board) -> a -> Board' -> Board'
+repxBB f x = repB . (f x) . absB
 
--- abstraction of (Config -> Pos -> [Pos]) "neighbs"
-absCPB :: (Config -> Pos -> [Pos]) -> (Config -> Pos -> Board)
-absCPB f c = (LifeBoard c) . (f c)
+-- abstraction of (Pos -> Board' -> Board') "inv"
+absxBB :: (a -> Board' -> Board') -> a -> Board -> Board
+absxBB f x = absB . (f x) . repB
 
 -- representation of (Board -> Board) "nextgen" and "next"
 repBB :: (Board -> Board) -> (Board' -> Board')
@@ -74,72 +71,51 @@ repBBB f b = repB . (f (absB b)) . absB
 absBBB :: (Board' -> Board' -> Board') -> Board -> Board -> Board
 absBBB f b = absB . (f (repB b)) . repB
 
--- representation of (Pos -> Board -> Board) "inv"
-repPBB :: (Pos -> Board -> Board) -> Pos -> Board' -> Board'
-repPBB f p = repB . (f p) . absB
-
--- abstraction of (Pos -> Board' -> Board') "inv"
-absPBB :: (Pos -> Board' -> Board') -> Pos -> Board -> Board
-absPBB f p = absB . (f p) . repB
-
 
 -- Rules for hermit conversion
--- Rules that move abs and rep functions up/down the AST
-{-# RULES "config-absB" [~] forall b. config (absB b) = config b #-}
-{-# RULES "board-absB"  [~] forall b. board (absB b) = absb (board b) #-}
-{-# RULES "LifeBoard-absb" [~] forall c b. LifeBoard c (absb b) = absB (LifeBoard c b) #-}
-{-# RULES "repB-absB" [~] forall b. repB (absB b) = b #-}
--- For removing an unnecessary build of LifeBoard
-{-# RULES "board-LifeBoard" [~] forall c b. board (LifeBoard c b) = b #-}
+{-# RULES "empty-b" [~] forall c. repB (LifeBoard c []) =  LifeBoard c (makeTree (fst c) False) #-}
 
--- Rules that convert list-based combinators into QuadTree-based combinators
-{-# RULES "repB-null" [~] forall c. repB (LifeBoard c []) =  LifeBoard c (makeTree (fst c) False) #-}
--- For conversion of diff function
-{-# RULES "diff-absb" [~] forall b1 b2. 
-	(absb (board b1)) \\ (absb (board b2)) 
+{-# RULES "alive"  [~] forall b. board (absB b) = absb (board b) #-}
+
+{-# RULES "dims" [~] forall b. config (absB b) = config b #-}
+
+{-# RULES "diff-b" [~] forall b1 b2. 
+	repB (LifeBoard (config (absB b1)) ((board (absB b1)) \\ (board (absB b2)))) 
 	= 
-	let cb = config b1
-	in let sz = fst cb
-	in absb (foldr (\p qt-> setLocation p qt (getLocation p (board b1) `xor` getLocation p (board b2))) 
-		(makeTree sz False) 
-		(indices sz))
- #-}
--- For conversion of isAlive function
-{-# RULES "elem-absb" [~] forall p b. elem p (absb b) = getLocation p b #-}
--- For conversion of survivors function
-{-# RULES "filter-sur" [~] forall f b n. 
-	filter (\p -> elem (f b p) n) (absb (board b))
+	LifeBoard (config b1) (foldr (\p qt-> setLocation p qt (getLocation p (board b1) `xor` getLocation p (board b2))) (makeTree (fst (config b1)) False) (indices (fst (config b1))))
+#-}
+ 
+{-# RULES "isAlive" [~] forall p b. elem p (board (absB b)) = getLocation p (board b) #-}
+
+{-# RULES "inv" [~] forall b f p. 
+	repB (LifeBoard (config (absB b)) (if f (repB (absB b)) p then filter ((/=) p) (board (absB b)) else (:) p (board (absB b))))
 	= 
-	absb (let sz = fst (config b)
-		in foldr (\p qt -> setLocation p qt (getLocation p (board b) && elem (f b p) n)) (makeTree sz False) (indices sz))
- #-}
--- For conversion of births function
-{-# RULES "filter-bir" [~] forall f f1 f2 b n. 
-	filter (\p -> f1 b p && f2 b p == n) (nub (concatMap f (absb (board b)))) 
+	LifeBoard (config b) (setLocation p (board b) (not (getLocation p (board b))))
+#-}
+
+{-# RULES "isEmpty" [~] forall b. repB (absB b) = b #-}
+
+{-# RULES "liveneighbs" [~] forall f b x. 
+	length (Prelude.filter (f (repB (absB b))) x) = length (Prelude.filter (f b) x) #-}
+
+{-# RULES "survivors" [~] forall f b n. 
+	repB (LifeBoard (config (absB b)) (filter (\p -> elem (f (repB (absB b)) p) n) (board (absB b))))
 	= 
-	absb (let cb = config b
-		in let sz = fst cb
-		in foldr (\p qt -> setLocation p qt (f1 b p && f2 b p == n)) 
-			(makeTree sz False) 
-			(indices sz))
- #-}
--- For conversion of nextgen function
-{-# RULES "sort-++-absb" [~] forall b1 b2. 
-	sort (absb (board b1) ++ absb (board b2)) 
+	LifeBoard (config b) (foldr (\p qt -> setLocation p qt (getLocation p (board b) && elem (f b p) n)) (makeTree (fst (config b)) False) (indices (fst (config b))))
+#-}
+
+{-# RULES "births" [~] forall f1 f2 f3 b n. 
+	repB (LifeBoard (config (absB b)) (filter (\p -> (f1 (repB (absB b)) p) && ((f2 (repB (absB b)) p) == n)) (nub (concatMap (f3 (config (absB b))) (board (absB b)))))) 
 	= 
-	absb (let cb = config b1 
-		in let sz = fst cb 
-		in foldr (\p qt -> setLocation p qt (getLocation p (board b1) 
-							|| getLocation p (board b2))) 
-		(makeTree sz False) 
-		(indices sz))
- #-}
--- For conversion to Vector.update in inv function
-{-# RULES "if-absb" [~] forall a b c f p. 
-	LifeBoard c (if a then filter f (absb (board b)) else sort ((:) p (absb (board b)))) 
+	LifeBoard (config b) (foldr (\p qt -> setLocation p qt (f1 b p && f2 b p == n)) 
+			(makeTree (fst (config b)) False) 
+			(indices (fst (config b))))
+#-}
+
+{-# RULES "nextgen" [~] forall b f1 f2. 
+	repB (LifeBoard (config (absB b)) (board (absB (f1 (repB (absB b)))) ++ board (absB (f2 (repB (absB b)))))) 
 	= 
-	let bb = board b 
-	in LifeBoard (config b) (absb (setLocation p bb (not (getLocation p bb))))
- #-}
+	LifeBoard (config b) (foldr (\p qt -> setLocation p qt (getLocation p (board (f1 b)) || getLocation p (board (f2 b)))) (makeTree (fst (config b)) False) (indices (fst (config b))))
+#-}
 
 

@@ -6,7 +6,13 @@ load-and-run HERMIT/QTree/scripts/empty.hss
 load-and-run HERMIT/QTree/scripts/alive.hss
 load-and-run HERMIT/QTree/scripts/dims.hss
 load-and-run HERMIT/QTree/scripts/diff.hss
-load-and-run HERMIT/QTree/scripts/next.hss
+load-and-run HERMIT/QTree/scripts/isAlive.hss
 load-and-run HERMIT/QTree/scripts/inv.hss
+load-and-run HERMIT/QTree/scripts/isEmpty.hss
+load-and-run HERMIT/QTree/scripts/liveneighbs.hss
+load-and-run HERMIT/QTree/scripts/survivors.hss
+load-and-run HERMIT/QTree/scripts/births.hss
+load-and-run HERMIT/QTree/scripts/nextgen.hss
+load-and-run HERMIT/QTree/scripts/next.hss
 continue
 
