@@ -1,4 +1,3 @@
-load-and-run HERMIT/Set/scripts/survivors.hss
 binding-of 'births
 fix-intro
 down

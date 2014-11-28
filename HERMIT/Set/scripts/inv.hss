@@ -1,4 +1,3 @@
-load-and-run HERMIT/Set/scripts/isAlive.hss
 binding-of '$cinv
 fix-intro
 down

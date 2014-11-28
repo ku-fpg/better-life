@@ -1,4 +1,3 @@
-load-and-run HERMIT/Set/scripts/births.hss
 binding-of 'nextgen
 fix-intro
 down

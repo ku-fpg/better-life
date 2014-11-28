@@ -3,10 +3,16 @@
 --	because next.hss contains conversions required by inv.hss
 
 load-and-run HERMIT/Set/scripts/empty.hss
-load-and-run HERMIT/Set/scripts/inv.hss
 load-and-run HERMIT/Set/scripts/alive.hss
 load-and-run HERMIT/Set/scripts/dims.hss
 load-and-run HERMIT/Set/scripts/diff.hss
+load-and-run HERMIT/Set/scripts/isAlive.hss
+load-and-run HERMIT/Set/scripts/inv.hss
+load-and-run HERMIT/Set/scripts/isEmpty.hss
+load-and-run HERMIT/Set/scripts/liveneighbs.hss
+load-and-run HERMIT/Set/scripts/survivors.hss
+load-and-run HERMIT/Set/scripts/births.hss
+load-and-run HERMIT/Set/scripts/nextgen.hss
 load-and-run HERMIT/Set/scripts/next.hss
 continue
 

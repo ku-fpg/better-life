@@ -1,4 +1,3 @@
-load-and-run HERMIT/Set/scripts/isEmpty.hss
 binding-of 'liveneighbs
 fix-intro
 down
