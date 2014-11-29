@@ -28,7 +28,7 @@ testHermit x c b = sort (alive (life x c b)) == sort (alive (lifeHutton x c b))
 -- Tests conversion against original for correctness and performance
 main :: IO ()
 main = do
-	quickCheck $ testHermit 1000 ((20,20),True) $ glider (0,0)
+	quickCheck $ testHermit 100 ((20,20),True) $ glider (0,0)
 	quickCheck $ testHermit 1000 ((50,50),False) $ gliderGunL (0,0)
 	quickCheck $ testHermit 1000 ((50,50),False) $ acorn (0,0)
 {-	defaultMain

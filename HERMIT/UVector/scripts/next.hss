@@ -1,4 +1,3 @@
-load-and-run HERMIT/UVector/scripts/nextgen.hss
 binding-of '$cnext
 fix-intro
 down
@@ -6,13 +5,12 @@ split-1-beta $cnext [|absBB|] [|repBB|]
 { 
 rhs-of 'g
 repeat (any-call (unfold ['nextgen, 'repBB, 'absBB]))
-bash
-any-call (unfold-rule repB-absB)
-bash
+simplify
+any-call (unfold-rule isEmpty)
 }
 let-subst
 alpha-let ['$cnext']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
+{ let-bind ; nonrec-rhs ; unfold ; simplify }
 top
 innermost let-float
 

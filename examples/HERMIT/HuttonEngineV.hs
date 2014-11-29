@@ -29,6 +29,7 @@ main :: IO ()
 main = do
     quickCheck $ testHermit 1000 ((20,20),True) $ glider (0,0)
     quickCheck $ testHermit 1000 ((50,50),False) $ gliderGunL (0,0)
+	quickCheck $ testHermit 1000 ((50,50),False) $ acorn (0,0)
 {-    defaultMain
         [ bench "Glider-20x20" $ whnf (life 100000 ((50,50),True)) $ gliders3 (0,0)
 		, bench "GliderGun-50x50" $ whnf (life 100000 ((50,50),False)) $ gliderGunL (5,5)

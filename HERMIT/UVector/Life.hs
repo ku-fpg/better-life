@@ -2,7 +2,7 @@ module HERMIT.UVector.Life where
 
 import Life.Types
 import Data.Vector.Unboxed as Vector
-import Data.List as List (nub,sort,(\\))
+import Data.List as List (nub,(\\))
 
 -- Standard implementation
 type Board = LifeBoard Config [Pos]
@@ -14,11 +14,11 @@ type Board' = LifeBoard Config (Vector Bool)
 -- repb and absb change the underlying board field
 {-# NOINLINE repb #-}
 repb :: Size -> [Pos] -> Vector Bool
-repb sz ps = fromList [(x,y) `Prelude.elem` ps | x <- [0..((fst sz) - 1)], y <- [0..((snd sz) - 1)]]
+repb sz b = generate ((fst sz)*(snd sz)) (\i -> Prelude.elem (i `mod` (fst sz), i `div` (fst sz)) b)
 
 {-# NOINLINE absb #-}
 absb :: Size -> Vector Bool -> [Pos]
-absb sz v = [ (x,y) | x <- [0..(fst sz) - 1], y <- [0..(snd sz) - 1], v ! (y * (fst sz) + x) ]
+absb sz b = [ (x,y) | x <- [0..((fst sz) - 1)], y <- [0..((snd sz) - 1)], b ! (y * (fst sz) + x) ]
 
 -- repB and absB change the entire Board structure
 {-# NOINLINE repB #-}
@@ -44,12 +44,12 @@ repBx f = f . absB
 absBx f = f . repB
 
 -- representation of (Pos -> Board -> Board) "inv"
-repPBB :: (Pos -> Board -> Board) -> Pos -> Board' -> Board'
-repPBB f p = repB . (f p) . absB
+repxBB :: (a -> Board -> Board) -> a -> Board' -> Board'
+repxBB f x = repB . (f x) . absB
 
 -- abstraction of (Pos -> Board' -> Board') "inv"
-absPBB :: (Pos -> Board' -> Board') -> Pos -> Board -> Board
-absPBB f p = absB . (f p) . repB
+absxBB :: (a -> Board' -> Board') -> a -> Board -> Board
+absxBB f x = absB . (f x) . repB
 
 -- representation of (Board -> Board) "nextgen" and "next"
 repBB :: (Board -> Board) -> (Board' -> Board')
@@ -69,25 +69,47 @@ absBBB f b = absB . (f (repB b)) . repB
 
 
 -- Rules for hermit conversion
--- Rules that move abs and rep functions up/down the AST
-{-# RULES "LifeBoard-absb" [~] forall c1 c2 b. LifeBoard c1 (absb (fst c2) b) = absB (LifeBoard c1 b) #-}
-{-# RULES "board-absB"  [~] forall b. board (absB b) = absb (fst (config b)) (board b) #-}
-{-# RULES "config-absB" [~] forall b. config (absB b) = config b #-}
-{-# RULES "repB-absB" [~] forall b. repB (absB b) = b #-}
+{-# RULES "empty-b" [~] forall c. repB (LifeBoard c []) = LifeBoard c (generate ((fst (fst c))*(snd (fst c))) (\i -> False)) #-}
 
--- Rules that convert list-based combinators into vector-based combinators
--- For conversion to Vector.empty
-{-# RULES "repB-null" [~] forall c. repB (LifeBoard c []) = LifeBoard c (generate ((fst (fst c))*(snd (fst c))) (\i -> False)) #-}
--- For conversion to Vector.!
-{-# RULES "elem-absb" [~] forall p c b. Prelude.elem p (absb (fst c) b) = b ! ((snd p)*(fst (fst c)) + (fst p)) #-}
--- For conversion to Vector.update in inv function
-{-# RULES "if-absb" [~] forall a b c f p. LifeBoard c (if a then Prelude.filter f (absb (fst c) (board b)) else sort ((:) p (absb (fst c) (board b)))) = let i = fst (fst c) * snd p + fst p in absB (LifeBoard (config b) ((//) (board b) [(i, not (board b ! i))])) #-}
--- For conversion to Vector.\\
-{-# RULES "diff-absb" [~] forall b1 b2. (absb (fst (config b1)) (board b1)) \\ (absb (fst (config b2)) (board b2)) = absb (fst (config b1))(generate (Vector.length (board b1)) (\i -> ((board b1) ! i) /= ((board b2) ! i))) #-}
--- For conversion to Vector.generate for survivors function
-{-# RULES "filter-sur" [~] forall f b n. Prelude.filter (\p -> Prelude.elem (f b p) n) (absb (fst (config b)) (board b)) = absb (fst (config b)) (generate (Vector.length (board b)) (\i -> Prelude.elem (f b (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b))))) n)) #-}
--- For conversion to Vector.generate in births function
-{-# RULES "filter-bir" [~] forall f f1 f2 b n s. Prelude.filter (\p -> f1 b p && f2 b p == n) (nub (Prelude.concatMap f (absb s (board b)))) = absb s (generate (Vector.length (board b)) (\i -> let p = (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b)))) in f1 b p && f2 b p == n)) #-}
--- For conversion to Vector.zipWith in nextgen function
-{-# RULES "sort-++-absb" [~] forall b1 b2. sort (absb (fst (config b1)) (board b1) Prelude.++ absb (fst (config b2)) (board b2)) = absb (fst (config b1)) (Vector.zipWith (||) (board b1) (board b2)) #-}
+{-# RULES "alive"  [~] forall b. board (absB b) = absb (fst (config b)) (board b) #-}
+
+{-# RULES "dims" [~] forall b. config (absB b) = config b #-}
+
+{-# RULES "diff-b" [~] forall b1 b2. 
+	repB (LifeBoard (config (absB b1)) (board (absB b1) \\ board (absB b2))) 
+	= 
+	LifeBoard (config b1) (generate (Vector.length (board b1)) (\i -> ((board b1) ! i) /= ((board b2) ! i)))
+ #-}
+
+{-# RULES "isAlive" [~] forall p b. 
+	Prelude.elem p (board (absB b)) 
+	= 
+	(board b) ! (((snd p) * (fst (fst (config b)))) + (fst p))
+ #-}
+
+{-# RULES "inv" [~] forall b f p. 
+	repB (LifeBoard (config (absB b)) (if f (repB (absB b)) p then Prelude.filter ((/=) p) (board (absB b)) else p : board (absB b))) 
+	= 
+	LifeBoard (config b) (imap (\i v -> if p == (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b)))) then not v else v) (board b))
+ #-}
+
+{-# RULES "isEmpty" [~] forall b. repB (absB b) = b #-}
+
+{-# RULES "survivors" [~] forall f b n. 
+	repB (LifeBoard (config (absB b)) (Prelude.filter (\p -> Prelude.elem (f (repB (absB b)) p) n) (board (absB b)))) 
+	= 
+	LifeBoard (config b) (Vector.zipWith (&&) (board b) (generate (Vector.length (board b)) (\i -> Prelude.elem (f b (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b))))) n)))
+ #-}
+
+{-# RULES "births" [~] forall f1 f2 f3 b n. 
+	repB (LifeBoard (config (absB b)) (Prelude.filter (\p -> f1 (repB (absB b)) p && f2 (repB (absB b)) p == n) (nub (Prelude.concatMap (f3 (config (absB b))) (board (absB b)))))) 
+	= 
+	LifeBoard (config (absB b)) (generate (Vector.length (board b)) (\i -> let p = (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b)))) in f1 b p && f2 b p == n)) #-}
+
+{-# RULES "nextgen" [~] forall f1 f2 b. 
+	repB (LifeBoard (config (absB b)) (board (absB (f1 (repB (absB b)))) Prelude.++ board (absB (f2 (repB (absB b)))))) 
+	= 
+	LifeBoard (config b) (Vector.zipWith (||) (board (f1 b)) (board (f2 b)))
+ #-}
+
 
