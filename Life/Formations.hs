@@ -14,6 +14,12 @@ gliders2 (x,y) = scenes [gliders (x,y), gliders (x+10,y), gliders (x,y+10), glid
 gliders3 :: Pos -> Scene
 gliders3 (x,y) = scenes [gliders2 (x,y), gliders2 (x+20,y), gliders2 (x,y+20), gliders2 (x+20,y+20)]
 
+gliders4 :: Pos -> Scene
+gliders4 (x,y) = scenes [gliders3 (x,y), gliders3 (x+40,y), gliders3 (x,y+40), gliders3 (x+40,y+40)]
+
+gliders5 :: Pos -> Scene
+gliders5 (x,y) = scenes [gliders4 (x,y), gliders4 (x+80,y), gliders4 (x,y+80), gliders4 (x+80,y+80)]
+
 gliderGunL :: Pos -> Scene
 gliderGunL (x,y) = [ (x+2,y+6), (x+2,y+7), (x+3,y+6), (x+3,y+7), 
 					(x+12,y+6), (x+12,y+7), (x+12,y+8), (x+13,y+5), 
