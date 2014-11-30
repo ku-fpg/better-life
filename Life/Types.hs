@@ -28,7 +28,10 @@ scenes :: [Scene] -> Scene
 scenes s = nub $ concat s
 
 scene :: Life board => Config -> Scene -> board
-scene c@((w,h),_) = foldr inv (empty c) . filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h)) 
+scene c@((w,h),warp) = 
+	foldr inv (empty c) . (if warp
+		then map (\(x,y) -> (x `mod` w, y `mod` h))
+		else filter (\(x,y) -> (x >= 0 && x < w) && (y >= 0 && y < h))) 
 
 -- Runs Life with the given board for the given number of generations
 -- 	At the end of the run it returns the final board configuration
