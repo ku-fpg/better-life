@@ -1,8 +1,8 @@
 binding-of '$cinv
 fix-intro
 down
-split-1-beta $cinv [|absPBB|] [|repPBB|]
-{ 
+split-1-beta $cinv [|absxBB|] [|repxBB|]
+{
 rhs-of 'g
 repeat (any-call (unfold ['isAlive]))
 bash
@@ -13,4 +13,3 @@ alpha-let ['$cinv']
 { let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
-

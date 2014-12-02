@@ -9,7 +9,7 @@ any-call (unfold-rule alive)
 }
 let-subst
 alpha-let ['$calive']
-{ let-bind ; nonrec-rhs ; unfold }
+{ let-bind ; nonrec-rhs ; unfold}
 top
 innermost let-float
 

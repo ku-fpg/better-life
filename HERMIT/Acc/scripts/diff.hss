@@ -5,7 +5,7 @@ split-1-beta $cdiff [|absBBB|] [|repBBB|]
 { 
 rhs-of 'g
 bash
-any-call (unfold-rule diff)
+any-call (unfold-rule diff-b)
 }
 let-subst
 alpha-let ['$cdiff']

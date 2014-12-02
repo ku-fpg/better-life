@@ -5,7 +5,7 @@ split-1-beta $cempty [|absxB|] [|repxB|]
 { 
 rhs-of 'g
 bash
-any-call (unfold-rule empty-b)
+any-call (unfold-rule empty)
 }
 let-subst
 alpha-let ['$cempty']

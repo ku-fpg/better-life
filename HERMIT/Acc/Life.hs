@@ -44,6 +44,7 @@ absB b = LifeBoard c $! absb (Prelude.fst c) $ board b
          where c = config b
 
 -- representation of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
+{-# NOINLINE repBx #-}
 repBx :: (Board -> a) -> Board' -> a
 repBx f = f . absB
 
@@ -52,6 +53,7 @@ absBx :: (Board' -> a) -> Board -> a
 absBx f = f . repB
 
 -- representation of (Pos -> Board -> Board) "inv"
+{-# NOINLINE repxBB #-}
 repxBB :: (a -> Board -> Board) -> a -> Board' -> Board'
 repxBB f x = repB . (f x) . absB
 
@@ -60,6 +62,7 @@ absxBB :: (a -> Board' -> Board') -> a -> Board -> Board
 absxBB f x = absB . (f x) . repB
 
 -- representation of "empty"
+{-# NOINLINE repxB #-}
 repxB :: (a -> Board) -> a -> Board'
 repxB f = repB . f
 
@@ -68,6 +71,7 @@ absxB :: (a -> Board') -> a -> Board
 absxB f = absB . f
 
 -- representation of (Board -> Board -> Board) "diff"
+{-# NOINLINE repBBB #-}
 repBBB :: (Board -> Board -> Board) -> Board' -> Board' -> Board'
 repBBB f b = repB . (f (absB b)) . absB
 
@@ -76,6 +80,7 @@ absBBB :: (Board' -> Board' -> Board') -> Board -> Board -> Board
 absBBB f b = absB . (f (repB b)) . repB
 
 -- representation of (Board -> Board) "births", "survivors", "nextgen", "next"
+{-# NOINLINE repBB #-}
 repBB :: (Board -> Board) -> Board' -> Board'
 repBB f = repB . f . absB
 
@@ -90,10 +95,10 @@ absBB f = absB . f . repB
                                                             
 {-# RULES "dims" [~] repBx (\b -> case (config b) of (s,w) -> s) = (\b -> case (config b) of (s,w) -> s) #-}
 
-{-# RULES "diff" [~] repBBB (\b1 b2 -> LifeBoard (config b1) (board b1 List.\\ board b2)) = 
-                              (\b1 b2 -> LifeBoard (config b1) $ A.generate (shape (board b1))
-                                                                            (\ix -> let Z :. i :. j = unlift ix
-                                                                                    in (((board b1) A.! (A.index2 i j)) /=* ((board b2) A.! (A.index2 i j))) ? (1, 0))) #-}
+{-# RULES "diff-b" [~] repBBB (\b1 b2 -> LifeBoard (config b1) (board b1 List.\\ board b2)) = 
+                            (\b1 b2 -> LifeBoard (config b1) (A.generate (shape (board b1))
+                                                                          (\ix -> let Z :. i :. j = unlift ix
+                                                                                  in (((board b1) A.! (A.index2 i j)) /=* ((board b2) A.! (A.index2 i j))) ? (1, 0)))) #-}
 
 {-# RULES "alive" [~] repBx (\b -> (board b)) = (\b -> let (w,h) = Prelude.fst $ config b
                                                            prs = A.reshape (A.index1 (lift (w * h))) $ A.generate (index2 (lift w) (lift h)) 
@@ -103,16 +108,18 @@ absBB f = absB . f . repB
                                                                                    in ((board b) A.! (index2 i j)) ==* 1) prs
                                                        in toList $ run res) #-}
 
-{-# RULES "inv" [~] forall f. 
-    repPBB (\p b -> LifeBoard (config b) f) 
-    = (\(x,y) b -> LifeBoard (config b) $ A.generate (shape (board b))
+{-# RULES "inv" [~]  
+    repxBB (\p b -> LifeBoard (config b) (if elem p (board b)
+                    then Prelude.filter ((/=) p) (board b) 
+                    else p : (board b)))
+    = (\(x,y) b -> LifeBoard (config b) $! A.generate (shape (board b))
                                                      (\ix -> let Z :. i :. j = unlift ix
                                                                  val = (board b) A.! (A.index2 i j)
-                                                             in (x ==* i &&* y ==* j) ? ((val + 1) `mod` 2, val))) #-}
+                                                             in ((lift x) ==* i &&* (lift y) ==* j) ? ((val + 1) `mod` 2, val))) #-}
 
 {-# RULES "next" [~] forall f. repBB (absBB f) = f #-}
 
-{-# RULES "nextgen" [~] forall f1 f2. repBB (\b -> LifeBoard (config b) (List.sort (board (absBB f1 b) List.++ board (absBB f2 b)))) = 
+{-# RULES "nextgen" [~] forall f1 f2. repBB (\b -> LifeBoard (config b) (board (f1 b) List.++ board (f2 b))) = 
                                             (\b ->  let pattern :: Stencil3x3 Int -> Exp Int
                                                         pattern ((t1,t2,t3), (l,m,r), (bt1, bt2, bt3)) = t1 + t2 + t3 + l + r + bt1 + bt2 + bt3
                                                         liveneighbs :: Board' -> Board'

@@ -1,5 +1,5 @@
 HuttonEngine: 
-	ghc examples/engines/HuttonEngine.hs
+	ghc -O2 examples/engines/HuttonEngine.hs 
 
 HuttonConsole:
 	ghc examples/simulations/HuttonConsole.hs
@@ -8,7 +8,7 @@ HuttonCanvas:
 	ghc -threaded examples/simulations/HuttonCanvas.hs
 
 SetEngine:
-	ghc examples/engines/SetEngine.hs
+	ghc examples/engines/SetEngine.hs 
 
 SetConsole:
 	ghc examples/simulations/SetConsole.hs
@@ -29,13 +29,13 @@ QTreeCanvas:
 	ghc -threaded examples/simulations/QTreeCanvas.hs
 
 HermitSetEngine:
-	hermit examples/HERMIT/HuttonEngineS.hs +Life.Engine.HERMIT.HuttonS HERMIT/Set/lifeclass.hss
+	hermit examples/HERMIT/HuttonEngineS.hs +Life.Engine.HERMIT.HuttonS HERMIT/Set/lifeclass.hss 
 
 HermitSetCanvas:
 	hermit examples/HERMIT/HuttonCanvasS.hs +Life.Engine.HERMIT.HuttonS HERMIT/Set/lifeclass.hss -- -threaded
 
 HermitQTreeEngine:
-	hermit examples/HERMIT/HuttonEngineQ.hs +Life.Engine.HERMIT.HuttonQ HERMIT/QTree/lifeclass.hss
+	hermit examples/HERMIT/HuttonEngineQ.hs +Life.Engine.HERMIT.HuttonQ HERMIT/QTree/lifeclass.hss 
 
 HermitQTreeCanvas:
 	hermit examples/HERMIT/HuttonCanvasQ.hs +Life.Engine.HERMIT.HuttonQ HERMIT/QTree/lifeclass.hss -- -threaded
@@ -44,7 +44,7 @@ HermitVectorEngine:
 	hermit examples/HERMIT/HuttonEngineV.hs +Life.Engine.HERMIT.HuttonV HERMIT/UVector/lifeclass.hss
 
 HermitAccEngine:
-	hermit examples/HERMIT/HuttonEngineA.hs +Life.Engine.HERMIT.HuttonA HERMIT/Acc/lifeclass.hss -- -threaded
+	hermit examples/HERMIT/HuttonEngineA.hs +Life.Engine.HERMIT.HuttonA HERMIT/Acc/lifeclass.hss -- -threaded -O2
 
 HermitAccCanvas:
 	hermit examples/HERMIT/HuttonCanvasA.hs +Life.Engine.HERMIT.HuttonA HERMIT/Acc/lifeclass.hss -- -threaded
