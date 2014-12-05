@@ -74,7 +74,7 @@ absBB f = absB . f . repB
 -- Rules for hermit conversion
 {-# RULES "empty-b" [~] forall c. repB (LifeBoard c []) = LifeBoard c Set.empty #-}
 
-{-# RULES "alive" [~] forall b. board (absB b) = absb (board b) #-}
+{-# RULES "alive" [~] forall b. board (absB b) = toList (board b) #-}
 
 {-# RULES "dims" [~] forall b. config (absB b) = config b #-}
 
