@@ -83,7 +83,7 @@ absBBB f b = absB . (f (repB b)) . repB
 	repB (LifeBoard (config (absB b1)) ((board (absB b1)) \\ (board (absB b2)))) 
 	= 
 	LifeBoard (config b1) (foldr (\p qt-> setLocation p qt (getLocation p (board b1) `xor` getLocation p (board b2))) (makeTree (fst (config b1)) False) (indices (fst (config b1))))
-#-}
+ #-}
  
 {-# RULES "isAlive" [~] forall p b. elem p (board (absB b)) = getLocation p (board b) #-}
 
@@ -91,7 +91,7 @@ absBBB f b = absB . (f (repB b)) . repB
 	repB (LifeBoard (config (absB b)) (if f (repB (absB b)) p then filter ((/=) p) (board (absB b)) else (:) p (board (absB b))))
 	= 
 	LifeBoard (config b) (setLocation p (board b) (not (getLocation p (board b))))
-#-}
+ #-}
 
 {-# RULES "isEmpty" [~] forall b. repB (absB b) = b #-}
 
@@ -102,7 +102,7 @@ absBBB f b = absB . (f (repB b)) . repB
 	repB (LifeBoard (config (absB b)) (filter (\p -> elem (f (repB (absB b)) p) n) (board (absB b))))
 	= 
 	LifeBoard (config b) (foldr (\p qt -> setLocation p qt (getLocation p (board b) && elem (f b p) n)) (makeTree (fst (config b)) False) (indices (fst (config b))))
-#-}
+ #-}
 
 {-# RULES "births" [~] forall f1 f2 f3 b n. 
 	repB (LifeBoard (config (absB b)) (filter (\p -> (f1 (repB (absB b)) p) && ((f2 (repB (absB b)) p) == n)) (nub (concatMap (f3 (config (absB b))) (board (absB b)))))) 
@@ -110,12 +110,12 @@ absBBB f b = absB . (f (repB b)) . repB
 	LifeBoard (config b) (foldr (\p qt -> setLocation p qt (f1 b p && f2 b p == n)) 
 			(makeTree (fst (config b)) False) 
 			(indices (fst (config b))))
-#-}
+ #-}
 
 {-# RULES "nextgen" [~] forall b f1 f2. 
 	repB (LifeBoard (config (absB b)) (board (absB (f1 (repB (absB b)))) ++ board (absB (f2 (repB (absB b)))))) 
 	= 
 	LifeBoard (config b) (foldr (\p qt -> setLocation p qt (getLocation p (board (f1 b)) || getLocation p (board (f2 b)))) (makeTree (fst (config b)) False) (indices (fst (config b))))
-#-}
+ #-}
 
 

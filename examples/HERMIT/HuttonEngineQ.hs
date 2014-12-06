@@ -27,14 +27,14 @@ testHermit x c b = sort (alive (life x c b)) == sort (alive (lifeQTree x c b))
 -- Tests conversion against original for correctness and performance
 main :: IO ()
 main = do
-    quickCheck $ testHermit 1000 ((20,20),True) $ glider (0,0)
-    quickCheck $ testHermit 1000 ((50,50),False) $ gliderGunL (0,0)
-{-    defaultMain
-        [ bench "Glider-20x20" $ whnf (life 100000 ((50,50),True)) $ gliders3 (0,0)
-		, bench "GliderGun-50x50" $ whnf (life 100000 ((50,50),False)) $ gliderGunL (5,5)
-		, bench "Acorn-100x100" $ whnf (life 100000 ((100,100),True)) $ acorn (20,20)
-		, bench "GGuns-100x100" $ whnf (life 100000 ((100,100),False)) $ gguns (0,0)
-		, bench "Battle-100x100" $ whnf (life 100000 ((100,100),False)) $ battle (0,0)
+--    quickCheck $ testHermit 1000 ((20,20),True) $ glider (0,0)
+--    quickCheck $ testHermit 1000 ((50,50),False) $ gliderGunL (0,0)
+    defaultMain
+		[ bench "Glider-20x20" $ whnf (life 1000000 ((20,20),True)) $ gguns (0,0)
+		, bench "GliderGun-50x50" $ whnf (life 1000000 ((50,50),False)) $ gliderGunL (5,5)
+		, bench "Acorn-100x100" $ whnf (life 1000000 ((100,100),True)) $ acorn (20,20)
+		, bench "Battle-100x100" $ whnf (life 1000000 ((100,100),False)) $ battle (0,0)
+		, bench "Gliders5-160x160" $ whnf (life 1000000 ((160,160),True)) $ gliders5 (0,0)
         ]
--}
+
 

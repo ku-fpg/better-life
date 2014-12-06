@@ -1,5 +1,5 @@
 HuttonEngine: 
-	ghc -O2 examples/engines/HuttonEngine.hs 
+	ghc examples/engines/HuttonEngine.hs 
 
 HuttonConsole:
 	ghc examples/simulations/HuttonConsole.hs
@@ -37,9 +37,6 @@ HermitSetCanvas:
 HermitQTreeEngine:
 	hermit examples/HERMIT/HuttonEngineQ.hs +Life.Engine.HERMIT.HuttonQ HERMIT/QTree/lifeclass.hss 
 
-HermitQTreeCanvas:
-	hermit examples/HERMIT/HuttonCanvasQ.hs +Life.Engine.HERMIT.HuttonQ HERMIT/QTree/lifeclass.hss -- -threaded
-
 HermitVectorEngine:
 	hermit examples/HERMIT/HuttonEngineV.hs +Life.Engine.HERMIT.HuttonV HERMIT/UVector/lifeclass.hss
 
@@ -56,8 +53,8 @@ clean:
 	rm -rf examples/engines/QTreeEngine examples/simulations/QTreeCanvas
 	rm -rf examples/HERMIT/HuttonEngineA examples/HERMIT/HuttonCanvasA
 	rm -rf examples/HERMIT/HuttonEngineS examples/HERMIT/HuttonCanvasS
-	rm -rf examples/HERMIT/HuttonEngineV examples/HERMIT/HuttonCanvasV
-	rm -rf examples/HERMIT/HuttonEngineQ examples/HERMIT/HuttonCanvasQ
+	rm -rf examples/HERMIT/HuttonEngineV
+	rm -rf examples/HERMIT/HuttonEngineQ
 	rm -rf examples/HERMIT/*~ examples/HERMIT/*.hi examples/HERMIT/*.o
 	rm -rf examples/engines/*~ examples/engines/*.hi examples/engines/*.o
 	rm -rf examples/simulations/*~ examples/simulations/*.hi examples/simulations/*.o

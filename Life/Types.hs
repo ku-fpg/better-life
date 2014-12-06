@@ -13,16 +13,12 @@ data LifeBoard c b = LifeBoard
 	deriving Show
 
 class Life b where
-	-- create
 	empty :: Config -> b
-	-- board operations
+	inv :: Pos -> b -> b
+	alive :: b -> Scene
+	dims :: b -> Size
 	diff :: b -> b -> b
 	next :: b -> b
-	-- point operations
-	inv :: Pos -> b -> b
-	-- projections
-	dims :: b -> Size
-	alive :: b -> Scene
 
 scenes :: [Scene] -> Scene
 scenes s = nub $ concat s
