@@ -41,10 +41,13 @@ HermitVectorEngine:
 	hermit examples/HERMIT/HuttonEngineV.hs +Life.Engine.HERMIT.HuttonV HERMIT/UVector/lifeclass.hss
 
 HermitAccEngine:
-	hermit examples/HERMIT/HuttonEngineA.hs +Life.Engine.HERMIT.HuttonA HERMIT/Acc/lifeclass.hss -- -threaded -O2
+	hermit examples/HERMIT/HuttonEngineA.hs +Life.Engine.HERMIT.HuttonA HERMIT/Acc/lifeclass.hss -- -threaded
 
 HermitAccCanvas:
 	hermit examples/HERMIT/HuttonCanvasA.hs +Life.Engine.HERMIT.HuttonA HERMIT/Acc/lifeclass.hss -- -threaded
+
+hermitbench:
+	bash hermit_tests.sh
 
 clean:
 	rm -rf examples/engines/HuttonEngine examples/simulations/HuttonCanvas examples/simulations/HuttonConsole
