@@ -4,9 +4,10 @@ down
 split-1-beta isEmpty [|absBx|] [|repBx|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['repBx]))
+repeat (any-call (unfold ['repBx, 'isAlive]))
 simplify
-any-call (unfold-rule isEmpty)
+any-call (unfold-rule board/absB)
+any-call (unfold-rule not-elem/notMember)
 }
 let-subst
 alpha-let ['isEmpty']

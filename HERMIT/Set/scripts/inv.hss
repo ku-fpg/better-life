@@ -6,7 +6,13 @@ split-1-beta $cinv [|absxBB|] [|repxBB|]
 rhs-of 'g
 repeat (any-call (unfold ['repxBB, 'isAlive, 'absBx]))
 simplify
-any-call (unfold-rule inv)
+any-call (unfold-rule config/absB)
+any-call (unfold-rule board/absB)
+any-call (unfold-rule cons/insert)
+any-call (unfold-rule filter/delete)
+one-td case-float-in
+any-call (unfold-rule LifeBoard/absb)
+any-call (unfold-rule repB/absB)
 }
 let-subst
 alpha-let ['$cinv']

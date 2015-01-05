@@ -71,7 +71,38 @@ absBB :: (Board' -> Board') -> Board -> Board
 absBB f = absB . f . repB
 
 
--- Rules for hermit conversion
+-- GHC Rules for HERMIT ------------------------------------------
+-- Rules for moving transformers
+{-# RULES 
+"board/absB" [~] forall b. board (absB b) = absb (board b) 
+"board/repB" [~] forall b. board (repB b) = repb (board b) 
+"LifeBoard/absb" [~] forall c b. LifeBoard c (absb b) = absB (LifeBoard c b)
+"LifeBoard/repb" [~] forall c b. LifeBoard c (repb b) = repB (LifeBoard c b)
+ #-}
+
+-- Rules for eliminating transformers
+{-# RULES 
+"repB/absB" [~] forall b. repB (absB b) = b 
+"absB/repB" [~] forall b. absB (repB b) = b 
+"config/absB" [~] forall b. config (absB b) = config b 
+"config/repB" [~] forall b. config (repB b) = config b 
+ #-}
+
+--Code replacement rules
+{-# RULES 
+"empty-l/empty-s" [~] forall c. repB (LifeBoard c []) = LifeBoard c Set.empty 
+"diff-l/diff-s" [~] forall b1 b2. absb b1 List.\\ absb b2 = absb (b1 Set.\\ b2)
+"not-elem/notMember" [~] forall p b. not (elem p (absb b)) = notMember p b
+"elem/member" [~] forall p b. elem p (absb b) = member p b
+"cons/insert" [~] forall p b. p : (absb b) = absb (insert p b)
+"filter/delete" [~] forall p b. Prelude.filter ((/=) p) (absb b) = absb (delete p b)
+"filter-l/filter-s" [~] forall f b. Prelude.filter f (absb b) = absb (Set.filter f b)
+"nub-concatMap/unions" [~] forall f b. nub (concatMap f (absb b)) = absb (unions (toList (Set.map (fromList . f) b)))
+"concat/union" [~] forall b1 b2. absb b1 ++ absb b2 = absb (union b1 b2)
+ #-}
+
+
+{--
 {-# RULES "empty-b" [~] forall c. repB (LifeBoard c []) = LifeBoard c Set.empty #-}
 
 {-# RULES "alive" [~] forall b. board (absB b) = toList (board b) #-}
@@ -118,5 +149,5 @@ absBB f = absB . f . repB
  #-}
 
 {-# RULES "next" [~] forall f b. repB (absB (f (repB (absB b)))) = f b #-}
-
+--}
 

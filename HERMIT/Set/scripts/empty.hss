@@ -6,7 +6,7 @@ split-1-beta $cempty [|absxB|] [|repxB|]
 rhs-of 'g
 repeat (any-call (unfold ['repxB]))
 simplify
-any-call (unfold-rule empty-b)
+any-call (unfold-rule empty-l/empty-s)
 }
 let-subst
 alpha-let ['$cempty']
