@@ -77,6 +77,7 @@ absBBB f b = absB . (f (repB b)) . repB
 {-# RULES 
 "board/absB" [~] forall b. board (absB b) = absb (board b) 
 "LifeBoard/absb" [~] forall c b. LifeBoard c (absb b) = absB (LifeBoard c b)
+"repB/LifeBoard" [~] forall c b. repB (LifeBoard c b) = LifeBoard c (repb (fst c) b)
  #-}
 
 -- Rules for eliminating transformers
@@ -87,8 +88,7 @@ absBBB f b = absB . (f (repB b)) . repB
 
 --Code replacement rules
 {-# RULES 
-"empty-l/empty-t" [~] forall c. 
-	repB (LifeBoard c []) = LifeBoard c (makeTree (fst c) False)
+"empty-l/empty-t" [~] forall s. repb s [] = makeTree s False
 "diff/foldr" [~] forall b1 b2. 
 	absb b1 \\ absb b2 = 
 	absb (foldr (\p qt -> setLocation p qt (xor (getLocation p b1) 
