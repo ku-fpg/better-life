@@ -6,7 +6,12 @@ split-1-beta births [|absBB|] [|repBB|]
 rhs-of 'g
 repeat (any-call (unfold ['repBB, 'isEmpty, 'liveneighbs, 'absBx]))
 simplify
-any-call (unfold-rule births)
+any-call (unfold-rule repB/absB)
+any-call (unfold-rule config/absB)
+any-call (unfold-rule board/absB)
+any-call (unfold-rule filter/generate)
+any-call (unfold-rule LifeBoard/absb)
+any-call (unfold-rule repB/absB)
 }
 let-subst
 alpha-let ['births']

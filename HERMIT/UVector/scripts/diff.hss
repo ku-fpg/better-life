@@ -6,7 +6,11 @@ split-1-beta $cdiff [|absBBB|] [|repBBB|]
 rhs-of 'g
 any-call (unfold 'repBBB)
 simplify
-any-call (unfold-rule diff-b)
+any-call (unfold-rule config/absB)
+any-call (unfold-rule board/absB)
+any-call (unfold-rule diff/generate)
+any-call (unfold-rule LifeBoard/absb)
+any-call (unfold-rule repB/absB)
 }
 let-subst
 alpha-let ['$cdiff']

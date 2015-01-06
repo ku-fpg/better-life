@@ -7,8 +7,8 @@ load-and-run HERMIT/UVector/scripts/alive.hss
 load-and-run HERMIT/UVector/scripts/dims.hss
 load-and-run HERMIT/UVector/scripts/diff.hss
 load-and-run HERMIT/UVector/scripts/isAlive.hss
-load-and-run HERMIT/UVector/scripts/inv.hss
 load-and-run HERMIT/UVector/scripts/isEmpty.hss
+load-and-run HERMIT/UVector/scripts/inv.hss
 load-and-run HERMIT/UVector/scripts/liveneighbs.hss
 load-and-run HERMIT/UVector/scripts/survivors.hss
 load-and-run HERMIT/UVector/scripts/births.hss

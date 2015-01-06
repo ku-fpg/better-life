@@ -68,48 +68,48 @@ absBBB :: (Board' -> Board' -> Board') -> Board -> Board -> Board
 absBBB f b = absB . (f (repB b)) . repB
 
 
--- Rules for hermit conversion
-{-# RULES "empty-b" [~] forall c. repB (LifeBoard c []) = LifeBoard c (generate ((fst (fst c))*(snd (fst c))) (\i -> False)) #-}
-
-{-# RULES "alive"  [~] forall b. board (absB b) = absb (fst (config b)) (board b) #-}
-
-{-# RULES "dims" [~] forall b. config (absB b) = config b #-}
-
-{-# RULES "diff-b" [~] forall b1 b2. 
-	repB (LifeBoard (config (absB b1)) (board (absB b1) \\ board (absB b2))) 
-	= 
-	LifeBoard (config b1) (generate (Vector.length (board b1)) (\i -> ((board b1) ! i) /= ((board b2) ! i)))
+-- Rules for moving transformers
+{-# RULES 
+"board/absB" [~] forall b. board (absB b) = absb (fst (config b)) (board b) 
+"LifeBoard/absb" [~] forall c b. LifeBoard c (absb (fst c) b) = absB (LifeBoard c b)
+"repB/LifeBoard" [~] forall c b. repB (LifeBoard c b) = LifeBoard c (repb (fst c) b)
  #-}
 
-{-# RULES "isAlive" [~] forall p b. 
-	Prelude.elem p (board (absB b)) 
-	= 
-	(board b) ! (((snd p) * (fst (fst (config b)))) + (fst p))
+-- Rules for eliminating transformers
+{-# RULES 
+"repB/absB" [~] forall b. repB (absB b) = b 
+"config/absB" [~] forall b. config (absB b) = config b 
  #-}
 
-{-# RULES "inv" [~] forall b f p. 
-	repB (LifeBoard (config (absB b)) (if f (repB (absB b)) p then Prelude.filter ((/=) p) (board (absB b)) else p : board (absB b))) 
-	= 
-	LifeBoard (config b) (imap (\i v -> if p == (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b)))) then not v else v) (board b))
- #-}
-
-{-# RULES "isEmpty" [~] forall b. repB (absB b) = b #-}
-
-{-# RULES "survivors" [~] forall f b n. 
-	repB (LifeBoard (config (absB b)) (Prelude.filter (\p -> Prelude.elem (f (repB (absB b)) p) n) (board (absB b)))) 
-	= 
-	LifeBoard (config b) (Vector.zipWith (&&) (board b) (generate (Vector.length (board b)) (\i -> Prelude.elem (f b (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b))))) n)))
- #-}
-
-{-# RULES "births" [~] forall f1 f2 f3 b n. 
-	repB (LifeBoard (config (absB b)) (Prelude.filter (\p -> f1 (repB (absB b)) p && f2 (repB (absB b)) p == n) (nub (Prelude.concatMap (f3 (config (absB b))) (board (absB b)))))) 
-	= 
-	LifeBoard (config (absB b)) (generate (Vector.length (board b)) (\i -> let p = (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b)))) in f1 b p && f2 b p == n)) #-}
-
-{-# RULES "nextgen" [~] forall f1 f2 b. 
-	repB (LifeBoard (config (absB b)) (board (absB (f1 (repB (absB b)))) Prelude.++ board (absB (f2 (repB (absB b)))))) 
-	= 
-	LifeBoard (config b) (Vector.zipWith (||) (board (f1 b)) (board (f2 b)))
+--Code replacement rules
+{-# RULES 
+"empty-l/empty-v" [~] forall s. 
+	repb s [] = generate (fst s * snd s) (\i -> False)
+"diff/generate" [~] forall b1 b2. 
+	absb (fst (config b1)) (board b1) \\ absb (fst (config b2)) (board b2) = 
+	absb (fst (config b1)) (generate (Vector.length (board b1)) 
+								     (\i -> ((board b1) ! i) /= ((board b2) ! i)))
+"elem/lookup" [~] forall p b s. 
+	Prelude.elem p (absb s (board b)) = board b ! (snd p * fst s + fst p)
+"cons/imap" [~] forall p s b. 
+	p : absb s b = 
+	absb s (imap (\i v -> if (not v) && p == (i `mod` fst s, i `div` fst s) then not v else v) b)
+"filter/imap" [~] forall p s b. 
+	Prelude.filter ((/=) p) (absb s b) = 
+	absb s (imap (\i v -> if v && p == (i `mod` fst s, i `div` fst s) then not v else v) b)
+"if-replace" [~] forall s x p b. 
+	absb s (if x then imap (\i v -> if v && p == (i `mod` fst s, i `div` fst s) then not v else v) b 
+				else imap (\i v -> if (not v) && p == (i `mod` fst s, i `div` fst s) then not v else v) b) = 
+	absb s (imap (\i v -> if p == (i `mod` fst s, i `div` fst s) then not v else v) b)
+"filter/zipWith" [~] forall f b n s. 
+	Prelude.filter (\p -> Prelude.elem (f b p) n) (absb s (board b)) = 
+	absb s (Vector.zipWith (&&) (board b) (generate (Vector.length (board b)) (\i -> Prelude.elem (f b (i `mod` fst s, i `div` fst s)) n)))
+"filter/generate" [~] forall f1 f2 f3 b n s. 
+	Prelude.filter (\p -> f1 b p && f2 b p == n) (nub (Prelude.concatMap (f3 (config b)) (absb s (board b)))) = 
+	absb s (generate (Vector.length (board b)) (\i -> let p = (i `mod` fst s, i `div` fst s) in f1 b p && f2 b p == n))
+"concat/zipWith" [~] forall b f1 f2.
+	board (absB (f1 (repB (absB b)))) Prelude.++ board (absB (f2 (repB (absB b)))) = 
+	absb (fst (config b)) (Vector.zipWith (||) (board (f1 (repB (absB b)))) (board (f2 (repB (absB b)))))
  #-}
 
 

@@ -6,7 +6,8 @@ split-1-beta isAlive [|absBx|] [|repBx|]
 rhs-of 'g
 any-call (unfold 'repBx)
 simplify
-any-call (unfold-rule isAlive)
+any-call (unfold-rule board/absB)
+any-call (unfold-rule elem/lookup)
 }
 let-subst
 alpha-let ['isAlive']
