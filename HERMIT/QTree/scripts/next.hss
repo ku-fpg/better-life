@@ -6,7 +6,7 @@ split-1-beta $cnext [|absBB|] [|repBB|]
 rhs-of 'g
 repeat (any-call (unfold ['repBB, 'nextgen, 'absBB]))
 simplify
-any-call (unfold-rule isEmpty)
+any-call (unfold-rule repB/absB)
 }
 let-subst
 alpha-let ['$cnext']

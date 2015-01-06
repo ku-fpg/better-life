@@ -72,50 +72,50 @@ absBBB :: (Board' -> Board' -> Board') -> Board -> Board -> Board
 absBBB f b = absB . (f (repB b)) . repB
 
 
--- Rules for hermit conversion
-{-# RULES "empty-b" [~] forall c. repB (LifeBoard c []) =  LifeBoard c (makeTree (fst c) False) #-}
-
-{-# RULES "alive"  [~] forall b. board (absB b) = absb (board b) #-}
-
-{-# RULES "dims" [~] forall b. config (absB b) = config b #-}
-
-{-# RULES "diff-b" [~] forall b1 b2. 
-	repB (LifeBoard (config (absB b1)) ((board (absB b1)) \\ (board (absB b2)))) 
-	= 
-	LifeBoard (config b1) (foldr (\p qt-> setLocation p qt (getLocation p (board b1) `xor` getLocation p (board b2))) (makeTree (fst (config b1)) False) (indices (fst (config b1))))
- #-}
- 
-{-# RULES "isAlive" [~] forall p b. elem p (board (absB b)) = getLocation p (board b) #-}
-
-{-# RULES "inv" [~] forall b f p. 
-	repB (LifeBoard (config (absB b)) (if f (repB (absB b)) p then filter ((/=) p) (board (absB b)) else (:) p (board (absB b))))
-	= 
-	LifeBoard (config b) (setLocation p (board b) (not (getLocation p (board b))))
+-- GHC Rules for HERMIT ------------------------------------------
+-- Rules for moving transformers
+{-# RULES 
+"board/absB" [~] forall b. board (absB b) = absb (board b) 
+"LifeBoard/absb" [~] forall c b. LifeBoard c (absb b) = absB (LifeBoard c b)
  #-}
 
-{-# RULES "isEmpty" [~] forall b. repB (absB b) = b #-}
-
-{-# RULES "liveneighbs" [~] forall f b x. 
-	length (Prelude.filter (f (repB (absB b))) x) = length (Prelude.filter (f b) x) #-}
-
-{-# RULES "survivors" [~] forall f b n. 
-	repB (LifeBoard (config (absB b)) (filter (\p -> elem (f (repB (absB b)) p) n) (board (absB b))))
-	= 
-	LifeBoard (config b) (foldr (\p qt -> setLocation p qt (getLocation p (board b) && elem (f b p) n)) (makeTree (fst (config b)) False) (indices (fst (config b))))
+-- Rules for eliminating transformers
+{-# RULES 
+"repB/absB" [~] forall b. repB (absB b) = b 
+"config/absB" [~] forall b. config (absB b) = config b 
  #-}
 
-{-# RULES "births" [~] forall f1 f2 f3 b n. 
-	repB (LifeBoard (config (absB b)) (filter (\p -> (f1 (repB (absB b)) p) && ((f2 (repB (absB b)) p) == n)) (nub (concatMap (f3 (config (absB b))) (board (absB b)))))) 
-	= 
-	LifeBoard (config b) (foldr (\p qt -> setLocation p qt (f1 b p && f2 b p == n)) 
-			(makeTree (fst (config b)) False) 
-			(indices (fst (config b))))
- #-}
-
-{-# RULES "nextgen" [~] forall b f1 f2. 
-	repB (LifeBoard (config (absB b)) (board (absB (f1 (repB (absB b)))) ++ board (absB (f2 (repB (absB b)))))) 
-	= 
-	LifeBoard (config b) (foldr (\p qt -> setLocation p qt (getLocation p (board (f1 b)) || getLocation p (board (f2 b)))) (makeTree (fst (config b)) False) (indices (fst (config b))))
+--Code replacement rules
+{-# RULES 
+"empty-l/empty-t" [~] forall c. 
+	repB (LifeBoard c []) = LifeBoard c (makeTree (fst c) False)
+"diff/foldr" [~] forall b1 b2. 
+	absb b1 \\ absb b2 = 
+	absb (foldr (\p qt -> setLocation p qt (xor (getLocation p b1) 
+											    (getLocation p b2))) 
+		        (makeTree (treeDimensions b1) False) 
+		        (indices (treeDimensions b1)))
+"elem/getLocation" [~] forall p b. elem p (absb b) = getLocation p b
+"cons/setLocation" [~] forall p b. p : (absb b) = absb (setLocation p b True)
+"filter/setLocation" [~] forall p b. filter ((/=) p) (absb b) = absb (setLocation p b False)
+"if-replace" [~] forall v p b. 
+	absb (if v then setLocation p b False else setLocation p b True) = 
+	absb (setLocation p b (not (getLocation p b)))
+"filter/foldr-s" [~] forall f b. 
+	filter f (absb b) = 
+	absb (foldr (\p qt -> setLocation p qt (getLocation p b && f p)) 
+			    (makeTree (treeDimensions b) False) 
+			    (indices (treeDimensions b)))
+"filter/foldr-b" [~] forall f1 f2 b.
+	filter f1 (nub (concatMap f2 (absb b))) = 
+	absb (foldr (\p qt -> setLocation p qt (f1 p)) 
+				(makeTree (treeDimensions b) False) 
+				(indices (treeDimensions b)))
+"concat/foldr" [~] forall f1 f2 b.
+	absb (board (f1 (repB (absB b)))) ++ absb (board (f2 (repB (absB b)))) = 
+	absb (foldr (\p qt -> setLocation p qt (getLocation p (board (f2 (repB (absB b)))))) 
+				(board (f1 (repB (absB b))))
+				(indices (treeDimensions (board (repB (absB b))))))
  #-}
 
 
