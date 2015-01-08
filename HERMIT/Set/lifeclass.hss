@@ -4,8 +4,6 @@
 
 load-and-run HERMIT/Set/scripts/empty.hss
 load-and-run HERMIT/Set/scripts/alive.hss
-load-and-run HERMIT/Set/scripts/dims.hss
-load-and-run HERMIT/Set/scripts/diff.hss
 load-and-run HERMIT/Set/scripts/isEmpty.hss
 load-and-run HERMIT/Set/scripts/isAlive.hss
 load-and-run HERMIT/Set/scripts/inv.hss

@@ -4,10 +4,11 @@ down                                            -- focus on the fix
 split-1-beta isAlive [|absBx|] [|repBx|]        -- do w/w split with proper abs/rep functions
 {
 rhs-of 'g                                       -- focus on rhs of g
-repeat (any-call (unfold ['repBx]))
+repeat (any-td (unfold ['repBx, 'absB, 'board]))
 simplify                                        -- cleanup
-any-call (unfold-rule board/absB)
-any-call (unfold-rule elem/member)                -- change elem to member
+any-td case-float-in
+any-td (fold 'board)
+any-td (apply-rule elem/member)                -- change elem to member
 }                                               -- back up to body of isAlive
 let-subst                                       -- inline g
 alpha-let ['isAlive']                           -- rename worker to isAlive'
