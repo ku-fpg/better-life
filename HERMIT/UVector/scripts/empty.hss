@@ -4,10 +4,10 @@ down
 split-1-beta $cempty [|absxB|] [|repxB|]
 { 
 rhs-of 'g
-any-call (unfold 'repxB)
+repeat (any-td (unfold ['repxB, 'repB]))
 simplify
-any-call (unfold-rule repB/LifeBoard)
-any-call (unfold-rule empty-l/empty-v)
+any-td (apply-rule empty-l/empty-v)
+bash
 }
 let-subst
 alpha-let ['$cempty']

@@ -4,9 +4,10 @@ down
 split-1-beta $cnext [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['nextgen, 'repBB, 'absBB]))
+repeat (any-td (unfold ['nextgen, 'repBB, 'absBB]))
 simplify
-any-call (unfold-rule repB/absB)
+any-td (apply-rule repB/absB-fusion)
+bash
 }
 let-subst
 alpha-let ['$cnext']

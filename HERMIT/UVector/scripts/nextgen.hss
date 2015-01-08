@@ -4,12 +4,16 @@ down
 split-1-beta nextgen [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['repBB, 'survivors, 'births, 'absBB]))
+repeat (any-td (unfold ['repBB, 'survivors, 'births, 'absBB]))
 simplify
-any-call (unfold-rule concat/zipWith)
-any-call (unfold-rule config/absB)
-any-call (unfold-rule LifeBoard/absb)
-any-call (unfold-rule repB/absB)
+any-td (apply-rule config-absB)
+any-td (apply-rule board-absB)
+any-td (apply-rule repB/absB-fusion)
+any-td (apply-rule concat/zipWith)
+any-td (unfold 'repB)
+any-td case-float-in
+smash
+any-td (apply-rule repb/absb-fusion)
 }
 let-subst
 alpha-let ['nextgen']
