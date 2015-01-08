@@ -14,10 +14,8 @@ data LifeBoard c b = LifeBoard
 
 class Life b where
 	empty :: Config -> b
-	inv :: Pos -> b -> b
 	alive :: b -> Scene
-	dims :: b -> Size
-	diff :: b -> b -> b
+	inv :: Pos -> b -> b
 	next :: b -> b
 
 scenes :: [Scene] -> Scene

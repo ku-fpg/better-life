@@ -43,12 +43,12 @@ absB :: Board' -> Board
 absB b = LifeBoard c $! absb (Prelude.fst c) $ board b
          where c = config b
 
--- representation of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
+-- representation of "alive", "isAlive", "isEmpty", "liveneighbs"
 {-# NOINLINE repBx #-}
 repBx :: (Board -> a) -> Board' -> a
 repBx f = f . absB
 
--- abstraction of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
+-- abstraction of "alive", "isAlive", "isEmpty", "liveneighbs"
 absBx :: (Board' -> a) -> Board -> a
 absBx f = f . repB
 
@@ -70,15 +70,6 @@ repxB f = repB . f
 absxB :: (a -> Board') -> a -> Board
 absxB f = absB . f
 
--- representation of (Board -> Board -> Board) "diff"
-{-# NOINLINE repBBB #-}
-repBBB :: (Board -> Board -> Board) -> Board' -> Board' -> Board'
-repBBB f b = repB . (f (absB b)) . absB
-
--- abstraction of (Board' -> Board' -> Board') "diff"
-absBBB :: (Board' -> Board' -> Board') -> Board -> Board -> Board
-absBBB f b = absB . (f (repB b)) . repB
-
 -- representation of (Board -> Board) "births", "survivors", "nextgen", "next"
 {-# NOINLINE repBB #-}
 repBB :: (Board -> Board) -> Board' -> Board'
@@ -93,13 +84,6 @@ absBB f = absB . f . repB
 {-# RULES "empty" [~] repxB (\c -> LifeBoard c []) = (\c -> let sz = Prelude.fst c
                                                             in LifeBoard c (A.fill (A.index2 (lift $ Prelude.fst sz) (lift $ Prelude.snd sz)) 0)) #-}
                                                             
-{-# RULES "dims" [~] repBx (\b -> case (config b) of (s,w) -> s) = (\b -> case (config b) of (s,w) -> s) #-}
-
-{-# RULES "diff-b" [~] repBBB (\b1 b2 -> LifeBoard (config b1) (board b1 List.\\ board b2)) = 
-                            (\b1 b2 -> LifeBoard (config b1) (A.generate (shape (board b1))
-                                                                          (\ix -> let Z :. i :. j = unlift ix
-                                                                                  in (((board b1) A.! (A.index2 i j)) /=* ((board b2) A.! (A.index2 i j))) ? (1, 0)))) #-}
-
 {-# RULES "alive" [~] repBx (\b -> (board b)) = (\b -> let (w,h) = Prelude.fst $ config b
                                                            prs = A.reshape (A.index1 (lift (w * h))) $ A.generate (index2 (lift w) (lift h)) 
                                                                                                                   (\ix -> let Z :. i :. j = unlift ix

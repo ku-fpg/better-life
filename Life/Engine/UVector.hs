@@ -36,11 +36,9 @@ nextgen b = LifeBoard (config b) $ Vector.zipWith (||) (board (survivors b)) $ b
 
 instance Life Board where
 	empty c@((w,h),_) = LifeBoard c $ generate (w * h) (\i -> False)
-	dims b = fst $ config b
-	diff b1 b2 = LifeBoard (config b1) $ generate (Vector.length (board b1)) (\i -> ((board b1) ! i) /= ((board b2) ! i))
-	next b = nextgen b
+	alive b = [ (x,y) | x <- [0..fst (fst (config b)) - 1], y <- [0.. snd (fst (config b)) - 1], (board b) ! (y * fst (fst (config b)) + x) ]
 	inv p b = LifeBoard (config b) $ 
 				imap (\i v -> if p == (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b)))) then not v else v) $ board b
-	alive b = [ (x,y) | x <- [0..fst (fst (config b)) - 1], y <- [0.. snd (fst (config b)) - 1], (board b) ! (y * fst (fst (config b)) + x) ]
+	next b = nextgen b
 
 

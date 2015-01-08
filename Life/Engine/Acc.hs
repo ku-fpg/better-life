@@ -25,10 +25,6 @@ nextgen b = let pattern :: Stencil3x3 Int-> Exp Int
 
 instance Life Board where
     empty c@(sz, flag) = LifeBoard c (A.fill (A.index2 (lift $ Prelude.fst sz) (lift $ Prelude.snd sz)) 0)
-    dims b = Prelude.fst $ config b
-    diff b1 b2 = LifeBoard (config b1) $ A.generate (shape (board b1))
-                                                    (\ix -> let Z :. i :. j = unlift ix
-                                                            in (((board b1) A.! (A.index2 i j)) /=* ((board b2) A.! (A.index2 i j))) ? (1, 0))
     next b = nextgen b
     inv (x,y) b = LifeBoard (config b) $ A.generate (shape (board b))
                                                 (\ix -> let Z :. i :. j = unlift ix

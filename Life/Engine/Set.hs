@@ -35,13 +35,11 @@ nextgen b = LifeBoard (config b) $ board (survivors b) `union` board (births b)
 
 instance Life Board where
 	empty c = LifeBoard c Set.empty
-	dims b = fst $ config b
-	diff b1 b2 = LifeBoard (config b1) $ board b1 \\ board b2
-	next = nextgen
+	alive b = toList $ board b
 	inv p b = LifeBoard (config b) $ 
 		if isAlive b p 
 		then delete p $ board b
 		else insert p $ board b
-	alive b = toList $ board b
+	next = nextgen
 
 

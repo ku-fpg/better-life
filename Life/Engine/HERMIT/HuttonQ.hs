@@ -37,14 +37,12 @@ nextgen b = LifeBoard (config b) $ board (survivors b) ++ board (births b)
 
 instance Life Board where
 	empty c = LifeBoard c []
-	dims = fst . config
-	diff b1 b2 = LifeBoard (config b1) $ board b1 \\ board b2
-	next b = nextgen b
+	{-# NOINLINE alive #-}
+	alive b = board b
 	inv p b = LifeBoard (config b) $ 
 		if isAlive b p 
 		then filter ((/=) p) $ board b
 		else p : board b
-	{-# NOINLINE alive #-}
-	alive b = board b
+	next b = nextgen b
 
 
