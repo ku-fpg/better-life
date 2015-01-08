@@ -4,9 +4,12 @@ down
 split-1-beta $calive [|absBx|] [|repBx|]
 { 
 rhs-of 'g
-any-call (unfold 'repBx)
+repeat (any-td (unfold ['repBx, 'absB, 'board]))
 simplify
-any-call (unfold-rule board/absB)
+any-td case-float-in
+any-td (fold 'board)
+any-td (unfold 'absb)
+bash
 }
 let-subst
 alpha-let ['$calive']

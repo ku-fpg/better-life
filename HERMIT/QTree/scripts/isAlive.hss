@@ -4,10 +4,11 @@ down
 split-1-beta isAlive [|absBx|] [|repBx|]
 {
 rhs-of 'g
-any-call (unfold 'repBx)
+repeat (any-td (unfold ['repBx, 'absB, 'board]))
 simplify
-any-call (unfold-rule board/absB)
-any-call (unfold-rule elem/getLocation)
+any-td case-float-in
+any-td (fold 'board)
+any-td (apply-rule elem/getLocation)
 }
 let-subst
 alpha-let ['isAlive']

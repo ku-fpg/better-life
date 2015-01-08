@@ -4,9 +4,15 @@ down
 split-1-beta $cnext [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['repBB, 'nextgen, 'absBB]))
+repeat (any-td (unfold ['repBB, 'nextgen, 'absBB, 'repB, 'absB]))
 simplify
-any-call (unfold-rule repB/absB)
+any-td (fold 'config)
+any-td case-float-in
+any-td (fold 'board)
+any-td (apply-rule repb/absb-fusion)
+simplify
+any-td (apply-rule LifeBoard-reduce)
+bash
 }
 let-subst
 alpha-let ['$cnext']

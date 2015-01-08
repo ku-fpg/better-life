@@ -4,14 +4,15 @@ down
 split-1-beta survivors [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['repBB, 'liveneighbs, 'absBx]))
+repeat (any-td (unfold ['repBB, 'liveneighbs, 'absBx, 'repB, 'absB, 'config, 'board]))
 simplify
-any-call (unfold-rule config/absB)
-any-call (unfold-rule board/absB)
-any-call (unfold-rule filter/foldr-s)
-any-call (unfold-rule LifeBoard/absb)
-any-call (unfold-rule repB/absB)
+any-td (fold 'config)
+any-td case-float-in
+any-td (fold 'board)
+any-td (apply-rule filter/foldr-s)
+any-td (apply-rule repb/absb-fusion)
 simplify
+any-td (apply-rule LifeBoard-reduce)
 }
 let-subst
 alpha-let ['survivors']

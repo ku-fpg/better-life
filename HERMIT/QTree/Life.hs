@@ -41,10 +41,10 @@ repxB f = repB . f
 -- abstraction of "empty"
 absxB f = absB . f
 
--- representation of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
+-- representation of "alive", "isAlive", "isEmpty", "liveneighbs"
 repBx f = f . absB
 
--- abstraction of "dims", "alive", "isAlive", "isEmpty", "liveneighbs"
+-- abstraction of "alive", "isAlive", "isEmpty", "liveneighbs"
 absBx f = f . repB
 
 -- representation of (Pos -> Board -> Board) "inv"
@@ -63,43 +63,22 @@ repBB f = repB . f . absB
 absBB :: (Board' -> Board') -> (Board -> Board)
 absBB f = absB . f . repB
 
--- representation of (Board -> Board -> Board) "diff"
-repBBB :: (Board -> Board -> Board) -> Board' -> Board' -> Board'
-repBBB f b = repB . (f (absB b)) . absB
-
--- abstraction of (Board' -> Board' -> Board') "diff"
-absBBB :: (Board' -> Board' -> Board') -> Board -> Board -> Board
-absBBB f b = absB . (f (repB b)) . repB
-
 
 -- GHC Rules for HERMIT ------------------------------------------
--- Rules for moving transformers
+-- Simplification rules
 {-# RULES 
-"board/absB" [~] forall b. board (absB b) = absb (board b) 
-"LifeBoard/absb" [~] forall c b. LifeBoard c (absb b) = absB (LifeBoard c b)
-"repB/LifeBoard" [~] forall c b. repB (LifeBoard c b) = LifeBoard c (repb (fst c) b)
- #-}
-
--- Rules for eliminating transformers
-{-# RULES 
-"repB/absB" [~] forall b. repB (absB b) = b 
-"config/absB" [~] forall b. config (absB b) = config b 
+"repb/absb-fusion" [~] forall s b. repb s (absb b) = b
+"LifeBoard-reduce" [~] forall b. LifeBoard (config b) (board b) = b
  #-}
 
 --Code replacement rules
 {-# RULES 
 "empty-l/empty-t" [~] forall s. repb s [] = makeTree s False
-"diff/foldr" [~] forall b1 b2. 
-	absb b1 \\ absb b2 = 
-	absb (foldr (\p qt -> setLocation p qt (xor (getLocation p b1) 
-											    (getLocation p b2))) 
-		        (makeTree (treeDimensions b1) False) 
-		        (indices (treeDimensions b1)))
 "elem/getLocation" [~] forall p b. elem p (absb b) = getLocation p b
 "cons/setLocation" [~] forall p b. p : (absb b) = absb (setLocation p b True)
 "filter/setLocation" [~] forall p b. filter ((/=) p) (absb b) = absb (setLocation p b False)
 "if-replace" [~] forall v p b. 
-	absb (if v then setLocation p b False else setLocation p b True) = 
+	absb (setLocation p b (if v then False else True)) = 
 	absb (setLocation p b (not (getLocation p b)))
 "filter/foldr-s" [~] forall f b. 
 	filter f (absb b) = 
@@ -111,11 +90,11 @@ absBBB f b = absB . (f (repB b)) . repB
 	absb (foldr (\p qt -> setLocation p qt (f1 p)) 
 				(makeTree (treeDimensions b) False) 
 				(indices (treeDimensions b)))
-"concat/foldr" [~] forall f1 f2 b.
-	absb (board (f1 (repB (absB b)))) ++ absb (board (f2 (repB (absB b)))) = 
-	absb (foldr (\p qt -> setLocation p qt (getLocation p (board (f2 (repB (absB b)))))) 
-				(board (f1 (repB (absB b))))
-				(indices (treeDimensions (board (repB (absB b))))))
+"concat/foldr" [~] forall f1 f2 b s.
+	LifeBoard (config b) (repb s (absb (board (f1 b)) ++ (absb (board (f2 b))))) = 
+	LifeBoard (config b) (repb s (absb (foldr (\p qt -> setLocation p qt (getLocation p (board (f1 b)) || getLocation p (board (f2 b)))) 
+											(makeTree s False)
+											(indices s))))
  #-}
 
 
