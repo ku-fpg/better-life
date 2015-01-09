@@ -64,19 +64,25 @@ absBB :: (Board' -> Board') -> (Board -> Board)
 absBB f = absB . f . repB
 
 
--- GHC Rules for HERMIT ------------------------------------------
+-- GHC Rules for HERMIT 
 -- Simplification rules
 {-# RULES 
-"repb/absb-fusion" [~] forall s b. repb s (absb b) = b
-"LifeBoard-reduce" [~] forall b. LifeBoard (config b) (board b) = b
+"repb/absb-fusion" [~] forall s b. 
+	repb s (absb b) = b
+"LifeBoard-reduce" [~] forall b. 
+	LifeBoard (config b) (board b) = b
  #-}
 
 --Code replacement rules
 {-# RULES 
-"empty-l/empty-t" [~] forall s. repb s [] = makeTree s False
-"elem/getLocation" [~] forall p b. elem p (absb b) = getLocation p b
-"cons/setLocation" [~] forall p b. p : (absb b) = absb (setLocation p b True)
-"filter/setLocation" [~] forall p b. filter ((/=) p) (absb b) = absb (setLocation p b False)
+"empty-l/empty-t" [~] forall s. 
+	repb s [] = makeTree s False
+"elem/getLocation" [~] forall p b. 
+	elem p (absb b) = getLocation p b
+"cons/setLocation" [~] forall p b. 
+	p : (absb b) = absb (setLocation p b True)
+"filter/setLocation" [~] forall p b. 
+	filter ((/=) p) (absb b) = absb (setLocation p b False)
 "if-replace" [~] forall v p b. 
 	absb (setLocation p b (if v then False else True)) = 
 	absb (setLocation p b (not (getLocation p b)))

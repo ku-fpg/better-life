@@ -60,37 +60,40 @@ absBB :: (Board' -> Board') -> (Board -> Board)
 absBB f = absB . f . repB
 
 
--- GHC Rules for HERMIT ------------------------------------------
+-- GHC Rules for HERMIT 
 -- Simplification rules
 {-# RULES 
-"repb/absb-fusion" [~] forall s1 s2 b. repb s1 (absb s2 b) = b
-"LifeBoard-reduce" [~] forall b. LifeBoard (config b) (board b) = b
 "config-absB" [~] forall b. config (absB b) = config b
-"board-absB" [~] forall b. board (absB b) = absb (fst (config b)) (board b)
 "repB/absB-fusion" [~] forall b. repB (absB b) = b
+ #-}
+
+-- Movement rules
+{-# RULES
+"LifeBoard-absb" [~] forall c b. LifeBoard c (absb (fst c) b) = absB (LifeBoard c b)
+"board-absB" [~] forall b. board (absB b) = absb (fst (config b)) (board b)
  #-}
 
 --Code replacement rules
 {-# RULES 
-"empty-l/empty-v" [~] forall s. 
-	repb s [] = generate (fst s * snd s) (\i -> False)
-"elem/lookup" [~] forall p b s. 
-	Prelude.elem p (absb s (board b)) = board b ! (snd p * fst s + fst p)
-"cons/update" [~] forall p s b. 
-	p : absb s b = 
-	absb s (b Vector.// [(((snd p) * (fst s) + (fst p)),True)])
-"filter/update" [~] forall p s b. 
-	Prelude.filter ((/=) p) (absb s b) = 
-	absb s (b Vector.// [(((snd p) * (fst s) + (fst p)), False)])
-"filter/zipWith" [~] forall f b n s. 
+"empty-l/empty-v" [~] forall c. 
+	repB (LifeBoard c []) = LifeBoard c (generate (fst (fst c) * snd (fst c)) (\i -> False))
+"elem/lookup" [~] forall p b. 
+	Prelude.elem p (board (absB b)) = board b ! (snd p * fst (fst (config b)) + fst p)
+"cons/update" [~] forall p b. 
+	p : board (absB b) = 
+	absb (fst (config b)) (board b Vector.// [(snd p * fst (fst (config b)) + fst p, True)])
+"filter/update" [~] forall p b. 
+	Prelude.filter ((/=) p) (board (absB b)) = 
+	absb (fst (config b)) (board b Vector.// [(snd p * fst (fst (config b)) + fst p, False)])
+"s_filter/generate" [~] forall f b n s. 
 	Prelude.filter (\p -> Prelude.elem (f b p) n) (absb s (board b)) = 
-	absb s (Vector.zipWith (&&) (board b) (generate (Vector.length (board b)) (\i -> Prelude.elem (f b (i `mod` fst s, i `div` fst s)) n)))
-"filter/generate" [~] forall f1 f2 f3 b n s. 
+	absb s (generate (Vector.length (board b)) (\i -> board b ! i && Prelude.elem (f b (i `mod` fst (fst (config b)), i `div` fst (fst (config b)))) n))
+"b_filter/generate" [~] forall f1 f2 f3 b n s. 
 	Prelude.filter (\p -> f1 b p && f2 b p == n) (nub (Prelude.concatMap (f3 (config b)) (absb s (board b)))) = 
-	absb s (generate (Vector.length (board b)) (\i -> let p = (i `mod` fst s, i `div` fst s) in f1 b p && f2 b p == n))
-"concat/zipWith" [~] forall s1 s2 b1 b2.
-	absb s1 b1 Prelude.++ absb s2 b2 = 
-	absb s1 (Vector.zipWith (||) b1 b2)
+	absb s (generate (Vector.length (board b)) (\i -> let w = fst s in let p = (i `mod` w, i `div` w) in f1 b p && f2 b p == n))
+"concat/zipWith" [~] forall b1 b2 s1 s2 c.
+	LifeBoard c (absb s1 (board b1) Prelude.++ absb s2 (board b2)) = 
+	LifeBoard c (absb (fst c) (Vector.zipWith (||) (board b1) (board b2)))
  #-}
 
 

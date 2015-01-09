@@ -63,7 +63,7 @@ absBB :: (Board' -> Board') -> Board -> Board
 absBB f = absB . f . repB
 
 
--- GHC Rules for HERMIT ------------------------------------------
+-- GHC Rules for HERMIT 
 -- Simplification rules
 {-# RULES 
 "repb/absb-fusion" [~] forall b. repb (absb b) = b

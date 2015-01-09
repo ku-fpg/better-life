@@ -4,7 +4,7 @@ down
 split-1-beta $cempty [|absxB|] [|repxB|]
 { 
 rhs-of 'g
-repeat (any-td (unfold ['repxB, 'repB]))
+any-td (unfold 'repxB)
 simplify
 any-td (apply-rule empty-l/empty-v)
 bash

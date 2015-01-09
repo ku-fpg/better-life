@@ -4,11 +4,8 @@ down
 split-1-beta isAlive [|absBx|] [|repBx|]
 {
 rhs-of 'g
-repeat (any-td (unfold ['repBx, 'absB, 'board]))
-smash
-repeat (any-td case-float-in)
-any-td (fold 'board)
-smash
+any-td (unfold 'repBx)
+simplify
 any-td (apply-rule elem/lookup)
 bash
 }

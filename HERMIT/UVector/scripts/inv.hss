@@ -4,18 +4,15 @@ down
 split-1-beta $cinv [|absxBB|] [|repxBB|]
 { 
 rhs-of 'g
-repeat (any-td (unfold ['repxBB, 'isAlive, 'absBx, 'repB, 'absB, 'config, 'board]))
-smash
-any-td (fold 'config)
-repeat (any-td case-float-in)
-any-td (fold 'board)
-smash
+repeat (any-td (unfold ['repxBB, 'isAlive, 'absBx]))
+simplify
 any-td (apply-rule cons/update)
 any-td (apply-rule filter/update)
-repeat (any-td case-float-in)
-smash
-any-td (apply-rule repb/absb-fusion)
-any-td (apply-rule LifeBoard-reduce)
+any-td case-float-in
+any-td (apply-rule config-absB)
+any-td (apply-rule LifeBoard-absb)
+any-td (apply-rule repB/absB-fusion)
+bash
 }
 let-subst
 alpha-let ['$cinv']

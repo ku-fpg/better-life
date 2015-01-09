@@ -4,7 +4,7 @@ down
 split-1-beta $cnext [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-td (unfold ['nextgen, 'repBB, 'absBB]))
+repeat (any-td (unfold ['repBB, 'nextgen,'absBB]))
 simplify
 any-td (apply-rule repB/absB-fusion)
 bash
