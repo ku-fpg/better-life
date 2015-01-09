@@ -1,10 +1,10 @@
 binding-of 'liveneighbs
 fix-intro
 down
-split-1-beta liveneighbs [|absBx|] [|repBx|]
+split-1-beta liveneighbs [|absBpi|] [|repBpi|]
 { 
 rhs-of 'g
-repeat (any-td (unfold ['repBx, 'isAlive, 'absBx, 'repB, 'absB, 'config]))
+repeat (any-td (unfold ['repBpi, 'isAlive, 'absBpb, 'repB, 'absB, 'config]))
 simplify
 any-td (fold 'config)
 any-td case-float-in

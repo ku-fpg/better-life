@@ -1,10 +1,10 @@
 binding-of 'isAlive                             -- focus on isAlive
 fix-intro                                       -- intro a trivial fix
 down                                            -- focus on the fix
-split-1-beta isAlive [|absBx|] [|repBx|]        -- do w/w split with proper abs/rep functions
+split-1-beta isAlive [|absBpb|] [|repBpb|]        -- do w/w split with proper abs/rep functions
 {
 rhs-of 'g                                       -- focus on rhs of g
-repeat (any-td (unfold ['repBx, 'absB, 'board]))
+repeat (any-td (unfold ['repBpb, 'absB, 'board]))
 simplify                                        -- cleanup
 any-td case-float-in
 any-td (fold 'board)

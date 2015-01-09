@@ -1,10 +1,10 @@
 binding-of '$cinv
 fix-intro
 down
-split-1-beta $cinv [|absxBB|] [|repxBB|]
+split-1-beta $cinv [|abspBB|] [|reppBB|]
 { 
 rhs-of 'g
-repeat (any-call (unfold ['repxBB, 'isAlive, 'absBx, 'repB, 'absB, 'config, 'board]))
+repeat (any-call (unfold ['reppBB, 'isAlive, 'absBpb, 'repB, 'absB, 'config, 'board]))
 simplify
 any-td (fold 'config)
 any-td case-float-in

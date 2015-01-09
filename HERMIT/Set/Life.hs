@@ -30,37 +30,51 @@ repB b = LifeBoard (config b) $ repb (board b)
 absB :: Board' -> Board
 absB b = LifeBoard (config b) $ absb (board b)
 
--- rep for "alive", "isAlive", "isEmpty", "liveneighbs"
-repBx :: (Board -> a) -> Board' -> a
-repBx f = f . absB
+-- rep for "alive"
+repBx :: (Board -> Scene) -> Board' -> Scene
+repBx f b = f (absB b)
 
--- abs for "alive", "isAlive", "isEmpty", "liveneighbs"
-absBx :: (Board' -> a) -> Board -> a
-absBx f = f . repB
+-- abs for "alive"
+absBx :: (Board' -> Scene) -> Board -> Scene
+absBx f b = f (repB b)
+
+--"isAlive", "isEmpty"
+repBpb :: (Board -> Pos -> Bool) -> Board' -> Pos -> Bool
+repBpb f b p = f (absB b) p
+
+absBpb :: (Board' -> Pos -> Bool) -> Board -> Pos -> Bool
+absBpb f b p = f (repB b) p
+
+--"liveneighbs"
+repBpi :: (Board -> Pos -> Int) -> Board' -> Pos -> Int
+repBpi f b p = f (absB b) p
+
+absBpi :: (Board' -> Pos -> Int) -> Board -> Pos -> Int
+absBpi f b p = f (repB b) p
 
 -- rep for "empty"
-repxB :: (a -> Board) -> a -> Board'
-repxB f = repB . f
+repcB :: (Config -> Board) -> Config -> Board'
+repcB f c = repB (f c)
 
 -- abs for "empty"
-absxB :: (a -> Board') -> a -> Board
-absxB f = absB . f
+abscB :: (Config -> Board') -> Config -> Board
+abscB f c = absB (f c)
 
 -- rep for "inv"
-repxBB :: (a -> Board -> Board) -> a -> Board' -> Board'
-repxBB f x = repB . (f x) . absB
+reppBB :: (Pos -> Board -> Board) -> Pos -> Board' -> Board'
+reppBB f x b = repB (f x (absB b))
 
 -- abs for "inv"
-absxBB :: (a -> Board' -> Board') -> a -> Board -> Board
-absxBB f x = absB . (f x) . repB
+abspBB :: (Pos -> Board' -> Board') -> Pos -> Board -> Board
+abspBB f x b = absB (f x (repB b))
 
 -- rep for "births", "survivors", "nextgen", "next"
 repBB :: (Board -> Board) -> Board' -> Board'
-repBB f = repB . f . absB
+repBB f b = repB (f (absB b))
 
 -- abs for "births", "survivors", "nextgen", "next"
 absBB :: (Board' -> Board') -> Board -> Board
-absBB f = absB . f . repB
+absBB f b = absB (f (repB b))
 
 
 -- GHC Rules for HERMIT 

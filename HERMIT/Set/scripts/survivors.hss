@@ -4,7 +4,7 @@ down
 split-1-beta survivors [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-td (unfold ['repBB, 'liveneighbs, 'absBx, 'repB, 'absB, 'config, 'board]))
+repeat (any-td (unfold ['repBB, 'liveneighbs, 'absBpi, 'repB, 'absB, 'config, 'board]))
 simplify
 any-td (fold 'config)
 any-td case-float-in

@@ -1,10 +1,10 @@
 binding-of '$cempty
 fix-intro
 down
-split-1-beta $cempty [|absxB|] [|repxB|]
+split-1-beta $cempty [|abscB|] [|repcB|]
 { 
 rhs-of 'g
-repeat (any-td (unfold ['repxB, 'repB]))
+repeat (any-td (unfold ['repcB, 'repB]))
 simplify
 any-call (apply-rule empty-l/empty-s)
 }

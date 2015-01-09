@@ -1,10 +1,10 @@
 binding-of 'isEmpty
 fix-intro
 down
-split-1-beta isEmpty [|absBx|] [|repBx|]
+split-1-beta isEmpty [|absBpb|] [|repBpb|]
 { 
 rhs-of 'g
-repeat (any-td (unfold ['repBx, 'absB, 'isAlive, 'board]))
+repeat (any-td (unfold ['repBpb, 'absB, 'isAlive, 'board]))
 simplify
 any-td case-float-in
 any-td (fold 'board)
