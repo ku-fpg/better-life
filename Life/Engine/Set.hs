@@ -30,9 +30,6 @@ births b = LifeBoard (config b)
 	$ Set.filter (\p -> (isEmpty b p) && (liveneighbs b p == 3)) 
 		$ unions $ toList $ Set.map (fromList . (neighbs (config b))) $ board b
 
-nextgen :: Board -> Board
-nextgen b = LifeBoard (config b) $ board (survivors b) `union` board (births b)
-
 instance Life Board where
 	empty c = LifeBoard c Set.empty
 	alive b = toList $ board b
@@ -40,6 +37,6 @@ instance Life Board where
 		if isAlive b p 
 		then delete p $ board b
 		else insert p $ board b
-	next = nextgen
+	next b = LifeBoard (config b) $ board (survivors b) `union` board (births b)
 
 

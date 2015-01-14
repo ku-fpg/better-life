@@ -40,18 +40,15 @@ births b = LifeBoard cb $ foldr (\p qt -> setLocation p qt (isEmpty b p && liven
 		cb = config b
 		sz = fst cb
 
-nextgen :: Board -> Board
-nextgen b = LifeBoard cb $ foldr (\p qt -> setLocation p qt (getLocation p (board (survivors b)) || getLocation p (board (births b)))) (makeTree sz False) $ indices sz
-	where 
-		cb = config b
-		sz = fst cb
-
 instance Life Board where
 	empty c = LifeBoard c $ makeTree (fst c) False
 	alive b = [ p | p <- indices (treeDimensions bb), getLocation p bb ]
 		where bb = board b
 	inv p b = LifeBoard (config b) $ setLocation p bb $ not $ getLocation p bb
 		where bb = board b
-	next b = nextgen b
+	next b = LifeBoard cb $ foldr (\p qt -> setLocation p qt (getLocation p (board (survivors b)) || getLocation p (board (births b)))) (makeTree sz False) $ indices sz
+		where 
+			cb = config b
+			sz = fst cb
 
 

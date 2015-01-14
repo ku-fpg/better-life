@@ -51,11 +51,11 @@ repxBB f x = repB . (f x) . absB
 absxBB :: (a -> Board' -> Board') -> a -> Board -> Board
 absxBB f x = absB . (f x) . repB
 
--- representation of (Board -> Board) "nextgen" and "next"
+-- representation of (Board -> Board) births, survivors, and "next"
 repBB :: (Board -> Board) -> (Board' -> Board')
 repBB f = repB . f . absB
 
--- abstraction of (Board' -> Board') "nextgen" and "next"
+-- abstraction of (Board' -> Board') births, survivors, and "next"
 absBB :: (Board' -> Board') -> (Board -> Board)
 absBB f = absB . f . repB
 

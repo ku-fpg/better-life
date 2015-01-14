@@ -32,9 +32,6 @@ births b = LifeBoard (config b) $ filter (\p -> isEmpty b p && liveneighbs b p =
 				$ nub $ concatMap (neighbs (config b)) $ board b
 --[ p | p <- nub $ concatMap (neighbs (config b)) $ board b, isEmpty b p, liveneighbs b p == 3 ]
 
-nextgen :: Board -> Board
-nextgen b = LifeBoard (config b) $ board (survivors b) ++ board (births b)
-
 instance Life Board where
 	empty c = LifeBoard c []
 	{-# NOINLINE alive #-}
@@ -43,6 +40,6 @@ instance Life Board where
 		if isAlive b p 
 		then filter ((/=) p) $ board b
 		else p : board b
-	next b = nextgen b
+	next b = LifeBoard (config b) $ board (survivors b) ++ board (births b)
 
 

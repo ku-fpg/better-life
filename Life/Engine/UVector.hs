@@ -29,16 +29,13 @@ births :: Board -> Board
 births b = LifeBoard (config b) $ generate 
 	(Vector.length (board b)) 
 	(\i -> let p = (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b)))) 
-		in (isEmpty b p) && (liveneighbs b p == 3))
-                                                                         
-nextgen :: Board -> Board
-nextgen b = LifeBoard (config b) $ Vector.zipWith (||) (board (survivors b)) $ board $ births b
+			in (isEmpty b p) && (liveneighbs b p == 3))
 
 instance Life Board where
 	empty c@((w,h),_) = LifeBoard c $ generate (w * h) (\i -> False)
 	alive b = [ (x,y) | x <- [0..fst (fst (config b)) - 1], y <- [0.. snd (fst (config b)) - 1], (board b) ! (y * fst (fst (config b)) + x) ]
 	inv p b = LifeBoard (config b) $ 
 				imap (\i v -> if p == (i `mod` (fst (fst (config b))), i `div` (fst (fst (config b)))) then not v else v) $ board b
-	next b = nextgen b
+	next b = LifeBoard (config b) $ Vector.zipWith (||) (board (survivors b)) $ board $ births b
 
 

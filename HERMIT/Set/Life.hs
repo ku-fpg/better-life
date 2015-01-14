@@ -68,11 +68,11 @@ reppBB f x b = repB (f x (absB b))
 abspBB :: (Pos -> Board' -> Board') -> Pos -> Board -> Board
 abspBB f x b = absB (f x (repB b))
 
--- rep for "births", "survivors", "nextgen", "next"
+-- rep for "births", "survivors", "next"
 repBB :: (Board -> Board) -> Board' -> Board'
 repBB f b = repB (f (absB b))
 
--- abs for "births", "survivors", "nextgen", "next"
+-- abs for "births", "survivors", "next"
 absBB :: (Board' -> Board') -> Board -> Board
 absBB f b = absB (f (repB b))
 

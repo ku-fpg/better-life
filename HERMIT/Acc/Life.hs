@@ -101,9 +101,7 @@ absBB f = absB . f . repB
                                                                  val = (board b) A.! (A.index2 i j)
                                                              in ((lift x) ==* i &&* (lift y) ==* j) ? ((val + 1) `mod` 2, val))) #-}
 
-{-# RULES "next" [~] forall f. repBB (absBB f) = f #-}
-
-{-# RULES "nextgen" [~] forall f1 f2. repBB (\b -> LifeBoard (config b) (board (f1 b) List.++ board (f2 b))) = 
+{-# RULES "next" [~] forall f1 f2. repBB (\b -> LifeBoard (config b) (board (f1 b) List.++ board (f2 b))) = 
                                             (\b ->  let pattern :: Stencil3x3 Int -> Exp Int
                                                         pattern ((t1,t2,t3), (l,m,r), (bt1, bt2, bt3)) = t1 + t2 + t3 + l + r + bt1 + bt2 + bt3
                                                         liveneighbs :: Board' -> Board'

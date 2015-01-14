@@ -10,7 +10,6 @@ load-and-run HERMIT/QTree/scripts/inv.hss
 load-and-run HERMIT/QTree/scripts/liveneighbs.hss
 load-and-run HERMIT/QTree/scripts/survivors.hss
 load-and-run HERMIT/QTree/scripts/births.hss
-load-and-run HERMIT/QTree/scripts/nextgen.hss
 load-and-run HERMIT/QTree/scripts/next.hss
 continue
 

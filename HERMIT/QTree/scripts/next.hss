@@ -4,7 +4,7 @@ down
 split-1-beta $cnext [|absBB|] [|repBB|]
 { 
 rhs-of 'g
-repeat (any-td (unfold ['repBB, 'nextgen, 'absBB, 'repB, 'absB]))
+repeat (any-td (unfold ['repBB, 'births, 'survivors, 'absBB, 'repB, 'absB, 'config, 'board]))
 simplify
 any-td (fold 'config)
 any-td case-float-in
@@ -12,12 +12,13 @@ any-td (fold 'board)
 any-td (apply-rule repb/absb-fusion)
 simplify
 any-td (apply-rule LifeBoard-reduce)
-bash
+smash
+any-td (apply-rule concat/foldr)
+any-td (apply-rule repb/absb-fusion)
 }
 let-subst
 alpha-let ['$cnext']
 { let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
-
 

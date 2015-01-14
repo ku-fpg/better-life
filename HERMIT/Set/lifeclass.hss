@@ -10,7 +10,6 @@ load-and-run HERMIT/Set/scripts/inv.hss
 load-and-run HERMIT/Set/scripts/liveneighbs.hss
 load-and-run HERMIT/Set/scripts/survivors.hss
 load-and-run HERMIT/Set/scripts/births.hss
-load-and-run HERMIT/Set/scripts/nextgen.hss
 load-and-run HERMIT/Set/scripts/next.hss
 continue
 
