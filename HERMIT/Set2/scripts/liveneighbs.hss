@@ -1,0 +1,17 @@
+binding-of 'liveneighbs
+fix-intro
+down
+split-1-beta liveneighbs [|absBpi|] [|repBpi|]
+{ 
+rhs-of 'g
+repeat (any-td (unfold ['repBpi, 'isAlive, 'absBpb]))
+simplify
+any-td (apply-rule config-absB)
+any-td (apply-rule repB/absB-fusion)
+}
+let-subst
+alpha-let ['liveneighbs']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+top
+innermost let-float
+

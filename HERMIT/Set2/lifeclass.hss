@@ -1,0 +1,15 @@
+-- The following scripts can be called in any order 
+--	except inv.hss must always follow next.hss
+--	because next.hss contains conversions required by inv.hss
+
+load-and-run HERMIT/Set2/scripts/empty.hss
+load-and-run HERMIT/Set2/scripts/alive.hss
+load-and-run HERMIT/Set2/scripts/isEmpty.hss
+load-and-run HERMIT/Set2/scripts/isAlive.hss
+load-and-run HERMIT/Set2/scripts/inv.hss
+load-and-run HERMIT/Set2/scripts/liveneighbs.hss
+load-and-run HERMIT/Set2/scripts/survivors.hss
+load-and-run HERMIT/Set2/scripts/births.hss
+load-and-run HERMIT/Set2/scripts/next.hss
+continue
+

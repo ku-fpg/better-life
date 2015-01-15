@@ -31,6 +31,9 @@ QTreeCanvas:
 HermitSetEngine:
 	hermit examples/HERMIT/HuttonEngineS.hs +Life.Engine.HERMIT.HuttonS HERMIT/Set/lifeclass.hss 
 
+HermitSet2Engine:
+	hermit examples/HERMIT/HuttonEngineS2.hs +Life.Engine.HERMIT.HuttonS2 HERMIT/Set2/lifeclass.hss 
+
 HermitSetCanvas:
 	hermit examples/HERMIT/HuttonCanvasS.hs +Life.Engine.HERMIT.HuttonS HERMIT/Set/lifeclass.hss -- -threaded
 

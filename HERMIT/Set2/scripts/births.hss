@@ -1,0 +1,21 @@
+binding-of 'births
+fix-intro
+down
+split-1-beta births [|absBB|] [|repBB|]
+{ 
+rhs-of 'g
+repeat (any-td (unfold ['repBB, 'isEmpty, 'liveneighbs, 'absBpb, 'absBpi]))
+simplify
+any-td (apply-rule nub-concatMap/unions)
+any-td (apply-rule filter-l/filter-s)
+any-td (apply-rule LifeBoard-absB)
+any-td (apply-rule config-absB)
+any-td (apply-rule repB/absB-fusion)
+bash
+}
+let-subst
+alpha-let ['births']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+top
+innermost let-float
+

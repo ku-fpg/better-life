@@ -1,0 +1,16 @@
+binding-of 'isEmpty
+fix-intro
+down
+split-1-beta isEmpty [|absBpb|] [|repBpb|]
+{ 
+rhs-of 'g
+repeat (any-td (unfold ['repBpb, 'isAlive]))
+simplify
+any-call (apply-rule not-elem/notMember)
+}
+let-subst
+alpha-let ['isEmpty']
+{ let-bind ; nonrec-rhs ; unfold ; bash }
+top
+innermost let-float
+

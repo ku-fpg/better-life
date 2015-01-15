@@ -1,0 +1,17 @@
+binding-of 'isAlive                             -- focus on isAlive
+fix-intro                                       -- intro a trivial fix
+down                                            -- focus on the fix
+split-1-beta isAlive [|absBpb|] [|repBpb|]        -- do w/w split with proper abs/rep functions
+{
+rhs-of 'g                                       -- focus on rhs of g
+any-td (unfold 'repBpb)
+simplify                                        -- cleanup
+any-td (apply-rule elem/member)                -- change elem to member
+}                                               -- back up to body of isAlive
+let-subst                                       -- inline g
+alpha-let ['isAlive']                           -- rename worker to isAlive'
+{ let-bind ; nonrec-rhs ; unfold ; bash }       -- undo fix intro (by unfolding fix) and cleanup
+top                                             -- return to top of module
+innermost let-float                             -- float isAlive' up to top level
+
+-- we are done... probably need to mark isAlive' as exported, but we can worry about this later
