@@ -1,0 +1,219 @@
+Hutton Engine Benchmarks
+warming up
+estimating clock resolution...
+mean is 3.425316 us (160001 iterations)
+found 9176 outliers among 159999 samples (5.7%)
+  5227 (3.3%) high mild
+  3924 (2.5%) high severe
+estimating cost of a clock call...
+mean is 1.902577 us (16 iterations)
+
+benchmarking Glider-20x20
+collecting 100 samples, 1 iterations each, in estimated 9.034801 s
+mean: 112.8574 ms, lb 111.5324 ms, ub 114.3205 ms, ci 0.950
+std dev: 7.111295 ms, lb 6.273109 ms, ub 8.153606 ms, ci 0.950
+found 1 outliers among 100 samples (1.0%)
+variance introduced by outliers: 59.536%
+variance is severely inflated by outliers
+
+benchmarking GliderGun-50x50
+collecting 100 samples, 1 iterations each, in estimated 8.006001 s
+mean: 111.9215 ms, lb 110.6475 ms, ub 113.5319 ms, ci 0.950
+std dev: 7.298196 ms, lb 5.990806 ms, ub 9.245689 ms, ci 0.950
+found 4 outliers among 100 samples (4.0%)
+  4 (4.0%) high mild
+variance introduced by outliers: 61.542%
+variance is severely inflated by outliers
+
+benchmarking Acorn-100x100
+collecting 100 samples, 1 iterations each, in estimated 6.339002 s
+mean: 109.2646 ms, lb 108.2589 ms, ub 110.5187 ms, ci 0.950
+std dev: 5.737281 ms, lb 4.761275 ms, ub 7.289380 ms, ci 0.950
+found 3 outliers among 100 samples (3.0%)
+  3 (3.0%) high mild
+variance introduced by outliers: 50.468%
+variance is severely inflated by outliers
+
+benchmarking Battle-100x100
+collecting 100 samples, 1 iterations each, in estimated 6.017303 s
+mean: 111.2449 ms, lb 110.1004 ms, ub 112.5587 ms, ci 0.950
+std dev: 6.304090 ms, lb 5.504018 ms, ub 7.461492 ms, ci 0.950
+found 2 outliers among 100 samples (2.0%)
+  2 (2.0%) high mild
+variance introduced by outliers: 54.474%
+variance is severely inflated by outliers
+
+benchmarking Gliders5-160x160
+collecting 100 samples, 1 iterations each, in estimated 6.171799 s
+mean: 125.7353 ms, lb 122.3128 ms, ub 130.4170 ms, ci 0.950
+std dev: 20.26118 ms, lb 15.96966 ms, ub 27.73172 ms, ci 0.950
+found 4 outliers among 100 samples (4.0%)
+  2 (2.0%) high mild
+  2 (2.0%) high severe
+variance introduced by outliers: 91.491%
+variance is severely inflated by outliers
+--------------------------------------
+
+HERMIT Converted Set Engine Benchmarks
+warming up
+estimating clock resolution...
+mean is 3.305584 us (160001 iterations)
+found 57853 outliers among 159999 samples (36.2%)
+  38203 (23.9%) low severe
+  19650 (12.3%) high severe
+estimating cost of a clock call...
+mean is 1.941401 us (19 iterations)
+
+benchmarking Glider-20x20
+collecting 100 samples, 1 iterations each, in estimated 9.182000 s
+mean: 77.85296 ms, lb 76.76784 ms, ub 79.11613 ms, ci 0.950
+std dev: 5.971767 ms, lb 5.139409 ms, ub 7.010670 ms, ci 0.950
+found 4 outliers among 100 samples (4.0%)
+  4 (4.0%) high mild
+variance introduced by outliers: 68.699%
+variance is severely inflated by outliers
+
+benchmarking GliderGun-50x50
+collecting 100 samples, 1 iterations each, in estimated 8.523202 s
+mean: 77.87106 ms, lb 76.89548 ms, ub 78.97613 ms, ci 0.950
+std dev: 5.323721 ms, lb 4.719961 ms, ub 6.089526 ms, ci 0.950
+variance introduced by outliers: 63.588%
+variance is severely inflated by outliers
+
+benchmarking Acorn-100x100
+collecting 100 samples, 1 iterations each, in estimated 8.262587 s
+mean: 77.39270 ms, lb 76.32950 ms, ub 78.71492 ms, ci 0.950
+std dev: 6.063687 ms, lb 5.066857 ms, ub 7.987271 ms, ci 0.950
+found 2 outliers among 100 samples (2.0%)
+  1 (1.0%) high severe
+variance introduced by outliers: 69.717%
+variance is severely inflated by outliers
+
+benchmarking Battle-100x100
+collecting 100 samples, 1 iterations each, in estimated 6.955981 s
+mean: 75.63378 ms, lb 74.77869 ms, ub 76.70026 ms, ci 0.950
+std dev: 4.866806 ms, lb 4.075114 ms, ub 6.486284 ms, ci 0.950
+found 2 outliers among 100 samples (2.0%)
+  2 (2.0%) high mild
+variance introduced by outliers: 60.549%
+variance is severely inflated by outliers
+
+benchmarking Gliders5-160x160
+collecting 100 samples, 1 iterations each, in estimated 7.695818 s
+mean: 76.70556 ms, lb 75.65235 ms, ub 77.90186 ms, ci 0.950
+std dev: 5.751547 ms, lb 5.000875 ms, ub 6.636365 ms, ci 0.950
+found 1 outliers among 100 samples (1.0%)
+variance introduced by outliers: 67.677%
+variance is severely inflated by outliers
+--------------------------------------
+
+HERMIT Converted QuadTree Engine Benchmarks
+warming up
+estimating clock resolution...
+mean is 3.415771 us (160001 iterations)
+found 40374 outliers among 159999 samples (25.2%)
+  21573 (13.5%) low severe
+  18801 (11.8%) high severe
+estimating cost of a clock call...
+mean is 1.911445 us (15 iterations)
+
+benchmarking Glider-20x20
+collecting 100 samples, 1 iterations each, in estimated 8.347297 s
+mean: 78.41410 ms, lb 77.42316 ms, ub 79.66041 ms, ci 0.950
+std dev: 5.683239 ms, lb 4.706076 ms, ub 7.218775 ms, ci 0.950
+found 3 outliers among 100 samples (3.0%)
+  3 (3.0%) high mild
+variance introduced by outliers: 66.625%
+variance is severely inflated by outliers
+
+benchmarking GliderGun-50x50
+collecting 100 samples, 1 iterations each, in estimated 7.659984 s
+mean: 78.49121 ms, lb 77.41382 ms, ub 79.82992 ms, ci 0.950
+std dev: 6.165909 ms, lb 5.204831 ms, ub 8.260231 ms, ci 0.950
+found 1 outliers among 100 samples (1.0%)
+variance introduced by outliers: 69.724%
+variance is severely inflated by outliers
+
+benchmarking Acorn-100x100
+collecting 100 samples, 1 iterations each, in estimated 7.209802 s
+mean: 76.43633 ms, lb 75.48707 ms, ub 77.58237 ms, ci 0.950
+std dev: 5.312308 ms, lb 4.518362 ms, ub 6.371149 ms, ci 0.950
+found 4 outliers among 100 samples (4.0%)
+  4 (4.0%) high mild
+variance introduced by outliers: 64.591%
+variance is severely inflated by outliers
+
+benchmarking Battle-100x100
+collecting 100 samples, 1 iterations each, in estimated 7.026911 s
+mean: 76.72516 ms, lb 75.93024 ms, ub 77.64504 ms, ci 0.950
+std dev: 4.394315 ms, lb 3.816216 ms, ub 5.135663 ms, ci 0.950
+found 1 outliers among 100 samples (1.0%)
+variance introduced by outliers: 55.452%
+variance is severely inflated by outliers
+
+benchmarking Gliders5-160x160
+collecting 100 samples, 1 iterations each, in estimated 8.397079 s
+mean: 76.94613 ms, lb 75.92321 ms, ub 78.25582 ms, ci 0.950
+std dev: 5.880775 ms, lb 4.752846 ms, ub 7.643085 ms, ci 0.950
+found 3 outliers among 100 samples (3.0%)
+  3 (3.0%) high mild
+variance introduced by outliers: 68.689%
+variance is severely inflated by outliers
+--------------------------------------
+
+HERMIT Converted Vector Engine Benchmarks
+warming up
+estimating clock resolution...
+mean is 3.420072 us (160001 iterations)
+found 52059 outliers among 159999 samples (32.5%)
+  25797 (16.1%) low severe
+  26262 (16.4%) high severe
+estimating cost of a clock call...
+mean is 1.885928 us (16 iterations)
+found 2 outliers among 16 samples (12.5%)
+  1 (6.2%) high mild
+  1 (6.2%) high severe
+
+benchmarking Glider-20x20
+collecting 100 samples, 1 iterations each, in estimated 8.122802 s
+mean: 77.19817 ms, lb 76.20961 ms, ub 78.34486 ms, ci 0.950
+std dev: 5.484349 ms, lb 4.749551 ms, ub 6.447288 ms, ci 0.950
+found 3 outliers among 100 samples (3.0%)
+  3 (3.0%) high mild
+variance introduced by outliers: 65.610%
+variance is severely inflated by outliers
+
+benchmarking GliderGun-50x50
+collecting 100 samples, 1 iterations each, in estimated 6.936479 s
+mean: 76.22125 ms, lb 75.26269 ms, ub 77.30294 ms, ci 0.950
+std dev: 5.227227 ms, lb 4.614416 ms, ub 6.132135 ms, ci 0.950
+found 2 outliers among 100 samples (2.0%)
+  2 (2.0%) high mild
+variance introduced by outliers: 63.596%
+variance is severely inflated by outliers
+
+benchmarking Acorn-100x100
+collecting 100 samples, 1 iterations each, in estimated 7.240391 s
+mean: 75.57299 ms, lb 74.61121 ms, ub 76.72152 ms, ci 0.950
+std dev: 5.382984 ms, lb 4.584382 ms, ub 6.562315 ms, ci 0.950
+found 3 outliers among 100 samples (3.0%)
+  3 (3.0%) high mild
+variance introduced by outliers: 65.618%
+variance is severely inflated by outliers
+
+benchmarking Battle-100x100
+collecting 100 samples, 1 iterations each, in estimated 7.093096 s
+mean: 75.69535 ms, lb 74.73207 ms, ub 76.91005 ms, ci 0.950
+std dev: 5.520040 ms, lb 4.683933 ms, ub 6.961726 ms, ci 0.950
+found 2 outliers among 100 samples (2.0%)
+  1 (1.0%) high severe
+variance introduced by outliers: 66.641%
+variance is severely inflated by outliers
+
+benchmarking Gliders5-160x160
+collecting 100 samples, 1 iterations each, in estimated 6.977987 s
+mean: 76.45808 ms, lb 75.43536 ms, ub 77.64443 ms, ci 0.950
+std dev: 5.656436 ms, lb 4.956560 ms, ub 6.586489 ms, ci 0.950
+found 1 outliers among 100 samples (1.0%)
+variance introduced by outliers: 67.641%
+variance is severely inflated by outliers
