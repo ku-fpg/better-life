@@ -2,9 +2,10 @@ binding-of 'births
 fix-intro
 down
 split-1-beta births [|absBB|] [|repBB|]
+let-subst
 { 
-rhs-of 'g
-repeat (any-td (unfold ['repBB, 'isEmpty, 'liveneighbs, 'absBpb, 'absBpi, 'repB, 'absB, 'config, 'board]))
+rhs-of 'worker
+repeat (any-td (unfold ['fix, 'absBB, 'repBB, 'isEmpty, 'liveneighbs, 'absBpb, 'absBpi, 'repB, 'absB, 'config, 'board]))
 simplify
 any-td (fold 'config)
 any-td case-float-in
@@ -15,9 +16,7 @@ any-td (apply-rule repb/absb-fusion)
 any-td (apply-rule LifeBoard-reduce)
 bash
 }
-let-subst
 alpha-let ['births']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
 

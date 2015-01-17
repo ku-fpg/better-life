@@ -2,17 +2,16 @@ binding-of '$calive
 fix-intro
 down
 split-1-beta $calive [|absBx|] [|repBx|]
+let-subst
 { 
-rhs-of 'g
-repeat (any-td (unfold ['repBx, 'absB, 'board]))
+rhs-of 'worker
+repeat (any-td (unfold ['fix, 'absBx, 'repBx, 'repB, 'absB, 'board]))
 simplify
 any-td case-float-in
 any-td (fold 'board)
 any-td (unfold 'absb)
 }
-let-subst
 alpha-let ['$calive']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
 

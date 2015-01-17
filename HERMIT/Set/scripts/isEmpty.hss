@@ -2,17 +2,16 @@ binding-of 'isEmpty
 fix-intro
 down
 split-1-beta isEmpty [|absBpb|] [|repBpb|]
+let-subst
 { 
-rhs-of 'g
-repeat (any-td (unfold ['repBpb, 'absB, 'isAlive, 'board]))
+rhs-of 'worker
+repeat (any-td (unfold ['fix, 'absBpb, 'repBpb, 'repB, 'absB, 'isAlive, 'board]))
 simplify
 any-td case-float-in
 any-td (fold 'board)
 any-call (apply-rule not-elem/notMember)
 }
-let-subst
 alpha-let ['isEmpty']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
 

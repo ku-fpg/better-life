@@ -2,9 +2,10 @@ binding-of 'survivors
 fix-intro
 down
 split-1-beta survivors [|absBB|] [|repBB|]
+let-subst
 { 
-rhs-of 'g
-repeat (any-td (unfold ['repBB, 'liveneighbs, 'absBpi, 'repB, 'absB, 'config, 'board]))
+rhs-of 'worker
+repeat (any-td (unfold ['fix, 'absBB, 'repBB, 'liveneighbs, 'absBpi, 'repB, 'absB, 'config, 'board]))
 simplify
 any-td (fold 'config)
 any-td case-float-in
@@ -13,9 +14,7 @@ any-td (apply-rule filter-l/filter-s)
 any-td (apply-rule repb/absb-fusion)
 any-td (apply-rule LifeBoard-reduce)
 }
-let-subst
 alpha-let ['survivors']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
 

@@ -2,17 +2,16 @@ binding-of 'isAlive                             -- focus on isAlive
 fix-intro                                       -- intro a trivial fix
 down                                            -- focus on the fix
 split-1-beta isAlive [|absBpb|] [|repBpb|]        -- do w/w split with proper abs/rep functions
+let-subst                                       -- inline g
 {
-rhs-of 'g                                       -- focus on rhs of g
-repeat (any-td (unfold ['repBpb, 'absB, 'board]))
-simplify                                        -- cleanup
+rhs-of 'worker                                  -- focus on rhs of worker
+repeat (any-td (unfold ['fix, 'absBpb, 'repBpb, 'repB, 'absB, 'board]))
+simplify                                        -- undo fix intro (by unfolding fix) and cleanup
 any-td case-float-in
 any-td (fold 'board)
 any-td (apply-rule elem/member)                -- change elem to member
 }                                               -- back up to body of isAlive
-let-subst                                       -- inline g
 alpha-let ['isAlive']                           -- rename worker to isAlive'
-{ let-bind ; nonrec-rhs ; unfold ; bash }       -- undo fix intro (by unfolding fix) and cleanup
 top                                             -- return to top of module
 innermost let-float                             -- float isAlive' up to top level
 

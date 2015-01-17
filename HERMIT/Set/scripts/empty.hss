@@ -2,15 +2,14 @@ binding-of '$cempty
 fix-intro
 down
 split-1-beta $cempty [|abscB|] [|repcB|]
+let-subst
 { 
-rhs-of 'g
-repeat (any-td (unfold ['repcB, 'repB]))
+rhs-of 'worker
+repeat (any-td (unfold ['fix, 'abscB, 'repcB, 'repB]))
 simplify
 any-call (apply-rule empty-l/empty-s)
 }
-let-subst
 alpha-let ['$cempty']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
 

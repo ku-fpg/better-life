@@ -2,9 +2,10 @@ binding-of 'liveneighbs
 fix-intro
 down
 split-1-beta liveneighbs [|absBpi|] [|repBpi|]
+let-subst
 { 
-rhs-of 'g
-repeat (any-td (unfold ['repBpi, 'isAlive, 'absBpb, 'repB, 'absB, 'config]))
+rhs-of 'worker
+repeat (any-td (unfold ['fix, 'absBpi, 'repBpi, 'isAlive, 'absBpb, 'repB, 'absB, 'config]))
 simplify
 any-td (fold 'config)
 any-td case-float-in
@@ -12,9 +13,7 @@ any-td (fold 'board)
 any-td (apply-rule repb/absb-fusion)
 any-td (apply-rule LifeBoard-reduce)
 }
-let-subst
 alpha-let ['liveneighbs']
-{ let-bind ; nonrec-rhs ; unfold ; bash }
 top
 innermost let-float
 
