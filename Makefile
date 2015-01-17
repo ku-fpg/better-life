@@ -59,6 +59,7 @@ clean:
 	rm -rf examples/engines/QTreeEngine examples/simulations/QTreeCanvas
 	rm -rf examples/HERMIT/HuttonEngineA examples/HERMIT/HuttonCanvasA
 	rm -rf examples/HERMIT/HuttonEngineS examples/HERMIT/HuttonCanvasS
+	rm -rf examples/HERMIT/HuttonEngineS2 examples/HERMIT/HuttonCanvasS2
 	rm -rf examples/HERMIT/HuttonEngineV
 	rm -rf examples/HERMIT/HuttonEngineQ
 	rm -rf examples/HERMIT/*~ examples/HERMIT/*.hi examples/HERMIT/*.o
@@ -71,6 +72,8 @@ clean:
 	rm -rf Life/Display/*~ Life/Display/*.hi Life/Display/*.o
 	rm -rf HERMIT/Set/scripts/*~
 	rm -rf HERMIT/Set/*~ HERMIT/Set/*.hi HERMIT/Set/*.o
+	rm -rf HERMIT/Set2/scripts/*~
+	rm -rf HERMIT/Set2/*~ HERMIT/Set2/*.hi HERMIT/Set2/*.o
 	rm -rf HERMIT/UVector/scripts/*~
 	rm -rf HERMIT/UVector/*~ HERMIT/UVector/*.hi HERMIT/UVector/*.o
 	rm -rf HERMIT/QTree/scripts/*~
