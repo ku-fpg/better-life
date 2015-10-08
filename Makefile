@@ -81,3 +81,22 @@ clean:
 	rm -rf HERMIT/Acc/scripts/*~
 	rm -rf HERMIT/Acc/*~ HERMIT/Acc/*.hi HERMIT/Acc/*.o
 
+
+boot::
+	cabal sandbox init 
+	mkdir clones
+	(cd clones ; \
+	  git clone https://github.com/ku-fpg/remote-json.git ; \
+	  git clone https://github.com/ku-fpg/hermit.git  ; \
+	  git clone https://github.com/ku-fpg/hermit-shell.git )
+	cabal sandbox add-source clones/remote-json
+	cabal sandbox add-source clones/hermit
+	cabal sandbox add-source clones/hermit-shell
+	cabal install --reorder-goals --only-dependencies . hermit-shell
+	cabal install hermit-shell
+	cabal configure 
+	cabal build
+
+
+ajg_clean::
+	rm -Rf clones
