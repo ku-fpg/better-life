@@ -30,3 +30,8 @@ View the sandbox directory for the HERMIT conversion example.
       original list-based implementation and replaces it with another
       implementation.
       
+To run manually;
+
+  % cabal exec bash
+  % cd examples/HERMIT
+  % hermit-shell HuttonEngineS.hs +Life.Engine.HERMIT.HuttonS HuttonSScript.hs resume -- -i../..
