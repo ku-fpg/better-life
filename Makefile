@@ -83,6 +83,7 @@ clean:
 
 
 boot::
+	cabal update
 	cabal sandbox init 
 	mkdir clones
 	(cd clones ; \
@@ -92,7 +93,7 @@ boot::
 	cabal sandbox add-source clones/remote-json
 	cabal sandbox add-source clones/hermit
 	cabal sandbox add-source clones/hermit-shell
-	cabal install --reorder-goals --only-dependencies . hermit-shell
+	cabal install -j --reorder-goals --only-dependencies . hermit-shell
 	cabal install hermit-shell
 	cabal configure 
 	cabal build
